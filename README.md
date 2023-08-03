@@ -2,7 +2,7 @@
 C-AME is an open source Python software application for avian migration paths estimation based on observation data from eBird platform.
 We offer both a **Windows-only** application and the corresponding source code.
 ## C-AME Application Usage (Windows only)
-![57ad48a6a345251dad021074217d808](https://github.com/shifengshierya/C-AMEv1.1/assets/131585037/8645d155-c98f-46e3-85e6-73dc140a9aaf)
+![came](https://github.com/shifengshierya/C-AME/assets/50764534/ccc84a8f-b4ca-42d4-998d-38d8996ab5b6)
 1. **Download the Code**
    - Download the code located in the "application" folder and extract all files.
 2. **Navigate and Determine Folder Paths**
@@ -36,7 +36,8 @@ pip install -r requirements.txt
 ```
 ### Data Preparation
 We collect all the data from [ebird](https://ebird.org/science/status-and-trends). The input data structure is
-![image](https://github.com/shifengshierya/C-AMEv1.1/assets/131585037/06a86fe7-e1ce-452e-9776-648cc1d2102a)
+![data](https://github.com/shifengshierya/C-AME/assets/50764534/81356e12-de3c-4abd-bc9f-0502a88f112b)
+
 ### Usage
 Navigate into the source folder, and run 
 ```bash
@@ -45,7 +46,7 @@ python Part_1_data_format_standardization.py --input_dir {INPUT_DIR} --data_dir 
 where 
 - `INPUT_DIR` refers to the directory of input data mentioned above (support for multiple files processing)
 - `DATA_DIR` refers to data format standardization results folder
-- `SAVE_DIR` refers to Final results storage folder
+- `SAVE_DIR` refers to final results storage folder
 
 Then, you can get the results in the corresponding folders：
 #### Result Files
