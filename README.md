@@ -8,9 +8,9 @@ We offer both a **Windows-only** application and the corresponding source code.
 2. **Navigate and Determine Folder Paths**
    - Navigate into the `cameMain` folder.
    - Determine the following folder paths to organize your data:
-     - Raw data folder: `./application/cameMain/Raw Data`
-     - Data format standardization results folder: `./application/cameMain/Process Files`
-     - Final results storage folder: `./application/cameMain/Result Files`
+     - Raw data folder (support for multiple files processing)
+     - Data format standardization results folder
+     - Final results storage folder
 3. **Execute the Application**
    - Double click on the Application file named `cameMain.exe`, which is represented by a blue bird icon. This action will open a terminal window.
 4. **Configure Column Settings**
@@ -40,9 +40,12 @@ We collect all the data from [ebird](https://ebird.org/science/status-and-trends
 ### Usage
 Navigate into the source folder, and run 
 ```bash
-python Part_1_data_format_standardization.py --input_dir {INPUT_DIR} 
+python Part_1_data_format_standardization.py --input_dir {INPUT_DIR} --data_dir {DATA_DIR} --save_dir {SAVE_DIR}
 ```
-where `INPUT_DIR` refers to the directory of input data mentioned above (support for multiple files processing).
+where 
+- `INPUT_DIR` refers to the directory of input data mentioned above (support for multiple files processing)
+- `DATA_DIR` refers to data format standardization results folder
+- `SAVE_DIR` refers to Final results storage folder
 
 Then, you can get the results in the corresponding folders：
 #### Result Files
