@@ -1,4 +1,4 @@
-# C-AMEv1.1 <a href="https://colab.research.google.com/drive/1gGKFL11XLAgi0Xxnxg8XdQQWVb9C4B0B?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="google colab logo"></a>
+# C-AMEv1.1 <a href="https://colab.research.google.com/drive/1kOmRemx4p2Wqa2JtFeZtZNlCNiVo8zEc?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="google colab logo"></a>
 C-AME is an open source Python software application for avian migration paths estimation based on observation data from eBird platform.
 We offer both a **Windows-only** application and the corresponding source code.
 ## C-AME Application Usage (Windows only)
@@ -28,7 +28,7 @@ We offer both a **Windows-only** application and the corresponding source code.
 ## C-AME Source-code Usage
 This part is recommended for developers.
 ### Quick Start on Colab
-We provide a [Colab Demo](https://colab.research.google.com/drive/1gGKFL11XLAgi0Xxnxg8XdQQWVb9C4B0B?usp=sharing) of this code for a quickly try.
+We provide a [Colab Demo](https://colab.research.google.com/drive/1kOmRemx4p2Wqa2JtFeZtZNlCNiVo8zEc?usp=sharing) of this code for a quick try.
 ### Environment
 We use Python 3.10 for all the experiments. Install other dependencies via
 ```bash
