@@ -169,6 +169,9 @@ def main(path1='./RawData/', path2='./source/', save_path='./target/', obs_count
        This function is for datetime format standardization
 
        Args:
+           path1:The directory of input data mentioned above (support for multiple files processing)
+           path2:Data format standardization results folder
+           save_path: Final results storage folder
            obs_count:The column number for observation count
            lat_col:The column number for latitude
            obs_date:The column number for observation date
