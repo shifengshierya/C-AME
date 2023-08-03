@@ -164,7 +164,7 @@ def map_2(save_path,csv_name):
     # plt.show()
     plt.close()
 
-def main(path1='/content/C-AMEv1.1/C-AME/RawData/', path2='./source/', data_path='./source/', save_path='./target/', obs_count=3,lat_col=8,obs_date=11):
+def main(path1='./RawData/', path2='./source/', save_path='./target/', obs_count=3,lat_col=8,obs_date=11):
     """
        This function is for datetime format standardization
 
@@ -228,9 +228,15 @@ def main(path1='/content/C-AMEv1.1/C-AME/RawData/', path2='./source/', data_path
         map_2(path2, csv_list[i])
         print(csv_list[i])
     print('Part 1 finished')
-    part2(data_path, save_path)
+    part2(path2, save_path)
 
 
 
 if __name__ == '__main__':
-    main()
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--input_dir", type=str, default='./RawData/')
+    parser.add_argument("--data_dir", type=str, default='./source/')
+    parser.add_argument("--save_dir", type=str, default='./target/')
+    opt = parser.parse_args()
+    main(path1=opt.input_dir, path2=opt.data_dir, save_path=opt.save_dir)
