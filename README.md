@@ -36,7 +36,7 @@ pip install -r requirements.txt
 ```
 ### Data Preparation
 We collect all the data from [ebird](https://ebird.org/science/status-and-trends). The input data structure is
-![data](https://github.com/shifengshierya/C-AME/assets/50764534/81356e12-de3c-4abd-bc9f-0502a88f112b)
+![data2](https://github.com/shifengshierya/C-AME/assets/50764534/70cac4c9-09ef-4b35-8a9a-dfa65cec966b)
 
 ### Usage
 Navigate into the source folder, and run 
