@@ -25,8 +25,10 @@ We offer both a **Windows-only** application and the corresponding source code.
 5. **Run the Application**
    - Click on the "RUN" button to execute the application.
 
-## C-AME Source-code Usage
-This part is recommended for developers.
+## C-AME Source-code Usage 
+[[API Documentation](https://shifengshierya.github.io/C-AME/)]
+
+This part is recommended for developers. 
 ### Quick Start on Colab
 We provide a [Colab Demo](https://colab.research.google.com/drive/1kOmRemx4p2Wqa2JtFeZtZNlCNiVo8zEc?usp=sharing) of this code for a quick try.
 ### Environment
