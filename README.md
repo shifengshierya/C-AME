@@ -15,11 +15,12 @@ We offer both a **Windows-only** application and the corresponding source code w
 3. **Execute the Application**
    - Double click on the Application file named `cameMain.exe`, which is represented by a blue bird icon. This action will open a terminal window.
 4. **Configure Column Settings**
-   - Set the three paths you determined in Step 2 within the terminal window.
+   - Set the three paths you determined in Step 2 within the terminal window:choose the corresponding folder path of Raw Data,Process Files,Result Files in the cameMain on your computer.
    - Ensure you select the correct columns for the following data:
      - Latitude
      - Longitude
      - Obs_date
+     - Observation_count
    - Note that we have set the default column mappings as follows:
      - Column Latitude : Column_Obs_date = 8 : 11
      - Default observation count (Column_Obs_count) is set to 3.
