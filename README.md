@@ -8,9 +8,10 @@ We offer both a **Windows-only** application and the corresponding source code w
 2. **Navigate and Determine Folder Paths**
    - Navigate into the `cameMain` folder.
    - Determine the following folder paths to organize your data:
-     - Raw data folder (support for multiple files processing)
-     - Data format standardization results folder
-     - Final results storage folder
+     - Raw data folder (support for multiple files processing):Part 1 Input path
+     - Data format standardization results folder: Part 1 Output path
+     - Final results storage folder: Part 2 output path
+   - Note that we have set the default folder as:Raw Data,Process Files,Result Files in the cameMain, find the corresponding folder path in your computer.
 3. **Execute the Application**
    - Double click on the Application file named `cameMain.exe`, which is represented by a blue bird icon. This action will open a terminal window.
 4. **Configure Column Settings**
