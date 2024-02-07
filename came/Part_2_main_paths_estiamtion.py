@@ -57,10 +57,10 @@ def part2(data_path='./source/', save_path='./target/'):
 #Path estimation: Get daily population centroids by mean_shift()
         result = mean_shift(SLDF_df,save_path,csv_name)
         print('{},Get Meanshift results'.format(csv_name))
-        data_write(os.path.join(save_path, csv_name.replace('.csv', ''), "shift.xls"), result)
+        data_write(os.path.join(save_path, csv_name.replace('.csv', ''), "shift.xlsx"), result)
 
 #Path estimation: Group the daily population centroids according to the minimum distance principle by group()
-        group(os.path.join(save_path, csv_name.replace('.csv', ''), "shift.xls"), save_path, csv_name)
+        group(os.path.join(save_path, csv_name.replace('.csv', ''), "shift.xlsx"), save_path, csv_name)
         print('File{}/{},Group finished'.format(csv_num + 1, len(all_csv)))
 
 

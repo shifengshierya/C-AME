@@ -237,7 +237,7 @@ def gam(save_path, csv_name,key):
            Lat:The latitude after gam algorithm
 
     """
-    df = pd.read_excel(os.path.join(save_path, csv_name.replace('.csv',''), 'ni_traj{}.xls'.format(key + 1)), sheet_name='Sheet1')
+    df = pd.read_excel(os.path.join(save_path, csv_name.replace('.csv',''), 'ni_traj{}.xlsx'.format(key + 1)), sheet_name='Sheet1')
     date = df["date"]
     x = df["X"]
     y = df["Y"]
@@ -639,7 +639,7 @@ def group(csv_path,save_path,csv_name):
         df = pd.DataFrame(value)
         names = ['X', 'Y', 'date']
         df.columns = names
-        df.to_excel(os.path.join(save_path, csv_name.replace('.csv',''), 'ni_traj{}.xls'.format(key + 1)), sheet_name='Sheet1', index=False)
+        df.to_excel(os.path.join(save_path, csv_name.replace('.csv',''), 'ni_traj{}.xlsx'.format(key + 1)), sheet_name='Sheet1', index=False)
 
 #Path estimation:Show the estimation results on the map
 def map_1(save_path,csv_name):

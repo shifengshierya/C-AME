@@ -111,7 +111,7 @@ def avg_distance(save_path):
        Returns:
            True: Omitted
     """
-    df=pd.read_excel(os.path.join(save_path, 'shift.xls'))
+    df=pd.read_excel(os.path.join(save_path, 'shift.xlsx'))
     train_data = np.array(df)
     excel_list = train_data.tolist()  # list
     # excel_list = excel_list[1:]
