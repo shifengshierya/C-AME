@@ -7,7 +7,7 @@ import pandas as pd
 from mpl_toolkits.basemap import Basemap
 import numpy as np
 import matplotlib.pyplot as plt
-from Part_2_main_paths_estiamtion import part2
+from Part_2_main_trajectory_estiamtion import part2
 
 
 # beginDate, endDate are datetime format like"20180101"
