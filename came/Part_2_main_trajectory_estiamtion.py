@@ -35,7 +35,7 @@ def part2(data_path='./source/', save_path='./target/'):
         y = df["LONGITUDE"]
         date = df["OBSERVATION DATE"]
         length = len(x)
-# Data preprocessing:convert original latitude and longitude data to Mercator coordinates by WGS84ToWebMercator_Single()
+# Data preprocessing:convert original latitude and longitude data to WebMercator coordinates by WGS84ToWebMercator_Single()
         initial_data = get_initial_data(x, y, date, length)
         initial_data_df = pd.DataFrame(initial_data[1:], columns=initial_data[0])
         initial_data_df.to_csv(os.path.join(save_path, csv_name.replace('.csv', ''), 'initial_data.csv'), index=False)
