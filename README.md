@@ -1,5 +1,5 @@
 # C-AMEv1.1 <a href="https://colab.research.google.com/drive/1kOmRemx4p2Wqa2JtFeZtZNlCNiVo8zEc?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="google colab logo"></a>
-C-AME is an open source Python software application for avian migration path estimation based on observation data from eBird platform.
+C-AME is an open source Python software application for avian migration trajectory estimation based on observation data from eBird platform.
 We offer both a **Windows-only** application and the corresponding source code with a Google Colab demo ready.
 ## C-AME Application Usage (Windows only)
 ![came](https://github.com/shifengshierya/C-AME/assets/50764534/ccc84a8f-b4ca-42d4-998d-38d8996ab5b6)
@@ -39,7 +39,7 @@ We use Python 3.10 for all the experiments. Install other dependencies via
 pip install -r requirements.txt
 ```
 ### Data Preparation
-We collect all the data from [ebird](https://ebird.org/science/status-and-trends). The input data structure is
+We collect all the data from [ebird](https://ebird.org/data/download). The input data structure is
 ![data2](https://github.com/shifengshierya/C-AME/assets/50764534/70cac4c9-09ef-4b35-8a9a-dfa65cec966b)
 
 ### Usage
@@ -56,7 +56,7 @@ Then, you can get the results in the corresponding folders：
 #### Result Files
 | Item                               | Description                                                                               |
 |:------------------------------------:|-------------------------------------------------------------------------------------------|
-| `map.jpg`                            | The migration paths estimation results                                                  |
+| `map.jpg`                            | The migration trajectory estimation results                                                  |
 | `off_distance` folder                | The offset distance calculation results and its figure <br> - `d1.csv`-`d13.csv`: the offset distance for each trajectory <br> - `da.csv`: the average offset distance for the species|
 | `speed` folder                       | The speed calculation results and its figure <br> - `s1.csv`-`s13.csv`: the speed for each trajectory <br> - `da.csv`: the average speed for the species|
 | `ave_disatance.csv` & `avg_distance.png`| The average distance of daily centroids and its figure                                    |
