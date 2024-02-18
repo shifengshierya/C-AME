@@ -178,14 +178,14 @@ def data_write(file_path, datas):
     f.save(file_path)
 
 
-#Coordinate conversion from WebMercator to wgs84
+#Coordinate conversion from Web Mercator to wgs84
 def webmercator2wgs84(a, b):
     """
-       This function is for Mercator coordinates conversion into  geographical ones
+       This function is for Web Mercator coordinates conversion into  geographical ones
 
        Args:
-           a: The Mercator coordinates of longitude
-           b: The Mercator coordinates of latitude
+           a: The Web Mercator coordinates of longitude
+           b: The Web Mercator coordinates of latitude
 
        Returns:
            lon: The geographical coordinates of longitude
@@ -264,15 +264,15 @@ def gam(save_path, csv_name,key):
 #Coordinate conversion from wgs84 to WebMercator
 def wgs84towebmercator_single(lat, lon):
     """
-       This function is for coordinates conversion into Mercator ones
+       This function is for coordinates conversion into Web Mercator ones
 
        Args:
            lat: Latitude data
            lon: Longitude data
 
        Returns:
-           m: The Mercator coordinates of latitude
-           n:The Mercator coordinates of longitude
+           m: The Web Mercator coordinates of latitude
+           n:The Web Mercator coordinates of longitude
     """
     transformer = Transformer.from_crs(crs_WGS84, crs_WebMercator)
     m, n = transformer.transform(lat, lon)
@@ -282,7 +282,7 @@ def wgs84towebmercator_single(lat, lon):
 # Data preprocessing: convert original latitude and longitude data to Mercator coordinates with wgs84towebmercator_Single()
 def get_initial_data(x,y,date,length):
     """
-       This function is for converting the geodetic coordinates into Mercator ones
+       This function is for converting the geodetic coordinates into Web Mercator ones
 
        Args:
            x: Latitude data
@@ -291,7 +291,7 @@ def get_initial_data(x,y,date,length):
            length:The length of the data
 
        Returns:
-           initial_data: The Mercator coordinates after converting
+           initial_data: The Web Mercator coordinates after converting
     """
     initial_data = []
     initial_data.append(["LATITUDE", "LONGITUDE", "OBSERVATION DATE"])
@@ -406,7 +406,7 @@ def get_sldf(window_data_df,save_path,csv_name):
     SLDF_df.to_csv(os.path.join(save_path, csv_name.replace('.csv',''), 'sldf.csv'), index=False)
     return SLDF_df
 
-#Path estimation: Get daily population centroids by Meanshift algorithm
+#Trajectory estimation: Get daily population centroids by Meanshift algorithm
 def mean_shift(SLDF_df,save_path,csv_name):
     """
        This function is for getting daily population centroids by Meanshift algorithm
@@ -465,7 +465,7 @@ def mean_shift(SLDF_df,save_path,csv_name):
             plt.close()
     return result
 
-#Path estimation: Group the daily population centroids according to the minimum distance principle
+#Trajectory estimation: Group the daily population centroids according to the minimum distance principle
 def group(csv_path,save_path,csv_name):
     """
        This function is for grouping the daily population centroids
@@ -641,7 +641,7 @@ def group(csv_path,save_path,csv_name):
         df.columns = names
         df.to_excel(os.path.join(save_path, csv_name.replace('.csv',''), 'ni_traj{}.xlsx'.format(key + 1)), sheet_name='Sheet1', index=False)
 
-#Path estimation:Show the estimation results on the map
+#Trajectory estimation:Show the estimation results on the map
 def map_1(save_path,csv_name):
     """
        This function is for showing the result figure on the map
