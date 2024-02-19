@@ -39,10 +39,10 @@ We use Python 3.10 for all the experiments. Install other dependencies via
 pip install -r requirements.txt
 ```
 ### Data Preparation
-We collect all the data from [ebird](https://ebird.org/data/download). Since the dataset is large, we commend the auk tool(Strimas et al., 2018)in R version 4.3.1 (R Core Team, 2023) for species-specific filtering. The data could be filtered according to the instructions in Best Practices for Using eBird Data (Version 2.0; Strimas et al., 2023) to include the complete checklists of Sprague’s Pipit (Anthus spragueii ) collected from 2018/1/1 to 2018/12/31. After saving the filtered data as CSV files, we can get the input data shown as below:
+We collect all the data from [ebird](https://ebird.org/data/download). Since the dataset is large, we commend the auk tool(Strimas et al., 2018) in R version 4.3.1 (R Core Team, 2023) for species-specific filtering. In our case, the data could be filtered according to the instructions in Best Practices for Using eBird Data (Version 2.0; Strimas et al., 2023) to include the complete checklists of Sprague’s Pipit (Anthus spragueii ) collected from 2018/1/1 to 2018/12/31. After saving the filtered data as CSV files, we can get the input data shown as below:
 ![data2](https://github.com/shifengshierya/C-AME/assets/50764534/70cac4c9-09ef-4b35-8a9a-dfa65cec966b)
 
-### Usage
+### Usagethe
 Navigate into the source folder, and run 
 ```bash
 python Part_1_data_format_standardization.py --input_dir {INPUT_DIR} --data_dir {DATA_DIR} --save_dir {SAVE_DIR}
