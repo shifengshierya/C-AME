@@ -279,7 +279,7 @@ def wgs84towebmercator_single(lat, lon):
     return n, m
 
 
-# Data preprocessing: convert original latitude and longitude data to Mercator coordinates with wgs84towebmercator_Single()
+# Data preprocessing: convert original latitude and longitude data to Web Mercator coordinates with wgs84towebmercator_Single()
 def get_initial_data(x,y,date,length):
     """
        This function is for converting the geodetic coordinates into Web Mercator ones
