@@ -222,7 +222,7 @@ def gam_pic(gam,save_path,csv_name,key,x_y):
     plt.savefig(os.path.join(save_path, csv_name.replace('.csv', ''), 'gam{}{}.jpg'.format(x_y,key + 1)))
     plt.close()
 
-#gam() for fitting longitude and latitude with time
+#gam() for fitting longitude and latitude in Web Mercator system with time
 def gam(save_path, csv_name,key):
     """
        This function is for gam algorithm
@@ -515,7 +515,7 @@ def group(csv_path,save_path,csv_name):
     guiji = {}
     abc = np.zeros((10000, 10000), dtype=int)
 
-#Traversal calculations of the centroid distance between adjacent days in the annual circle
+#Traversal calculations of the centroid distance between two adjacent days in the annual circle
     for b1 in range(2, N3):
         if LL6 > 0:
             LL1 = A3[1, b1 - 2]
