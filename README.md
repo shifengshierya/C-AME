@@ -39,7 +39,7 @@ We use Python 3.10 for all the experiments. Install other dependencies via
 pip install -r requirements.txt
 ```
 ### Data Preparation
-We collected data from [ebird](https://ebird.org/data/download). According to Terms of Use about eBird Data Access, we are not allowed to publicly distribute eBird data in their original format. So we recommend to process the eBird Basic Dataset for observations of Sprague’s Pipit (Anthus spragueii ) using the auk package (Strimas et al., 2018) in R version 4.3.1 (R Core Team, 2023). You can limit the selection of eBird checklists to those collected during January 1 to December 31 in 2018.After saving the filtered data in CSV files, you can get the observation data file. Noted that the EBD is updated monthly, and it’s likely to receive different versions of data. Part of the data we use in our work is shown as below:
+We collected data from [ebird Basic Dataset](https://ebird.org/data/download). According to Terms of Use about eBird Data Access, we are not allowed to publicly distribute eBird data in their original format. So we recommend to download the full eBird Basic Dataset and process it for observations of Sprague’s Pipit (Anthus spragueii) using the auk package (Strimas et al., 2018) in R version 4.3.1 (R Core Team, 2023). You can limit the selection of eBird checklists to those collected during January 1 to December 31 in 2018.After saving the filtered data in CSV files, you can get the observation data file. Noted that the EBD is updated monthly, and it’s likely to receive different versions of data. Part of the data we use in our work is shown as below:
 ![data2](https://github.com/shifengshierya/C-AME/assets/50764534/70cac4c9-09ef-4b35-8a9a-dfa65cec966b)
 
 ### Usagethe
