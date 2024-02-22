@@ -222,7 +222,7 @@ def gam_pic(gam,save_path,csv_name,key,x_y):
     plt.savefig(os.path.join(save_path, csv_name.replace('.csv', ''), 'gam{}{}.jpg'.format(x_y,key + 1)))
     plt.close()
 
-#gam() for fitting longitude and latitude in Web Mercator system with time; Coordinate conversion from WebMercator to wgs84  
+#gam() for fitting longitude and latitude in Web Mercator system with time; Coordinate conversion from WebMercator to wgs84 with webmercator2wgs84() 
 def gam(save_path, csv_name,key):
     """
        This function is for gam algorithm
