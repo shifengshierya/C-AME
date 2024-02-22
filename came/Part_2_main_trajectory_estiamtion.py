@@ -64,7 +64,7 @@ def part2(data_path='./source/', save_path='./target/'):
         print('File{}/{},Group finished'.format(csv_num + 1, len(all_csv)))
 
 
-#Path estimation:Show the estimation results on the map by map_1()
+#Path estimation:Show the estimation results on the map by map_1() after GAM fitting and converting  WebMercator to wgs84
         map_1(save_path,csv_name)
 
 
