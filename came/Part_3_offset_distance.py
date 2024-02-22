@@ -84,7 +84,7 @@ def get_file_list(path):
                 file_list.append(os.path.join(root, file))
     return file_list
 
-#Get migration axis
+
 def get_distance_point2line(point, line):
     """
        This function is for calculating the distance from points to a line
