@@ -29,7 +29,7 @@ def savecsv(path,item,model = 'a'):
             print('Close the table or the program cannot write')
             time.sleep(1)
 
-#Index calculation of avarage distance of daily centroids
+
 def dist_eclud(data1, data2):
     """
        This function is for calculating the Euclidean distance
@@ -79,10 +79,10 @@ def get_same_date_list(date,excel_list):
             same_datas.append(datas)
     return same_datas
 
-#Obtain the Euclidean distance for each day
+#Avarage distance 
 def get_avg(datalist):
     """
-        This function is for obtaining the average Euclidean distance for each day
+        This function is for obtaining the average Euclidean distance
 
         Args:
             datalist: The data to be  processed
@@ -100,10 +100,11 @@ def get_avg(datalist):
     else:
         avg = 0
     return avg
-
+    
+#Calculate the average Euclidean distance for daily centroids
 def avg_distance(save_path):
     """
-       This function is for calculating the average Euclidean distance for each day
+       This function is for calculating the average Euclidean distance for daily centroids
 
        Args:
            save_path: The path of files
