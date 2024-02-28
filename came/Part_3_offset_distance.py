@@ -205,7 +205,7 @@ def off_distance_main(path):
             tmp = 0
             result2.append(averange)
     items = [[datas] for datas in result2]
-    savecsvs(os.path.join(path, 'off_distance', 'da.csv'), items)
+    #savecsvs(os.path.join(path, 'off_distance', 'da.csv'), items)
 
     count = 1
     for l in result:
@@ -219,7 +219,7 @@ def off_distance_main(path):
         #plt.title('%s'%name)
 
     #plt.legend()
-    #plt.savefig('q2/DistancePreDay.png')
+    #plt.savefig('q2/OffsetDistancePreDay.png')
     #plt.show()
 
     #plt.plot(result2,label='aveVar')
@@ -229,7 +229,7 @@ def off_distance_main(path):
     plt.ylabel("distance")
     #plt.title('averangeVar')
     plt.legend()
-    plt.savefig(os.path.join(path, 'off_distance', 'DistancePreDayAverange.png'))
+    plt.savefig(os.path.join(path, 'off_distance', 'OffsetDistancePreDay.png'))
     plt.show()
 
 
@@ -241,7 +241,7 @@ def off_distance(data_path):
         This function is for saving the results in the folder
 
         Args:
-            data_path : The data path
+            data_path: The data path
 
         Returns:
             True: Omitted
