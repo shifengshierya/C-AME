@@ -154,7 +154,7 @@ def speed_main(path):
     #plt.title('averangeSpeed')
 
     plt.legend()
-    plt.savefig(os.path.join(path, 'speed', 'SpeedPreDay.png'))
+    plt.savefig(os.path.join(path, 'speed', 'SpeedPerDay.png'))
     plt.show()
     plt.close()
 
