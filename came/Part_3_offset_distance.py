@@ -229,7 +229,7 @@ def off_distance_main(path):
     plt.ylabel("distance")
     #plt.title('averangeVar')
     plt.legend()
-    plt.savefig(os.path.join(path, 'off_distance', 'OffsetDistancePreDay.png'))
+    plt.savefig(os.path.join(path, 'off_distance', 'OffsetDistancePerDay.png'))
     plt.show()
 
 
