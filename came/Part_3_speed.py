@@ -136,7 +136,7 @@ def speed_main(path):
         sum = 0
         for n in range(len(list_averange)):
             sum = sum + float(list_averange[n][m])
-        savecsv(os.path.join(path, 'speed', 'sa.csv'),[sum/len(list_averange)])
+        #savecsv(os.path.join(path, 'speed', 'sa.csv'),[sum/len(list_averange)])
         result2.append(sum/len(list_averange))
 
 
@@ -148,13 +148,13 @@ def speed_main(path):
 
     #plt.xlim(0,500)
     plt.ylim(0,110000)
-    plt.plot(result2,label='averange')
+    #plt.plot(result2,label='averange')
     #plt.xlabel("date")
     #plt.ylabel("speed")
     #plt.title('averangeSpeed')
 
     plt.legend()
-    plt.savefig(os.path.join(path, 'speed', 'SpeedPreDayAverange.png'))
+    plt.savefig(os.path.join(path, 'speed', 'SpeedPreDay.png'))
     plt.show()
     plt.close()
 
@@ -163,7 +163,7 @@ def speed(data_path):
        This function is for saving the results in the folder
 
        Args:
-          data_path : The data path
+          data_path: The data path
 
        Returns:
            True: Omitted
