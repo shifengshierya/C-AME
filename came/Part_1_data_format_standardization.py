@@ -164,7 +164,7 @@ def map_2(save_path,csv_name):
     # plt.show()
     plt.close()
 
-def main(path1='./RawData/', path2='./source/', save_path='./target/', obs_count=3,lat_col=8,obs_date=11):
+def main(path1='./RawData/', path2='./ProcessFiles/', save_path='./ResultFiles/', obs_count=3,lat_col=8,obs_date=11):
     """
        This function is for datetime format standardization
 
@@ -239,7 +239,7 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--input_dir", type=str, default='./RawData/')
-    parser.add_argument("--data_dir", type=str, default='./source/')
-    parser.add_argument("--save_dir", type=str, default='./target/')
+    parser.add_argument("--data_dir", type=str, default='./ProcessFiles/')
+    parser.add_argument("--save_dir", type=str, default='./ResultFiles/')
     opt = parser.parse_args()
     main(path1=opt.input_dir, path2=opt.data_dir, save_path=opt.save_dir)
