@@ -14,7 +14,7 @@ from mpl_toolkits.basemap import Basemap
 
 
 
-# WGS84 geographic coordinate system
+# WGS84 geographic coordinate system and Web Mercator coordinate system
 crs_WGS84 = CRS.from_epsg(4326)
 crs_WebMercator = CRS.from_epsg(3857)
 cell_size = 0.009330691929342804
