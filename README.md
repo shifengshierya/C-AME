@@ -11,7 +11,7 @@ We offer both a **Windows-only** application and the corresponding source code w
      - Raw data folder (support for multiple files processing): Part 1 Input path
      - Data format standardization results folder: Part 1 Output path
      - Final results storage folder: Part 2 output path
-   - Note that we have set the default folder as:Raw Data,Process Files,Result Files in the cameMain.
+   - Note that we have set the default folder 'Raw Data' as the Part 1 Input path with the raw data in it, you need to set two empty folders, such as'Process Files' and 'Result Files', as Part 1 Output path and Part 2 Output path in cameMain before you run it. 
 3. **Execute the Application**
    - Double click on the Application file named `cameMain.exe`, which is represented by a blue bird icon. This action will open a terminal window.
 4. **Configure Column Settings**
