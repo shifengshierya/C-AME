@@ -17,10 +17,10 @@ def datelist(beginDate, endDate):
 
         Args:
             beginDate: The beginning date in the datelist
-            endDate:The end date in the datelist
+            endDate: The end date in the datelist
 
         Returns:
-            date_l:The datelist result
+            date_l: The datelist result
     """
     date_l=[datetime.strftime(x,'%Y-%m-%d') for x in list(pd.date_range(start=beginDate, end=endDate))]
     return date_l
@@ -33,7 +33,7 @@ def readcsv(path):
            path: The file  path
 
        Returns:
-           rows:The file data
+           rows: The file data
     """
     try:
         with open(path, 'r',encoding='utf_8_sig') as f:
@@ -54,11 +54,11 @@ def savecsv(path,item,model = 'a'):
 
        Args:
            path: The  path for saving csv files
-           item:The data to be saved
-           model:The default parameter
+           item: The data to be saved
+           model: The default parameter
 
        Returns:
-           True:Omitted
+           True: Omitted
     """
     while True:
         try:
@@ -80,7 +80,7 @@ def file_names(inputpath):
            inputpath: The folder path  to be looped over
 
        Returns:
-           namelist:The files list
+           namelist: The files list
     """
     namelist = []
     filePath = inputpath
@@ -94,11 +94,11 @@ def map_2(save_path,csv_name):
        This function is for showing the raw data on the map
 
        Args:
-           save_path : Path for storing the raw data figures
+           save_path: Path for storing the raw data figures
            csv_name: Name of the species to be processed
 
        Returns:
-           True:Omitted
+           True: Omitted
     """
     m = Basemap(llcrnrlat=-60, urcrnrlat=90, llcrnrlon=-180, urcrnrlon=-20)  # Instantiate a map
     m.drawcoastlines()  # Draw the coastline
@@ -166,18 +166,18 @@ def map_2(save_path,csv_name):
 
 def main(path1='./RawData/', path2='./ProcessFiles/', save_path='./ResultFiles/', obs_count=3,lat_col=8,obs_date=11):
     """
-       This function is for datetime format standardization
+       This function is for data format standardization
 
        Args:
-           path1:The directory of input data mentioned above (support for multiple files processing)
-           path2:Data format standardization results folder
+           path1: The directory of input data mentioned above (support for multiple files processing)
+           path2: Data format standardization results folder
            save_path: Final results storage folder
-           obs_count:The column number for observation count
-           lat_col:The column number for latitude
-           obs_date:The column number for observation date
+           obs_count: The column number for observation count
+           lat_col: The column number for latitude
+           obs_date: The column number for observation date
 
        Returns:
-           True:Omitted
+           True: Omitted
      """
     #Absolute path
     # path1 = './2018/'
@@ -198,7 +198,7 @@ def main(path1='./RawData/', path2='./ProcessFiles/', save_path='./ResultFiles/'
         date1[date] = num
         num = num + 1
 
-#Extract three columns :LONGITUDE,LATITUDE, and OBS_DATE and name them as:LATITUDE', 'LONGITUDE', 'OBSERVATION DATE'
+#Extract three columns: LONGITUDE, LATITUDE, and OBS_DATE and name them as: 'LATITUDE', 'LONGITUDE', 'OBSERVATION DATE'
     csv_list = file_names(path1)[0][2]
     csv_list = [name for name in csv_list if '.csv' in name]
     for i in range(len(csv_list)):
