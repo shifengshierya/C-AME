@@ -15,7 +15,8 @@ def file_names(inputpath):
            inputpath: The folder path  to be looped over
 
        Returns:
-           namelist:The files list
+           namelist: The files list
+           
     """
     namelist = []
     filePath = inputpath
@@ -29,11 +30,12 @@ def savecsvs(path,item,model = 'a'):
 
        Args:
            path: The  path for saving csv files
-           item:The data to be saved
-           model:The default parameter
+           item: The data to be saved
+           model: The default parameter
 
        Returns:
-           True:Omitted
+           True: Omitted
+           
     """
     while True:
         # try:
@@ -49,11 +51,12 @@ def savecsv(path,item,model = 'a'):
 
        Args:
            path: The  path for saving csv files
-           item:The data to be saved
-           model:The default parameter
+           item: The data to be saved
+           model: The default parameter
 
        Returns:
-           True:Omitted
+           True: Omitted
+           
     """
     while True:
         try:
@@ -74,7 +77,8 @@ def get_file_list(path):
            path: The  path for files
 
        Returns:
-            file_list:The file list
+            file_list: The file list
+            
     """
 
     file_list = []
@@ -91,10 +95,11 @@ def get_distance_point2line(point, line):
 
        Args:
            point: The observation points
-           line:A line
+           line: A line
 
        Returns:
-           distance:The distance from points to the line
+           distance: The distance from points to the line
+           
     """
     line_point1, line_point2 = np.array(line[0:2]), np.array(line[2:])
     vec1 = line_point1 - point
@@ -108,10 +113,11 @@ def calculate_distance(path_list):
        This function is for getting migration axis and  offset distance
 
       Args:
-         path_list : The files in the path
+         path_list: The files in the path
 
       Returns:
           list11: The offset distances
+          
     """
     list_distance = []
     for l in path_list:
@@ -182,10 +188,11 @@ def off_distance_main(path):
        This function is for saving and drawing the results
 
        Args:
-           path : The file path
+           path: The file path
 
        Returns:
            True: Omitted
+           
     """
     path1 = get_file_list(path)
     result = calculate_distance(path1)
@@ -245,6 +252,7 @@ def off_distance(data_path):
 
         Returns:
             True: Omitted
+            
     """
     # --------------------------------------------
     excel_list = file_names(data_path)
