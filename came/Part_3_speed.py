@@ -13,7 +13,8 @@ def file_names(inputpath):
            inputpath: The folder path  to be looped over
 
        Returns:
-           namelist:The files list
+           namelist: The files list
+           
     """
     namelist = []
     filePath = inputpath
@@ -27,11 +28,12 @@ def savecsvs(path,item,model = 'a'):
 
        Args:
            path: The  path for saving csv files
-           item:The data to be saved
-           model:The default parameter
+           item: The data to be saved
+           model: The default parameter
 
         Returns:
-           True:Omitted
+           True: Omitted
+           
     """
     while True:
         # try:
@@ -47,11 +49,12 @@ def savecsv(path,item,model = 'a'):
 
         Args:
             path: The  path for saving csv files
-            item:The data to be saved
-            model:The default parameter
+            item: The data to be saved
+            model: The default parameter
 
         Returns:
-            True:Omitted
+            True: Omitted
+            
      """
     while True:
         try:
@@ -72,7 +75,8 @@ def get_file_list(path):
            path: The  path for files
 
        Returns:
-            file_list:The file list
+            file_list: The file list
+            
     """
     file_list = []
     for root, dirs, files in os.walk(path):
@@ -87,10 +91,11 @@ def calculate_speed(path):
         This function is for calculating the speed
 
         Args:
-            path : The file path
+            path: The file path
 
         Returns:
             list_speed: The speed results
+            
     """
     df = pd.read_excel(path, header=None)
     list_speed = [0]
@@ -107,10 +112,11 @@ def speed_main(path):
        This function is for saving and drawing the results
 
        Args:
-           path : The file path
+           path: The file path
 
        Returns:
            True: Omitted
+           
     """
     path1 = get_file_list(path)
     list_averange = []
@@ -167,6 +173,7 @@ def speed(data_path):
 
        Returns:
            True: Omitted
+           
     """
     # --------------------------------------------
     excel_list = file_names(data_path)
