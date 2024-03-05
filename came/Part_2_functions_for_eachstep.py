@@ -30,7 +30,7 @@ def create_folder(inputpath):
            inputpath: The folder path
 
         Returns:
-           True:Omitted
+           True: Omitted
     """
     if not os.path.exists(inputpath):
         os.makedirs(inputpath)
@@ -43,7 +43,7 @@ def file_names(inputpath):
            inputpath: The folder path  to be looped over
 
        Returns:
-           namelist:The files list
+           namelist: The files list
     """
     namelist = []
     filePath = inputpath
@@ -60,7 +60,7 @@ def get_all_csv(data_path):
            data_path: The folder path of storing the csv files
 
        Returns:
-           all_csv:All the csv files
+           all_csv: All the csv files
     """
 
     excel_list = file_names(data_path)
@@ -79,10 +79,10 @@ def sldf(x):
        This function is for outlier detection based on sldf values
 
        Args:
-           x : The input data
+           x: The input data
 
        Returns:
-           result:The result after sldf outlier detection
+           result: The result after sldf outlier detection
     """
     n = len(x)
     column = len(x[0])
@@ -162,11 +162,11 @@ def data_write(file_path, datas):
        This function is for saving files
 
        Args:
-           file_path : The path for saving files
-           datas:The data to be saved
+           file_path: The path for saving files
+           datas: The data to be saved
 
        Returns:
-           True:Omitted
+           True: Omitted
     """
     f = xlwt.Workbook()
     sheet1 = f.add_sheet(u'sheet1', cell_overwrite_ok=True)  # Create a sheet
@@ -189,7 +189,7 @@ def webmercator2wgs84(a, b):
 
        Returns:
            lon: The geographical coordinates of longitude
-           lat:The geographical coordinates of latitude
+           lat: The geographical coordinates of latitude
     """
     lon = a / 20037508.34 * 180
     lat = b / 20037508.34 * 180
@@ -204,12 +204,12 @@ def gam_pic(gam,save_path,csv_name,key,x_y):
        Args:
            gam: The usage of gam model
            save_path: The path for saving the result file
-           csv_name:The species name being processed
-           key:The number for file naming
-           x_y:The choice for Lat or Lon when file naming
+           csv_name: The species name being processed
+           key: The number for file naming
+           x_y: The choice for Lat or Lon when file naming
 
        Returns:
-           True:Omitted
+           True: Omitted
     """
     XX = gam.generate_X_grid(term=0, n=365)
     # plt.scatter([data for data in range(364)], data, color='b', marker='o')
@@ -229,12 +229,12 @@ def gam(save_path, csv_name,key):
 
        Args:
            save_path: The path for saving the result file
-           csv_name:The species name being processed
-           key:The number for file naming
+           csv_name: The species name being processed
+           key: The number for file naming
 
        Returns:
-           Lon:The longitude after gam algorithm
-           Lat:The latitude after gam algorithm
+           Lon: The longitude after gam algorithm
+           Lat: The latitude after gam algorithm
 
     """
     df = pd.read_excel(os.path.join(save_path, csv_name.replace('.csv',''), 'ni_traj{}.xlsx'.format(key + 1)), sheet_name='Sheet1')
@@ -273,7 +273,7 @@ def wgs84towebmercator_single(lat, lon):
 
        Returns:
            m: The Web Mercator coordinates of latitude
-           n:The Web Mercator coordinates of longitude
+           n: The Web Mercator coordinates of longitude
     """
     transformer = Transformer.from_crs(crs_WGS84, crs_WebMercator)
     m, n = transformer.transform(lat, lon)
@@ -289,7 +289,7 @@ def get_initial_data(x,y,date,length):
            x: Latitude data
            y: Longitude data
            date: The observation date
-           length:The length of the data
+           length: The length of the data
 
        Returns:
            initial_data: The Web Mercator coordinates after converting
@@ -309,8 +309,8 @@ def interpolation(date,length,initial_data):
 
        Args:
            date: The observation date
-           length:The length of the data
-           initial_data:The data after coordinates conversion
+           length: The length of the data
+           initial_data: The data after coordinates conversion
 
        Returns:
            initial_data: The data results after interpolation
@@ -346,8 +346,8 @@ def rolling_window(initial_data,save_path,csv_name):
 
        Args:
            initial_data: The data after interpolation
-           save_path:The path for saving the result file
-           csv_name:The species name being processed
+           save_path: The path for saving the result file
+           csv_name: The species name being processed
 
        Returns:
            rolling_window_data_df: The data results after rolling_window
@@ -376,8 +376,8 @@ def get_sldf(window_data_df,save_path,csv_name):
 
        Args:
            window_data_df: The data after rolling_window
-           save_path:The path for saving the result file
-           csv_name:The species name being processed
+           save_path: The path for saving the result file
+           csv_name: The species name being processed
 
        Returns:
            sldf_df: The data results after sldf outlier detection
@@ -414,11 +414,12 @@ def mean_shift(SLDF_df,save_path,csv_name):
 
        Args:
            SLDF_df: The data after sldf outlier detection
-           save_path:The path for saving the result file
-           csv_name:The species name being processed
+           save_path: The path for saving the result file
+           csv_name: The species name being processed
 
         Returns:
            result: The data results after meanshift clustering
+           
     """
     # datas = pd.read_excel('data/clean_window_data.xlsx')
     datas = SLDF_df.drop(['SLDF'], axis=1)
@@ -473,8 +474,8 @@ def group(csv_path,save_path,csv_name):
 
        Args:
            csv_path: The path for the data file after Meanshift algorithm
-           save_path:The path for saving the result file
-           csv_name:The species name being processed
+           save_path: The path for saving the result file
+           csv_name: The species name being processed
 
        Returns:
             True: Omitted
@@ -642,17 +643,18 @@ def group(csv_path,save_path,csv_name):
         df.columns = names
         df.to_excel(os.path.join(save_path, csv_name.replace('.csv',''), 'ni_traj{}.xlsx'.format(key + 1)), sheet_name='Sheet1', index=False)
 
-#Trajectory estimation:Show the estimation results on the map
+#Trajectory estimation: Show the estimation results on the map
 def map_1(save_path,csv_name):
     """
        This function is for showing the result figure on the map
 
        Args:
-           save_path : The path for storing the result figures
+           save_path: The path for storing the result figures
            csv_name: The name of the species to be processed
 
        Returns:
-           True:Omitted
+           True: Omitted
+           
     """
     # plt.rcParams['figure.figsize'] = (28, 8)
     # plt.show()
