@@ -68,7 +68,7 @@ Then, you can get the results in the corresponding folders：
 |  Rolling_window_data.csv  |                The data after rolling window                            |
 |  sldf.csv                 |             The data after SLDF outlier detection                        |
 |  shift.xls                |                  The data after Meanshift algorithm                      |
-|  shift_43120.jpg-shift_43460.jpg | The figures showing the centroids during clustering                |
+|  shift_43110.jpg-shift_43460.jpg | The figures showing the centroids during clustering                |
 |  ni_traj1.xls-ni_traj13.xls     | The centroids coordinates files after grouping                      |
 |  gamLat1.jpg-gamLon13.jpg       | The process figures for Gam algorithm                                |
 |  result1.xls-result13.xls       | The results after Gam algorithm                                      |
