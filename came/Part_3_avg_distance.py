@@ -12,11 +12,12 @@ def savecsv(path,item,model = 'a'):
 
        Args:
            path: The  path for saving csv files
-           item:The data to be saved
-           model:The default parameter
+           item: The data to be saved
+           model: The default parameter
 
        Returns:
-            True:Omitted
+            True: Omitted
+            
     """
     while True:
         try:
@@ -36,10 +37,11 @@ def dist_eclud(data1, data2):
 
        Args:
            data1: One data
-           data2:The other data
+           data2: The other data
 
        Returns:
            data: The Euclidean distance
+           
     """
     x = data2[0] - data1[0]
     y = data2[1] - data1[1]
@@ -55,6 +57,7 @@ def get_date_list(datelist):
 
        Returns:
            date1: The date list
+           
     """
     date1 = []
     for dates in datelist:
@@ -68,10 +71,11 @@ def get_same_date_list(date,excel_list):
 
        Args:
            date: The date
-           excel_list:The datas to be processed
+           excel_list: The data to be processed
 
        Returns:
            same_datas: The same dates
+           
     """
     same_datas = []
     for datas in excel_list:
@@ -89,6 +93,7 @@ def get_avg(datalist):
 
         Returns:
             avg: The average distance
+            
     """
     data1 = [datalist[0][0],datalist[0][1]]
     avg_datalist = []
@@ -111,6 +116,7 @@ def avg_distance(save_path):
 
        Returns:
            True: Omitted
+           
     """
     df=pd.read_excel(os.path.join(save_path, 'shift.xlsx'))
     train_data = np.array(df)
