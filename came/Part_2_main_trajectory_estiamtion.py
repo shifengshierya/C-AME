@@ -9,7 +9,7 @@ warnings.filterwarnings('ignore')
 from Part_3_avg_distance import avg_distance
 
 
-def part2(data_path='./source/', save_path='./target/'):
+def part2(data_path='./ProcessFiles/', save_path='./ResultFiles/'):
 #Run by input paths from the terminal
     # data_path = input('Please set part2 input folder ')
     # data_path = data_path + '/'
