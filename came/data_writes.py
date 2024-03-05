@@ -6,11 +6,11 @@ def data_write(file_path, datas):
         This function is for saving files
 
         Args:
-            file_path : The path for saving files
-            datas:The data to be saved
+            file_path: The path for saving files
+            datas: The data to be saved
 
         Returns:
-            True:Omitted
+            True: Omitted
     """
 
     f = xlwt.Workbook()
