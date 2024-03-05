@@ -446,7 +446,7 @@ def mean_shift(SLDF_df,save_path,csv_name):
             result.append([float(c[0]), float(c[1]), date])
 
         colors = cycle('bcmyk')
-        if date % 20 == 0:
+        if date % 10 == 0:
             for k, color in zip(range(n_clusters), colors):
                 # current_member indicates true if the label is k and false if not
                 current_member = labels == k
