@@ -35,25 +35,25 @@ import pandas as pd
 from mpl_toolkits.basemap import Basemap
 import numpy as np
 import matplotlib.pyplot as plt
-from Part_2_main_paths_estiamtion import part2
+from Part_2_main_trajectory_estiamtion import part2
 
 
 # beginDate, endDate are datetime format like&#34;20180101&#34;
-def datelist(beginDate, endDate): 
+def datelist(beginDate, endDate):
     &#34;&#34;&#34;
         This function is for getting the datelist
 
         Args:
             beginDate: The beginning date in the datelist
-            endDate: The end date in the datelist
+            endDate:The end date in the datelist
 
         Returns:
-            date_l: The datelist result
+            date_l:The datelist result
     &#34;&#34;&#34;
     date_l=[datetime.strftime(x,&#39;%Y-%m-%d&#39;) for x in list(pd.date_range(start=beginDate, end=endDate))]
     return date_l
 
-def readcsv(path): 
+def readcsv(path):
     &#34;&#34;&#34;
        This function is for reading csv files
 
@@ -61,46 +61,46 @@ def readcsv(path):
            path: The file  path
 
        Returns:
-           rows: The file data
+           rows:The file data
     &#34;&#34;&#34;
-    try: 
-        with open(path, &#39;r&#39;,encoding=&#39;utf_8_sig&#39;) as f: 
-        #with open(path, &#39;r&#39;,encoding=&#39;gb18030&#39;) as f: 
+    try:
+        with open(path, &#39;r&#39;,encoding=&#39;utf_8_sig&#39;) as f:
+        #with open(path, &#39;r&#39;,encoding=&#39;gb18030&#39;) as f:
             reader = csv.reader(f)
             rows = [row for row in reader]
         return rows
-    except: 
-        #with open(path, &#39;r&#39;,encoding=&#39;utf_8_sig&#39;) as f: 
-        with open(path, &#39;r&#39;,encoding=&#39;gb18030&#39;) as f: 
+    except:
+        #with open(path, &#39;r&#39;,encoding=&#39;utf_8_sig&#39;) as f:
+        with open(path, &#39;r&#39;,encoding=&#39;gb18030&#39;) as f:
             reader = csv.reader(f)
             rows = [row for row in reader]
         return rows
 
-def savecsv(path,item,model = &#39;a&#39;): 
+def savecsv(path,item,model = &#39;a&#39;):
     &#34;&#34;&#34;
        This function is for saving csv files
 
        Args:
            path: The  path for saving csv files
-           item: The data to be saved
-           model: The default parameter
+           item:The data to be saved
+           model:The default parameter
 
        Returns:
-           None
+           True:Omitted
     &#34;&#34;&#34;
-    while True: 
-        try: 
-            with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f: 
-            #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f: 
+    while True:
+        try:
+            with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f:
+            #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f:
                 w = csv.writer(f)
                 w.writerow(item)
                 return True
-        except: 
+        except:
             print(&#39;Close&#39;)
             time.sleep(1)
 
 #Read the names of all files and folders within the directory
-def file_names(inputpath): 
+def file_names(inputpath):
     &#34;&#34;&#34;
        This function is for looping over files
 
@@ -108,25 +108,25 @@ def file_names(inputpath):
            inputpath: The folder path  to be looped over
 
        Returns:
-           namelist: The files list
+           namelist:The files list
     &#34;&#34;&#34;
     namelist = []
     filePath = inputpath
-    for i, j, k in os.walk(filePath): 
+    for i, j, k in os.walk(filePath):
         namelist.append([i, j, k])
     return namelist
 
 #Show the raw data
-def map_2(save_path,csv_name): 
+def map_2(save_path,csv_name):
     &#34;&#34;&#34;
        This function is for showing the raw data on the map
 
        Args:
-           save_path: Path for storing the raw data figures
+           save_path : Path for storing the raw data figures
            csv_name: Name of the species to be processed
 
        Returns:
-           None
+           True:Omitted
     &#34;&#34;&#34;
     m = Basemap(llcrnrlat=-60, urcrnrlat=90, llcrnrlon=-180, urcrnrlon=-20)  # Instantiate a map
     m.drawcoastlines()  # Draw the coastline
@@ -142,17 +142,17 @@ def map_2(save_path,csv_name):
     # plt.show()
 
     datalist = readcsv(save_path + csv_name)
-    datalist = datalist[1: ]
+    datalist = datalist[1:]
 
     LON = []
     LAT = []
-    for i in range(1): 
+    for i in range(1):
         Lat = [[float(data[0]),int(data[2])] for data in datalist]
         Lon = [[float(data[1]),int(data[2])] for data in datalist]
         LON.append(Lon)
         LAT.append(Lat)
 
-    for doc in range(1): 
+    for doc in range(1):
         colorMap = [&#39;red&#39;, &#39;darkorange&#39;, &#39;gold&#39;, &#39;greenyellow&#39;, &#39;pink&#39;, &#39;limegreen&#39;, &#39;mediumturquoise&#39;,
                     &#39;dodgerblue&#39;,
                     &#39;navy&#39;, &#39;blue&#39;, &#39;mediumorchid&#39;, &#39;fuchsia&#39;]
@@ -166,10 +166,10 @@ def map_2(save_path,csv_name):
         flag = True
 
         col1 = 43101
-        for i in range(13): 
+        for i in range(13):
             # print(i)
-            if doc == 0: 
-                # m.plot(LON[doc][i: i + 30], LAT[doc][i: i + 30], marker=marker[doc], linewidth=0.4,
+            if doc == 0:
+                # m.plot(LON[doc][i:i + 30], LAT[doc][i:i + 30], marker=marker[doc], linewidth=0.4,
                 #        color=colorMap[j],
                 #        markersize=0.5, label=label[
                 #         j])
@@ -179,9 +179,9 @@ def map_2(save_path,csv_name):
                 m.scatter(LON1, LAT1, color=colorMap[j],s=1, label=label[j])
                 # plt.show()
                 j += 1
-                if j == 12: 
+                if j == 12:
                     j = 0
-                    if flag: 
+                    if flag:
                         plt.legend(loc=&#39;lower left&#39;, shadow=True)
                         flag = False
                     continue
@@ -192,20 +192,20 @@ def map_2(save_path,csv_name):
     # plt.show()
     plt.close()
 
-def main(path1=&#39;./RawData/&#39;, path2=&#39;./source/&#39;, save_path=&#39;./target/&#39;, obs_count=3,lat_col=8,obs_date=11): 
+def main(path1=&#39;./RawData/&#39;, path2=&#39;./ProcessFiles/&#39;, save_path=&#39;./ResultFiles/&#39;, obs_count=3,lat_col=8,obs_date=11):
     &#34;&#34;&#34;
        This function is for datetime format standardization
 
        Args:
-           path1: The directory of input data mentioned above (support for multiple files processing)
-           path2: Data format standardization results folder
+           path1:The directory of input data mentioned above (support for multiple files processing)
+           path2:Data format standardization results folder
            save_path: Final results storage folder
-           obs_count: The column number for observation count
-           lat_col: The column number for latitude
-           obs_date: The column number for observation date
+           obs_count:The column number for observation count
+           lat_col:The column number for latitude
+           obs_date:The column number for observation date
 
        Returns:
-           None
+           True:Omitted
      &#34;&#34;&#34;
     #Absolute path
     # path1 = &#39;./2018/&#39;
@@ -222,38 +222,38 @@ def main(path1=&#39;./RawData/&#39;, path2=&#39;./source/&#39;, save_path=&#39;.
 #Datetime format standardization: 20180101 corresponds to 43101
     date1 = {}
     num = 43101
-    for date in date_list: 
+    for date in date_list:
         date1[date] = num
         num = num + 1
 
-#Extract three columns: LONGITUDE,LATITUDE, and OBS_DATE and name them as: LATITUDE&#39;, &#39;LONGITUDE&#39;, &#39;OBSERVATION DATE&#39;
+#Extract three columns :LONGITUDE,LATITUDE, and OBS_DATE and name them as:LATITUDE&#39;, &#39;LONGITUDE&#39;, &#39;OBSERVATION DATE&#39;
     csv_list = file_names(path1)[0][2]
     csv_list = [name for name in csv_list if &#39;.csv&#39; in name]
-    for i in range(len(csv_list)): 
+    for i in range(len(csv_list)):
         csv_path = path1 + csv_list[i]
         datalist = readcsv(csv_path)
-        datalist = [[data[obs_count]] + data[lat_col: obs_date] for data in datalist]
-        datalist = datalist[1: ]
+        datalist = [[data[obs_count]] + data[lat_col:obs_date] for data in datalist]
+        datalist = datalist[1:]
 
 #Perform quantity correction according to observation count
         data2 = []
-        for datas in datalist: 
-            ctime = &#39;2018&#39; + datas[3][4: ]
+        for datas in datalist:
+            ctime = &#39;2018&#39; + datas[3][4:]
             ctime = date1[ctime]
             datas[3] = ctime
-            if datas[0] == &#39;X&#39;: 
+            if datas[0] == &#39;X&#39;:
                 num = 1
-            else: 
+            else:
                 num = int(datas[0])
-            for j in range(num): 
+            for j in range(num):
                 data2.append(datas)
-        data2 = [data[1: ] for data in data2]
+        data2 = [data[1:] for data in data2]
 #Sort by time
         sorted_data = sorted(data2, key=lambda x: x[2])
         sorted_data = [[&#39;LATITUDE&#39;, &#39;LONGITUDE&#39;, &#39;OBSERVATION DATE&#39;]] + sorted_data
 
 
-        for data in sorted_data: 
+        for data in sorted_data:
             os.makedirs(path2, exist_ok=True)
             savecsv(path2 + csv_list[i],data)
         map_2(path2, csv_list[i])
@@ -263,12 +263,12 @@ def main(path1=&#39;./RawData/&#39;, path2=&#39;./source/&#39;, save_path=&#39;.
 
 
 
-if __name__ == &#39;__main__&#39;: 
+if __name__ == &#39;__main__&#39;:
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument(&#34;--input_dir&#34;, type=str, default=&#39;./RawData/&#39;)
-    parser.add_argument(&#34;--data_dir&#34;, type=str, default=&#39;./source/&#39;)
-    parser.add_argument(&#34;--save_dir&#34;, type=str, default=&#39;./target/&#39;)
+    parser.add_argument(&#34;--data_dir&#34;, type=str, default=&#39;./ProcessFiles/&#39;)
+    parser.add_argument(&#34;--save_dir&#34;, type=str, default=&#39;./ResultFiles/&#39;)
     opt = parser.parse_args()
     main(path1=opt.input_dir, path2=opt.data_dir, save_path=opt.save_dir)</code></pre>
 </details>
@@ -289,28 +289,24 @@ if __name__ == &#39;__main__&#39;:
 <dl>
 <dt><strong><code>beginDate</code></strong></dt>
 <dd>The beginning date in the datelist</dd>
-<dt><strong><code>endDate</code></strong></dt>
-<dd>The end date in the datelist</dd>
 </dl>
+<p>endDate:The end date in the datelist</p>
 <h2 id="returns">Returns</h2>
-<dl>
-<dt><code>date_l</code></dt>
-<dd>The datelist result</dd>
-</dl></div>
+<p>date_l:The datelist result</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def datelist(beginDate, endDate): 
+<pre><code class="python">def datelist(beginDate, endDate):
     &#34;&#34;&#34;
         This function is for getting the datelist
 
         Args:
             beginDate: The beginning date in the datelist
-            endDate: The end date in the datelist
+            endDate:The end date in the datelist
 
         Returns:
-            date_l: The datelist result
+            date_l:The datelist result
     &#34;&#34;&#34;
     date_l=[datetime.strftime(x,&#39;%Y-%m-%d&#39;) for x in list(pd.date_range(start=beginDate, end=endDate))]
     return date_l</code></pre>
@@ -328,15 +324,12 @@ if __name__ == &#39;__main__&#39;:
 to be looped over</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<dl>
-<dt><code>namelist</code></dt>
-<dd>The files list</dd>
-</dl></div>
+<p>namelist:The files list</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def file_names(inputpath): 
+<pre><code class="python">def file_names(inputpath):
     &#34;&#34;&#34;
        This function is for looping over files
 
@@ -344,55 +337,50 @@ to be looped over</dd>
            inputpath: The folder path  to be looped over
 
        Returns:
-           namelist: The files list
+           namelist:The files list
     &#34;&#34;&#34;
     namelist = []
     filePath = inputpath
-    for i, j, k in os.walk(filePath): 
+    for i, j, k in os.walk(filePath):
         namelist.append([i, j, k])
     return namelist</code></pre>
 </details>
 </dd>
 <dt id="came.Part_1_data_format_standardization.main"><code class="name flex">
-<span>def <span class="ident">main</span></span>(<span>path1='./RawData/', path2='./source/', save_path='./target/', obs_count=3, lat_col=8, obs_date=11)</span>
+<span>def <span class="ident">main</span></span>(<span>path1='./RawData/', path2='./ProcessFiles/', save_path='./ResultFiles/', obs_count=3, lat_col=8, obs_date=11)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>This function is for datetime format standardization</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>path1</code></strong></dt>
-<dd>The directory of input data mentioned above (support for multiple files processing)</dd>
-<dt><strong><code>path2</code></strong></dt>
-<dd>Data format standardization results folder</dd>
+<dt>path1:The directory of input data mentioned above (support for multiple files processing)</dt>
+<dt>path2:Data format standardization results folder</dt>
 <dt><strong><code>save_path</code></strong></dt>
 <dd>Final results storage folder</dd>
-<dt><strong><code>obs_count</code></strong></dt>
-<dd>The column number for observation count</dd>
-<dt><strong><code>lat_col</code></strong></dt>
-<dd>The column number for latitude</dd>
-<dt><strong><code>obs_date</code></strong></dt>
-<dd>The column number for observation date</dd>
 </dl>
+<p>obs_count:The column number for observation count
+lat_col:The column number for latitude
+obs_date:The column number for observation date</p>
 <h2 id="returns">Returns</h2>
-<p>None</p></div>
+<p>True:Omitted</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def main(path1=&#39;./RawData/&#39;, path2=&#39;./source/&#39;, save_path=&#39;./target/&#39;, obs_count=3,lat_col=8,obs_date=11): 
+<pre><code class="python">def main(path1=&#39;./RawData/&#39;, path2=&#39;./ProcessFiles/&#39;, save_path=&#39;./ResultFiles/&#39;, obs_count=3,lat_col=8,obs_date=11):
     &#34;&#34;&#34;
        This function is for datetime format standardization
 
        Args:
-           path1: The directory of input data mentioned above (support for multiple files processing)
-           path2: Data format standardization results folder
+           path1:The directory of input data mentioned above (support for multiple files processing)
+           path2:Data format standardization results folder
            save_path: Final results storage folder
-           obs_count: The column number for observation count
-           lat_col: The column number for latitude
-           obs_date: The column number for observation date
+           obs_count:The column number for observation count
+           lat_col:The column number for latitude
+           obs_date:The column number for observation date
 
        Returns:
-           None
+           True:Omitted
      &#34;&#34;&#34;
     #Absolute path
     # path1 = &#39;./2018/&#39;
@@ -409,38 +397,38 @@ to be looped over</dd>
 #Datetime format standardization: 20180101 corresponds to 43101
     date1 = {}
     num = 43101
-    for date in date_list: 
+    for date in date_list:
         date1[date] = num
         num = num + 1
 
-#Extract three columns: LONGITUDE,LATITUDE, and OBS_DATE and name them as: LATITUDE&#39;, &#39;LONGITUDE&#39;, &#39;OBSERVATION DATE&#39;
+#Extract three columns :LONGITUDE,LATITUDE, and OBS_DATE and name them as:LATITUDE&#39;, &#39;LONGITUDE&#39;, &#39;OBSERVATION DATE&#39;
     csv_list = file_names(path1)[0][2]
     csv_list = [name for name in csv_list if &#39;.csv&#39; in name]
-    for i in range(len(csv_list)): 
+    for i in range(len(csv_list)):
         csv_path = path1 + csv_list[i]
         datalist = readcsv(csv_path)
-        datalist = [[data[obs_count]] + data[lat_col: obs_date] for data in datalist]
-        datalist = datalist[1: ]
+        datalist = [[data[obs_count]] + data[lat_col:obs_date] for data in datalist]
+        datalist = datalist[1:]
 
 #Perform quantity correction according to observation count
         data2 = []
-        for datas in datalist: 
-            ctime = &#39;2018&#39; + datas[3][4: ]
+        for datas in datalist:
+            ctime = &#39;2018&#39; + datas[3][4:]
             ctime = date1[ctime]
             datas[3] = ctime
-            if datas[0] == &#39;X&#39;: 
+            if datas[0] == &#39;X&#39;:
                 num = 1
-            else: 
+            else:
                 num = int(datas[0])
-            for j in range(num): 
+            for j in range(num):
                 data2.append(datas)
-        data2 = [data[1: ] for data in data2]
+        data2 = [data[1:] for data in data2]
 #Sort by time
         sorted_data = sorted(data2, key=lambda x: x[2])
         sorted_data = [[&#39;LATITUDE&#39;, &#39;LONGITUDE&#39;, &#39;OBSERVATION DATE&#39;]] + sorted_data
 
 
-        for data in sorted_data: 
+        for data in sorted_data:
             os.makedirs(path2, exist_ok=True)
             savecsv(path2 + csv_list[i],data)
         map_2(path2, csv_list[i])
@@ -456,27 +444,26 @@ to be looped over</dd>
 <div class="desc"><p>This function is for showing the raw data on the map</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>save_path</code></strong></dt>
-<dd>Path for storing the raw data figures</dd>
+<dt>save_path : Path for storing the raw data figures</dt>
 <dt><strong><code>csv_name</code></strong></dt>
 <dd>Name of the species to be processed</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>None</p></div>
+<p>True:Omitted</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def map_2(save_path,csv_name): 
+<pre><code class="python">def map_2(save_path,csv_name):
     &#34;&#34;&#34;
        This function is for showing the raw data on the map
 
        Args:
-           save_path: Path for storing the raw data figures
+           save_path : Path for storing the raw data figures
            csv_name: Name of the species to be processed
 
        Returns:
-           None
+           True:Omitted
     &#34;&#34;&#34;
     m = Basemap(llcrnrlat=-60, urcrnrlat=90, llcrnrlon=-180, urcrnrlon=-20)  # Instantiate a map
     m.drawcoastlines()  # Draw the coastline
@@ -492,17 +479,17 @@ to be looped over</dd>
     # plt.show()
 
     datalist = readcsv(save_path + csv_name)
-    datalist = datalist[1: ]
+    datalist = datalist[1:]
 
     LON = []
     LAT = []
-    for i in range(1): 
+    for i in range(1):
         Lat = [[float(data[0]),int(data[2])] for data in datalist]
         Lon = [[float(data[1]),int(data[2])] for data in datalist]
         LON.append(Lon)
         LAT.append(Lat)
 
-    for doc in range(1): 
+    for doc in range(1):
         colorMap = [&#39;red&#39;, &#39;darkorange&#39;, &#39;gold&#39;, &#39;greenyellow&#39;, &#39;pink&#39;, &#39;limegreen&#39;, &#39;mediumturquoise&#39;,
                     &#39;dodgerblue&#39;,
                     &#39;navy&#39;, &#39;blue&#39;, &#39;mediumorchid&#39;, &#39;fuchsia&#39;]
@@ -516,10 +503,10 @@ to be looped over</dd>
         flag = True
 
         col1 = 43101
-        for i in range(13): 
+        for i in range(13):
             # print(i)
-            if doc == 0: 
-                # m.plot(LON[doc][i: i + 30], LAT[doc][i: i + 30], marker=marker[doc], linewidth=0.4,
+            if doc == 0:
+                # m.plot(LON[doc][i:i + 30], LAT[doc][i:i + 30], marker=marker[doc], linewidth=0.4,
                 #        color=colorMap[j],
                 #        markersize=0.5, label=label[
                 #         j])
@@ -529,9 +516,9 @@ to be looped over</dd>
                 m.scatter(LON1, LAT1, color=colorMap[j],s=1, label=label[j])
                 # plt.show()
                 j += 1
-                if j == 12: 
+                if j == 12:
                     j = 0
-                    if flag: 
+                    if flag:
                         plt.legend(loc=&#39;lower left&#39;, shadow=True)
                         flag = False
                     continue
@@ -555,15 +542,12 @@ to be looped over</dd>
 path</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<dl>
-<dt><code>rows</code></dt>
-<dd>The file data</dd>
-</dl></div>
+<p>rows:The file data</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def readcsv(path): 
+<pre><code class="python">def readcsv(path):
     &#34;&#34;&#34;
        This function is for reading csv files
 
@@ -571,17 +555,17 @@ path</dd>
            path: The file  path
 
        Returns:
-           rows: The file data
+           rows:The file data
     &#34;&#34;&#34;
-    try: 
-        with open(path, &#39;r&#39;,encoding=&#39;utf_8_sig&#39;) as f: 
-        #with open(path, &#39;r&#39;,encoding=&#39;gb18030&#39;) as f: 
+    try:
+        with open(path, &#39;r&#39;,encoding=&#39;utf_8_sig&#39;) as f:
+        #with open(path, &#39;r&#39;,encoding=&#39;gb18030&#39;) as f:
             reader = csv.reader(f)
             rows = [row for row in reader]
         return rows
-    except: 
-        #with open(path, &#39;r&#39;,encoding=&#39;utf_8_sig&#39;) as f: 
-        with open(path, &#39;r&#39;,encoding=&#39;gb18030&#39;) as f: 
+    except:
+        #with open(path, &#39;r&#39;,encoding=&#39;utf_8_sig&#39;) as f:
+        with open(path, &#39;r&#39;,encoding=&#39;gb18030&#39;) as f:
             reader = csv.reader(f)
             rows = [row for row in reader]
         return rows</code></pre>
@@ -597,37 +581,35 @@ path</dd>
 <dt><strong><code>path</code></strong></dt>
 <dd>The
 path for saving csv files</dd>
-<dt><strong><code>item</code></strong></dt>
-<dd>The data to be saved</dd>
-<dt><strong><code>model</code></strong></dt>
-<dd>The default parameter</dd>
 </dl>
+<p>item:The data to be saved
+model:The default parameter</p>
 <h2 id="returns">Returns</h2>
-<p>None</p></div>
+<p>True:Omitted</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def savecsv(path,item,model = &#39;a&#39;): 
+<pre><code class="python">def savecsv(path,item,model = &#39;a&#39;):
     &#34;&#34;&#34;
        This function is for saving csv files
 
        Args:
            path: The  path for saving csv files
-           item: The data to be saved
-           model: The default parameter
+           item:The data to be saved
+           model:The default parameter
 
        Returns:
-           None
+           True:Omitted
     &#34;&#34;&#34;
-    while True: 
-        try: 
-            with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f: 
-            #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f: 
+    while True:
+        try:
+            with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f:
+            #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f:
                 w = csv.writer(f)
                 w.writerow(item)
                 return True
-        except: 
+        except:
             print(&#39;Close&#39;)
             time.sleep(1)</code></pre>
 </details>

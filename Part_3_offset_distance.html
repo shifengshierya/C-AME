@@ -35,122 +35,122 @@ import csv
 import time
 from Part_2_functions_for_eachstep import create_folder
 
-def file_names(inputpath): 
+def file_names(inputpath):
     &#34;&#34;&#34;
        This function is for looping over files
 
        Args:
-           inputpath:  The folder path  to be looped over
+           inputpath: The folder path  to be looped over
 
        Returns:
-           namelist: The files list
+           namelist:The files list
     &#34;&#34;&#34;
     namelist = []
     filePath = inputpath
-    for i, j, k in os.walk(filePath): 
+    for i, j, k in os.walk(filePath):
         namelist.append([i, j, k])
     return namelist
 
-def savecsvs(path,item,model = &#39;a&#39;): 
+def savecsvs(path,item,model = &#39;a&#39;):
     &#34;&#34;&#34;
         This function is for saving csv files
 
        Args:
-           path:  The  path for saving csv files
-           item: The data to be saved
-           model: The default parameter
+           path: The  path for saving csv files
+           item:The data to be saved
+           model:The default parameter
 
        Returns:
-           True: Omitted
+           True:Omitted
     &#34;&#34;&#34;
-    while True: 
-        # try: 
-        with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f: 
-        #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f: 
+    while True:
+        # try:
+        with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f:
+        #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f:
             w = csv.writer(f)
             w.writerows(item)
             return True
 
-def savecsv(path,item,model = &#39;a&#39;): 
+def savecsv(path,item,model = &#39;a&#39;):
     &#34;&#34;&#34;
        This function is for saving csv files
 
        Args:
-           path:  The  path for saving csv files
-           item: The data to be saved
-           model: The default parameter
+           path: The  path for saving csv files
+           item:The data to be saved
+           model:The default parameter
 
        Returns:
-           True: Omitted
+           True:Omitted
     &#34;&#34;&#34;
-    while True: 
-        try: 
-            with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f: 
-            #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f: 
+    while True:
+        try:
+            with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f:
+            #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f:
                 w = csv.writer(f)
                 w.writerow(item)
                 return True
-        except: 
+        except:
             print(&#39;Close the table or the program cannot write&#39;)
             time.sleep(1)
 
-def get_file_list(path): 
+def get_file_list(path):
     &#34;&#34;&#34;
        This function is for getting file lists
 
        Args:
-           path:  The  path for files
+           path: The  path for files
 
        Returns:
-            file_list: The file list
+            file_list:The file list
     &#34;&#34;&#34;
 
     file_list = []
-    for root, dirs, files in os.walk(path): 
-        for file in files: 
-            if file != &#39;.DS_Store&#39;: 
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            if file != &#39;.DS_Store&#39;:
                 file_list.append(os.path.join(root, file))
     return file_list
 
-#Get migration axis
-def get_distance_point2line(point, line): 
+
+def get_distance_point2line(point, line):
     &#34;&#34;&#34;
        This function is for calculating the distance from points to a line
 
        Args:
-           point:  The observation points
-           line: A line
+           point: The observation points
+           line:A line
 
        Returns:
-           distance: The distance from points to the line
+           distance:The distance from points to the line
     &#34;&#34;&#34;
-    line_point1, line_point2 = np.array(line[0: 2]), np.array(line[2: ])
+    line_point1, line_point2 = np.array(line[0:2]), np.array(line[2:])
     vec1 = line_point1 - point
     vec2 = line_point2 - point
     distance = np.abs(np.cross(vec1, vec2)) / np.linalg.norm(line_point1 - line_point2)
     return distance
 
 #Index calculation of offset distance
-def calculate_distance(path_list): 
+def calculate_distance(path_list):
     &#34;&#34;&#34;
        This function is for getting migration axis and  offset distance
 
       Args:
-         path_list:  The files in the path
+         path_list : The files in the path
 
       Returns:
-          list11:  The offset distances
+          list11: The offset distances
     &#34;&#34;&#34;
     list_distance = []
-    for l in path_list: 
+    for l in path_list:
         name1 = os.path.basename(l)
-        if name1[0] == &#39;r&#39;: 
+        if name1[0] == &#39;r&#39;:
             tmp = pd.read_excel(l, header=None)
             list_distance.append(tmp)
 
     mean_x = []
     mean_y = []
-    for q in list_distance: 
+    for q in list_distance:
         mean_x.append(float(q.iloc[1, 0]))
         mean_y.append(float(q.iloc[1, 1]))
 
@@ -163,11 +163,11 @@ def calculate_distance(path_list):
     list1 = []
     max_list_x = []
     max_list_y = []
-    for r in path_list: 
+    for r in path_list:
         name1 = os.path.basename(r)
-        if name1[0: 2] == &#39;re&#39;: 
+        if name1[0:2] == &#39;re&#39;:
             tmp = pd.read_excel(r, header=None)
-            for l in range(1,365): 
+            for l in range(1,365):
                 x1 = float(tmp.iloc[1, 0])
                 y1 = float(tmp.iloc[1, 1])
 
@@ -192,12 +192,12 @@ def calculate_distance(path_list):
     line = [mean_x1, mean_y1, mean_x2, mean_y2]
 
     list11 = []
-    for r in path_list: 
+    for r in path_list:
         list_tmp = []
         name1 = os.path.basename(r)
-        if name1[0: 2] == &#39;re&#39;: 
+        if name1[0:2] == &#39;re&#39;:
             tmp = pd.read_excel(r, header=None)
-            for p in range(1,365): 
+            for p in range(1,365):
                 x = float(tmp.iloc[p, 0])
                 y = float(tmp.iloc[p, 1])
                 distance2 = get_distance_point2line((x, y), line)
@@ -205,38 +205,38 @@ def calculate_distance(path_list):
             list11.append(list_tmp)
     return list11
 
-def off_distance_main(path): 
+def off_distance_main(path):
     &#34;&#34;&#34;
        This function is for saving and drawing the results
 
        Args:
-           path:  The file path
+           path : The file path
 
        Returns:
-           True:  Omitted
+           True: Omitted
     &#34;&#34;&#34;
     path1 = get_file_list(path)
     result = calculate_distance(path1)
     count1 = 0
     tmp = 0
     index = 1
-    for j in result: 
+    for j in result:
         list_averange = []
         result2 = []
         items = [[datas] for datas in j]
         savecsvs(os.path.join(path, &#39;off_distance&#39;, &#39;d{}.csv&#39;.format(str(index))),items)
         index = index + 1
-        for b in range(len(j)): 
-            for l in result: 
+        for b in range(len(j)):
+            for l in result:
                 tmp += l[b]
             averange = int(tmp/len(result))
             tmp = 0
             result2.append(averange)
     items = [[datas] for datas in result2]
-    savecsvs(os.path.join(path, &#39;off_distance&#39;, &#39;da.csv&#39;), items)
+    #savecsvs(os.path.join(path, &#39;off_distance&#39;, &#39;da.csv&#39;), items)
 
     count = 1
-    for l in result: 
+    for l in result:
         name = os.path.basename(path1[count])
         #plt.xlim(0,360)
         plt.plot(l,label=&#39;d{}&#39;.format(count))
@@ -247,7 +247,7 @@ def off_distance_main(path):
         #plt.title(&#39;%s&#39;%name)
 
     #plt.legend()
-    #plt.savefig(&#39;q2/DistancePreDay.png&#39;)
+    #plt.savefig(&#39;q2/OffsetDistancePreDay.png&#39;)
     #plt.show()
 
     #plt.plot(result2,label=&#39;aveVar&#39;)
@@ -257,33 +257,33 @@ def off_distance_main(path):
     plt.ylabel(&#34;distance&#34;)
     #plt.title(&#39;averangeVar&#39;)
     plt.legend()
-    plt.savefig(os.path.join(path, &#39;off_distance&#39;, &#39;DistancePreDayAverange.png&#39;))
+    plt.savefig(os.path.join(path, &#39;off_distance&#39;, &#39;OffsetDistancePerDay.png&#39;))
     plt.show()
 
 
     #plt.savefig(path + &#39;\\variance\\VarPreDay.png&#39;)
     plt.show()
 
-def off_distance(data_path): 
+def off_distance(data_path):
     &#34;&#34;&#34;
         This function is for saving the results in the folder
 
         Args:
-            data_path:  The data path
+            data_path: The data path
 
         Returns:
-            True:  Omitted
+            True: Omitted
     &#34;&#34;&#34;
     # --------------------------------------------
     excel_list = file_names(data_path)
 
-    for i in range(len(excel_list)): 
+    for i in range(len(excel_list)):
         folder_attribute = excel_list[i]  #
         index = 1
 
-        if len(folder_attribute[2]) &gt; 0: 
-            for fileName in folder_attribute[2]: 
-                if fileName[0: 2] == &#39;re&#39;: 
+        if len(folder_attribute[2]) &gt; 0:
+            for fileName in folder_attribute[2]:
+                if fileName[0:2] == &#39;re&#39;:
                     path = folder_attribute[0]
                     create_folder(os.path.join(path, &#39;speed&#39;))
                     create_folder(os.path.join(path, &#39;off_distance&#39;))
@@ -310,10 +310,7 @@ def off_distance(data_path):
 <div class="desc"><p>This function is for getting migration axis and
 offset distance</p>
 <h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>path_list</code></strong></dt>
-<dd>The files in the path</dd>
-</dl>
+<p>path_list : The files in the path</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>list11</code></dt>
@@ -323,26 +320,26 @@ offset distance</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def calculate_distance(path_list): 
+<pre><code class="python">def calculate_distance(path_list):
     &#34;&#34;&#34;
        This function is for getting migration axis and  offset distance
 
       Args:
-         path_list:  The files in the path
+         path_list : The files in the path
 
       Returns:
-          list11:  The offset distances
+          list11: The offset distances
     &#34;&#34;&#34;
     list_distance = []
-    for l in path_list: 
+    for l in path_list:
         name1 = os.path.basename(l)
-        if name1[0] == &#39;r&#39;: 
+        if name1[0] == &#39;r&#39;:
             tmp = pd.read_excel(l, header=None)
             list_distance.append(tmp)
 
     mean_x = []
     mean_y = []
-    for q in list_distance: 
+    for q in list_distance:
         mean_x.append(float(q.iloc[1, 0]))
         mean_y.append(float(q.iloc[1, 1]))
 
@@ -355,11 +352,11 @@ offset distance</p>
     list1 = []
     max_list_x = []
     max_list_y = []
-    for r in path_list: 
+    for r in path_list:
         name1 = os.path.basename(r)
-        if name1[0: 2] == &#39;re&#39;: 
+        if name1[0:2] == &#39;re&#39;:
             tmp = pd.read_excel(r, header=None)
-            for l in range(1,365): 
+            for l in range(1,365):
                 x1 = float(tmp.iloc[1, 0])
                 y1 = float(tmp.iloc[1, 1])
 
@@ -384,12 +381,12 @@ offset distance</p>
     line = [mean_x1, mean_y1, mean_x2, mean_y2]
 
     list11 = []
-    for r in path_list: 
+    for r in path_list:
         list_tmp = []
         name1 = os.path.basename(r)
-        if name1[0: 2] == &#39;re&#39;: 
+        if name1[0:2] == &#39;re&#39;:
             tmp = pd.read_excel(r, header=None)
-            for p in range(1,365): 
+            for p in range(1,365):
                 x = float(tmp.iloc[p, 0])
                 y = float(tmp.iloc[p, 1])
                 distance2 = get_distance_point2line((x, y), line)
@@ -410,27 +407,24 @@ offset distance</p>
 to be looped over</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<dl>
-<dt><code>namelist</code></dt>
-<dd>The files list</dd>
-</dl></div>
+<p>namelist:The files list</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def file_names(inputpath): 
+<pre><code class="python">def file_names(inputpath):
     &#34;&#34;&#34;
        This function is for looping over files
 
        Args:
-           inputpath:  The folder path  to be looped over
+           inputpath: The folder path  to be looped over
 
        Returns:
-           namelist: The files list
+           namelist:The files list
     &#34;&#34;&#34;
     namelist = []
     filePath = inputpath
-    for i, j, k in os.walk(filePath): 
+    for i, j, k in os.walk(filePath):
         namelist.append([i, j, k])
     return namelist</code></pre>
 </details>
@@ -444,30 +438,26 @@ to be looped over</dd>
 <dl>
 <dt><strong><code>point</code></strong></dt>
 <dd>The observation points</dd>
-<dt><strong><code>line</code></strong></dt>
-<dd>A line</dd>
 </dl>
+<p>line:A line</p>
 <h2 id="returns">Returns</h2>
-<dl>
-<dt><code>distance</code></dt>
-<dd>The distance from points to the line</dd>
-</dl></div>
+<p>distance:The distance from points to the line</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_distance_point2line(point, line): 
+<pre><code class="python">def get_distance_point2line(point, line):
     &#34;&#34;&#34;
        This function is for calculating the distance from points to a line
 
        Args:
-           point:  The observation points
-           line: A line
+           point: The observation points
+           line:A line
 
        Returns:
-           distance: The distance from points to the line
+           distance:The distance from points to the line
     &#34;&#34;&#34;
-    line_point1, line_point2 = np.array(line[0: 2]), np.array(line[2: ])
+    line_point1, line_point2 = np.array(line[0:2]), np.array(line[2:])
     vec1 = line_point1 - point
     vec2 = line_point2 - point
     distance = np.abs(np.cross(vec1, vec2)) / np.linalg.norm(line_point1 - line_point2)
@@ -486,29 +476,26 @@ to be looped over</dd>
 path for files</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<dl>
-<dt><code>file_list</code></dt>
-<dd>The file list</dd>
-</dl></div>
+<p>file_list:The file list</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_file_list(path): 
+<pre><code class="python">def get_file_list(path):
     &#34;&#34;&#34;
        This function is for getting file lists
 
        Args:
-           path:  The  path for files
+           path: The  path for files
 
        Returns:
-            file_list: The file list
+            file_list:The file list
     &#34;&#34;&#34;
 
     file_list = []
-    for root, dirs, files in os.walk(path): 
-        for file in files: 
-            if file != &#39;.DS_Store&#39;: 
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            if file != &#39;.DS_Store&#39;:
                 file_list.append(os.path.join(root, file))
     return file_list</code></pre>
 </details>
@@ -532,26 +519,26 @@ path for files</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def off_distance(data_path): 
+<pre><code class="python">def off_distance(data_path):
     &#34;&#34;&#34;
         This function is for saving the results in the folder
 
         Args:
-            data_path:  The data path
+            data_path: The data path
 
         Returns:
-            True:  Omitted
+            True: Omitted
     &#34;&#34;&#34;
     # --------------------------------------------
     excel_list = file_names(data_path)
 
-    for i in range(len(excel_list)): 
+    for i in range(len(excel_list)):
         folder_attribute = excel_list[i]  #
         index = 1
 
-        if len(folder_attribute[2]) &gt; 0: 
-            for fileName in folder_attribute[2]: 
-                if fileName[0: 2] == &#39;re&#39;: 
+        if len(folder_attribute[2]) &gt; 0:
+            for fileName in folder_attribute[2]:
+                if fileName[0:2] == &#39;re&#39;:
                     path = folder_attribute[0]
                     create_folder(os.path.join(path, &#39;speed&#39;))
                     create_folder(os.path.join(path, &#39;off_distance&#39;))
@@ -570,10 +557,7 @@ path for files</dd>
 <dd>
 <div class="desc"><p>This function is for saving and drawing the results</p>
 <h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>path</code></strong></dt>
-<dd>The file path</dd>
-</dl>
+<p>path : The file path</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>True</code></dt>
@@ -583,38 +567,38 @@ path for files</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def off_distance_main(path): 
+<pre><code class="python">def off_distance_main(path):
     &#34;&#34;&#34;
        This function is for saving and drawing the results
 
        Args:
-           path:  The file path
+           path : The file path
 
        Returns:
-           True:  Omitted
+           True: Omitted
     &#34;&#34;&#34;
     path1 = get_file_list(path)
     result = calculate_distance(path1)
     count1 = 0
     tmp = 0
     index = 1
-    for j in result: 
+    for j in result:
         list_averange = []
         result2 = []
         items = [[datas] for datas in j]
         savecsvs(os.path.join(path, &#39;off_distance&#39;, &#39;d{}.csv&#39;.format(str(index))),items)
         index = index + 1
-        for b in range(len(j)): 
-            for l in result: 
+        for b in range(len(j)):
+            for l in result:
                 tmp += l[b]
             averange = int(tmp/len(result))
             tmp = 0
             result2.append(averange)
     items = [[datas] for datas in result2]
-    savecsvs(os.path.join(path, &#39;off_distance&#39;, &#39;da.csv&#39;), items)
+    #savecsvs(os.path.join(path, &#39;off_distance&#39;, &#39;da.csv&#39;), items)
 
     count = 1
-    for l in result: 
+    for l in result:
         name = os.path.basename(path1[count])
         #plt.xlim(0,360)
         plt.plot(l,label=&#39;d{}&#39;.format(count))
@@ -625,7 +609,7 @@ path for files</dd>
         #plt.title(&#39;%s&#39;%name)
 
     #plt.legend()
-    #plt.savefig(&#39;q2/DistancePreDay.png&#39;)
+    #plt.savefig(&#39;q2/OffsetDistancePreDay.png&#39;)
     #plt.show()
 
     #plt.plot(result2,label=&#39;aveVar&#39;)
@@ -635,7 +619,7 @@ path for files</dd>
     plt.ylabel(&#34;distance&#34;)
     #plt.title(&#39;averangeVar&#39;)
     plt.legend()
-    plt.savefig(os.path.join(path, &#39;off_distance&#39;, &#39;DistancePreDayAverange.png&#39;))
+    plt.savefig(os.path.join(path, &#39;off_distance&#39;, &#39;OffsetDistancePerDay.png&#39;))
     plt.show()
 
 
@@ -653,40 +637,35 @@ path for files</dd>
 <dt><strong><code>path</code></strong></dt>
 <dd>The
 path for saving csv files</dd>
-<dt><strong><code>item</code></strong></dt>
-<dd>The data to be saved</dd>
-<dt><strong><code>model</code></strong></dt>
-<dd>The default parameter</dd>
 </dl>
+<p>item:The data to be saved
+model:The default parameter</p>
 <h2 id="returns">Returns</h2>
-<dl>
-<dt><code>True</code></dt>
-<dd>Omitted</dd>
-</dl></div>
+<p>True:Omitted</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def savecsv(path,item,model = &#39;a&#39;): 
+<pre><code class="python">def savecsv(path,item,model = &#39;a&#39;):
     &#34;&#34;&#34;
        This function is for saving csv files
 
        Args:
-           path:  The  path for saving csv files
-           item: The data to be saved
-           model: The default parameter
+           path: The  path for saving csv files
+           item:The data to be saved
+           model:The default parameter
 
        Returns:
-           True: Omitted
+           True:Omitted
     &#34;&#34;&#34;
-    while True: 
-        try: 
-            with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f: 
-            #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f: 
+    while True:
+        try:
+            with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f:
+            #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f:
                 w = csv.writer(f)
                 w.writerow(item)
                 return True
-        except: 
+        except:
             print(&#39;Close the table or the program cannot write&#39;)
             time.sleep(1)</code></pre>
 </details>
@@ -701,36 +680,31 @@ path for saving csv files</dd>
 <dt><strong><code>path</code></strong></dt>
 <dd>The
 path for saving csv files</dd>
-<dt><strong><code>item</code></strong></dt>
-<dd>The data to be saved</dd>
-<dt><strong><code>model</code></strong></dt>
-<dd>The default parameter</dd>
 </dl>
+<p>item:The data to be saved
+model:The default parameter</p>
 <h2 id="returns">Returns</h2>
-<dl>
-<dt><code>True</code></dt>
-<dd>Omitted</dd>
-</dl></div>
+<p>True:Omitted</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def savecsvs(path,item,model = &#39;a&#39;): 
+<pre><code class="python">def savecsvs(path,item,model = &#39;a&#39;):
     &#34;&#34;&#34;
         This function is for saving csv files
 
        Args:
-           path:  The  path for saving csv files
-           item: The data to be saved
-           model: The default parameter
+           path: The  path for saving csv files
+           item:The data to be saved
+           model:The default parameter
 
        Returns:
-           True: Omitted
+           True:Omitted
     &#34;&#34;&#34;
-    while True: 
-        # try: 
-        with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f: 
-        #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f: 
+    while True:
+        # try:
+        with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f:
+        #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f:
             w = csv.writer(f)
             w.writerows(item)
             return True</code></pre>

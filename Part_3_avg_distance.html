@@ -34,120 +34,121 @@ import csv
 import time
 import os
 
-def savecsv(path,item,model = &#39;a&#39;): 
+def savecsv(path,item,model = &#39;a&#39;):
     &#34;&#34;&#34;
        This function is for saving csv files
 
        Args:
-           path:  The  path for saving csv files
-           item: The data to be saved
-           model: The default parameter
+           path: The  path for saving csv files
+           item:The data to be saved
+           model:The default parameter
 
        Returns:
-            True: Omitted
+            True:Omitted
     &#34;&#34;&#34;
-    while True: 
-        try: 
-            with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f: 
-            #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f: 
+    while True:
+        try:
+            with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f:
+            #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f:
                 w = csv.writer(f)
                 w.writerow(item)
                 return True
-        except: 
+        except:
             print(&#39;Close the table or the program cannot write&#39;)
             time.sleep(1)
 
-#Index calculation of avarage distance of daily centroids
-def dist_eclud(data1, data2): 
+
+def dist_eclud(data1, data2):
     &#34;&#34;&#34;
        This function is for calculating the Euclidean distance
 
        Args:
-           data1:  One data
-           data2: The other data
+           data1: One data
+           data2:The other data
 
        Returns:
-           data:  The Euclidean distance
+           data: The Euclidean distance
     &#34;&#34;&#34;
     x = data2[0] - data1[0]
     y = data2[1] - data1[1]
     data = math.sqrt(x*x + y*y)
     return data
 
-def get_date_list(datelist): 
+def get_date_list(datelist):
     &#34;&#34;&#34;
        This function is for getting the date list
 
        Args:
-           datelist:  The date list
+           datelist: The date list
 
        Returns:
-           date1:  The date list
+           date1: The date list
     &#34;&#34;&#34;
     date1 = []
-    for dates in datelist: 
-        if dates[2] not in date1: 
+    for dates in datelist:
+        if dates[2] not in date1:
             date1.append(dates[2])
     return date1
 
-def get_same_date_list(date,excel_list): 
+def get_same_date_list(date,excel_list):
     &#34;&#34;&#34;
        This function is for getting the same dates
 
        Args:
-           date:  The date
-           excel_list: The datas to be processed
+           date: The date
+           excel_list:The datas to be processed
 
        Returns:
-           same_datas:  The same dates
+           same_datas: The same dates
     &#34;&#34;&#34;
     same_datas = []
-    for datas in excel_list: 
-        if datas[2] == date: 
+    for datas in excel_list:
+        if datas[2] == date:
             same_datas.append(datas)
     return same_datas
 
-#Obtain the Euclidean distance for each day
-def get_avg(datalist): 
+#Avarage distance 
+def get_avg(datalist):
     &#34;&#34;&#34;
-        This function is for obtaining the average Euclidean distance for each day
+        This function is for obtaining the average Euclidean distance
 
         Args:
-            datalist:  The data to be  processed
+            datalist: The data to be  processed
 
         Returns:
-            avg:  The average distance
+            avg: The average distance
     &#34;&#34;&#34;
     data1 = [datalist[0][0],datalist[0][1]]
     avg_datalist = []
-    for i in range(1,len(datalist)): 
+    for i in range(1,len(datalist)):
         datas = [datalist[i][0],datalist[i][1]]
         avg_datalist.append(dist_eclud(data1,datas))
-    if avg_datalist: 
+    if avg_datalist:
         avg = sum(avg_datalist)/(len(datalist) - 1)
-    else: 
+    else:
         avg = 0
     return avg
-
-def avg_distance(save_path): 
+    
+#Calculate the average Euclidean distance for daily centroids
+def avg_distance(save_path):
     &#34;&#34;&#34;
-       This function is for calculating the average Euclidean distance for each day
+       This function is for calculating the average Euclidean distance for daily centroids
 
        Args:
-           save_path:  The path of files
+           save_path: The path of files
 
        Returns:
-           True:  Omitted
+           True: Omitted
     &#34;&#34;&#34;
-    df=pd.read_excel(os.path.join(save_path, &#39;shift.xls&#39;))
+    df=pd.read_excel(os.path.join(save_path, &#39;shift.xlsx&#39;))
     train_data = np.array(df)
     excel_list = train_data.tolist()  # list
-    # excel_list = excel_list[1: ]
+    # excel_list = excel_list[1:]
 
     datelist = get_date_list(excel_list)
 
     avg_list = []
-    for date in datelist: 
+    for date in datelist:
         same_date = get_same_date_list(date,excel_list)
         avg_date = get_avg(same_date)
         avg_list.append(avg_date)
@@ -161,7 +162,7 @@ def avg_distance(save_path):
     plt.savefig(os.path.join(save_path, &#39;avg.png&#39;))
     plt.show()
 
-if __name__ == &#39;__main__&#39;: 
+if __name__ == &#39;__main__&#39;:
     save_path = &#39;&#39;
     avg_distance(save_path)</code></pre>
 </details>
@@ -177,7 +178,7 @@ if __name__ == &#39;__main__&#39;:
 <span>def <span class="ident">avg_distance</span></span>(<span>save_path)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This function is for calculating the average Euclidean distance for each day</p>
+<div class="desc"><p>This function is for calculating the average Euclidean distance for daily centroids</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>save_path</code></strong></dt>
@@ -192,25 +193,25 @@ if __name__ == &#39;__main__&#39;:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def avg_distance(save_path): 
+<pre><code class="python">def avg_distance(save_path):
     &#34;&#34;&#34;
-       This function is for calculating the average Euclidean distance for each day
+       This function is for calculating the average Euclidean distance for daily centroids
 
        Args:
-           save_path:  The path of files
+           save_path: The path of files
 
        Returns:
-           True:  Omitted
+           True: Omitted
     &#34;&#34;&#34;
-    df=pd.read_excel(os.path.join(save_path, &#39;shift.xls&#39;))
+    df=pd.read_excel(os.path.join(save_path, &#39;shift.xlsx&#39;))
     train_data = np.array(df)
     excel_list = train_data.tolist()  # list
-    # excel_list = excel_list[1: ]
+    # excel_list = excel_list[1:]
 
     datelist = get_date_list(excel_list)
 
     avg_list = []
-    for date in datelist: 
+    for date in datelist:
         same_date = get_same_date_list(date,excel_list)
         avg_date = get_avg(same_date)
         avg_list.append(avg_date)
@@ -234,9 +235,8 @@ if __name__ == &#39;__main__&#39;:
 <dl>
 <dt><strong><code>data1</code></strong></dt>
 <dd>One data</dd>
-<dt><strong><code>data2</code></strong></dt>
-<dd>The other data</dd>
 </dl>
+<p>data2:The other data</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>data</code></dt>
@@ -246,16 +246,16 @@ if __name__ == &#39;__main__&#39;:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def dist_eclud(data1, data2): 
+<pre><code class="python">def dist_eclud(data1, data2):
     &#34;&#34;&#34;
        This function is for calculating the Euclidean distance
 
        Args:
-           data1:  One data
-           data2: The other data
+           data1: One data
+           data2:The other data
 
        Returns:
-           data:  The Euclidean distance
+           data: The Euclidean distance
     &#34;&#34;&#34;
     x = data2[0] - data1[0]
     y = data2[1] - data1[1]
@@ -267,7 +267,7 @@ if __name__ == &#39;__main__&#39;:
 <span>def <span class="ident">get_avg</span></span>(<span>datalist)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This function is for obtaining the average Euclidean distance for each day</p>
+<div class="desc"><p>This function is for obtaining the average Euclidean distance</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>datalist</code></strong></dt>
@@ -283,24 +283,24 @@ processed</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_avg(datalist): 
+<pre><code class="python">def get_avg(datalist):
     &#34;&#34;&#34;
-        This function is for obtaining the average Euclidean distance for each day
+        This function is for obtaining the average Euclidean distance
 
         Args:
-            datalist:  The data to be  processed
+            datalist: The data to be  processed
 
         Returns:
-            avg:  The average distance
+            avg: The average distance
     &#34;&#34;&#34;
     data1 = [datalist[0][0],datalist[0][1]]
     avg_datalist = []
-    for i in range(1,len(datalist)): 
+    for i in range(1,len(datalist)):
         datas = [datalist[i][0],datalist[i][1]]
         avg_datalist.append(dist_eclud(data1,datas))
-    if avg_datalist: 
+    if avg_datalist:
         avg = sum(avg_datalist)/(len(datalist) - 1)
-    else: 
+    else:
         avg = 0
     return avg</code></pre>
 </details>
@@ -324,19 +324,19 @@ processed</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_date_list(datelist): 
+<pre><code class="python">def get_date_list(datelist):
     &#34;&#34;&#34;
        This function is for getting the date list
 
        Args:
-           datelist:  The date list
+           datelist: The date list
 
        Returns:
-           date1:  The date list
+           date1: The date list
     &#34;&#34;&#34;
     date1 = []
-    for dates in datelist: 
-        if dates[2] not in date1: 
+    for dates in datelist:
+        if dates[2] not in date1:
             date1.append(dates[2])
     return date1</code></pre>
 </details>
@@ -350,9 +350,8 @@ processed</dd>
 <dl>
 <dt><strong><code>date</code></strong></dt>
 <dd>The date</dd>
-<dt><strong><code>excel_list</code></strong></dt>
-<dd>The datas to be processed</dd>
 </dl>
+<p>excel_list:The datas to be processed</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>same_datas</code></dt>
@@ -362,20 +361,20 @@ processed</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_same_date_list(date,excel_list): 
+<pre><code class="python">def get_same_date_list(date,excel_list):
     &#34;&#34;&#34;
        This function is for getting the same dates
 
        Args:
-           date:  The date
-           excel_list: The datas to be processed
+           date: The date
+           excel_list:The datas to be processed
 
        Returns:
-           same_datas:  The same dates
+           same_datas: The same dates
     &#34;&#34;&#34;
     same_datas = []
-    for datas in excel_list: 
-        if datas[2] == date: 
+    for datas in excel_list:
+        if datas[2] == date:
             same_datas.append(datas)
     return same_datas</code></pre>
 </details>
@@ -390,40 +389,35 @@ processed</dd>
 <dt><strong><code>path</code></strong></dt>
 <dd>The
 path for saving csv files</dd>
-<dt><strong><code>item</code></strong></dt>
-<dd>The data to be saved</dd>
-<dt><strong><code>model</code></strong></dt>
-<dd>The default parameter</dd>
 </dl>
+<p>item:The data to be saved
+model:The default parameter</p>
 <h2 id="returns">Returns</h2>
-<dl>
-<dt><code>True</code></dt>
-<dd>Omitted</dd>
-</dl></div>
+<p>True:Omitted</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def savecsv(path,item,model = &#39;a&#39;): 
+<pre><code class="python">def savecsv(path,item,model = &#39;a&#39;):
     &#34;&#34;&#34;
        This function is for saving csv files
 
        Args:
-           path:  The  path for saving csv files
-           item: The data to be saved
-           model: The default parameter
+           path: The  path for saving csv files
+           item:The data to be saved
+           model:The default parameter
 
        Returns:
-            True: Omitted
+            True:Omitted
     &#34;&#34;&#34;
-    while True: 
-        try: 
-            with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f: 
-            #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f: 
+    while True:
+        try:
+            with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f:
+            #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f:
                 w = csv.writer(f)
                 w.writerow(item)
                 return True
-        except: 
+        except:
             print(&#39;Close the table or the program cannot write&#39;)
             time.sleep(1)</code></pre>
 </details>

@@ -29,24 +29,24 @@
 <pre><code class="python">import xlwt
 
 #Function for file storage
-def data_write(file_path, datas): 
+def data_write(file_path, datas):
     &#34;&#34;&#34;
         This function is for saving files
 
         Args:
-            file_path: The path for saving files
-            datas: The data to be saved
+            file_path : The path for saving files
+            datas:The data to be saved
 
         Returns:
-            None
+            True:Omitted
     &#34;&#34;&#34;
 
     f = xlwt.Workbook()
     sheet1 = f.add_sheet(u&#39;sheet1&#39;, cell_overwrite_ok=True)
     
     i = 0
-    for data in datas: 
-        for j in range(len(data)): 
+    for data in datas:
+        for j in range(len(data)):
             sheet1.write(i, j, str(data[j]))
         i = i + 1
     f.save(file_path)</code></pre>
@@ -65,36 +65,32 @@ def data_write(file_path, datas):
 <dd>
 <div class="desc"><p>This function is for saving files</p>
 <h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>file_path</code></strong></dt>
-<dd>The path for saving files</dd>
-<dt><strong><code>datas</code></strong></dt>
-<dd>The data to be saved</dd>
-</dl>
+<p>file_path : The path for saving files
+datas:The data to be saved</p>
 <h2 id="returns">Returns</h2>
-<p>None</p></div>
+<p>True:Omitted</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def data_write(file_path, datas): 
+<pre><code class="python">def data_write(file_path, datas):
     &#34;&#34;&#34;
         This function is for saving files
 
         Args:
-            file_path: The path for saving files
-            datas: The data to be saved
+            file_path : The path for saving files
+            datas:The data to be saved
 
         Returns:
-            None
+            True:Omitted
     &#34;&#34;&#34;
 
     f = xlwt.Workbook()
     sheet1 = f.add_sheet(u&#39;sheet1&#39;, cell_overwrite_ok=True)
     
     i = 0
-    for data in datas: 
-        for j in range(len(data)): 
+    for data in datas:
+        for j in range(len(data)):
             sheet1.write(i, j, str(data[j]))
         i = i + 1
     f.save(file_path)</code></pre>

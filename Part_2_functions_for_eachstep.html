@@ -42,7 +42,7 @@ from mpl_toolkits.basemap import Basemap
 
 
 
-# WGS84 geographic coordinate system
+# WGS84 geographic coordinate system and Web Mercator coordinate system
 crs_WGS84 = CRS.from_epsg(4326)
 crs_WebMercator = CRS.from_epsg(3857)
 cell_size = 0.009330691929342804
@@ -50,7 +50,7 @@ origin_level = 24
 EarthRadius = 6378137.0
 tile_size = 256
 
-def create_folder(inputpath): 
+def create_folder(inputpath):
     &#34;&#34;&#34;
        This function is for creating folders
 
@@ -58,12 +58,12 @@ def create_folder(inputpath):
            inputpath: The folder path
 
         Returns:
-           True: Omitted
+           True:Omitted
     &#34;&#34;&#34;
-    if not os.path.exists(inputpath): 
+    if not os.path.exists(inputpath):
         os.makedirs(inputpath)
 
-def file_names(inputpath): 
+def file_names(inputpath):
     &#34;&#34;&#34;
        This function is for looping over files
 
@@ -71,16 +71,16 @@ def file_names(inputpath):
            inputpath: The folder path  to be looped over
 
        Returns:
-           namelist: The files list
+           namelist:The files list
     &#34;&#34;&#34;
     namelist = []
     filePath = inputpath
-    for i, j, k in os.walk(filePath): 
+    for i, j, k in os.walk(filePath):
         namelist.append([i, j, k])
     return namelist
 
 # Get the file names in the source folder
-def get_all_csv(data_path): 
+def get_all_csv(data_path):
     &#34;&#34;&#34;
        This function is for getting all csv files
 
@@ -88,29 +88,29 @@ def get_all_csv(data_path):
            data_path: The folder path of storing the csv files
 
        Returns:
-           all_csv: All the csv files
+           all_csv:All the csv files
     &#34;&#34;&#34;
 
     excel_list = file_names(data_path)
     all_csv = []
-    for i in range(len(excel_list)): 
+    for i in range(len(excel_list)):
         folder_attribute = excel_list[i]
-        if len(folder_attribute[2])&gt;0: 
-            for fileName in folder_attribute[2]: 
-                if fileName[-1] == &#39;v&#39;: 
+        if len(folder_attribute[2])&gt;0:
+            for fileName in folder_attribute[2]:
+                if fileName[-1] == &#39;v&#39;:
                     all_csv.append(fileName)
     return all_csv
 
 #sldf() for outlier detection
-def sldf(x): 
+def sldf(x):
     &#34;&#34;&#34;
        This function is for outlier detection based on sldf values
 
        Args:
-           x: The input data
+           x : The input data
 
        Returns:
-           result: The result after sldf outlier detection
+           result:The result after sldf outlier detection
     &#34;&#34;&#34;
     n = len(x)
     column = len(x[0])
@@ -121,16 +121,16 @@ def sldf(x):
     lens = 1 / k
     position_x = np.ceil(x_ / lens)
 
-    for i in range(len(position_x)): 
-        for j in range(len(position_x[0])): 
-            if position_x[i][j] == 0: 
+    for i in range(len(position_x)):
+        for j in range(len(position_x[0])):
+            if position_x[i][j] == 0:
                 position_x[i][j] = 1
 
-    B = np.lexsort([position_x[: , 1], position_x[: , 0]])
-    A = position_x[B,: ]
+    B = np.lexsort([position_x[:, 1], position_x[:, 0]])
+    A = position_x[B, :]
     A = A.astype(int)
     count = np.zeros((k, k))
-    for i in range(n): 
+    for i in range(n):
         count[A[i][0] - 1][A[i][1] - 1] += 1
     max_count = np.max(count)
 
@@ -138,30 +138,30 @@ def sldf(x):
     q = q * max_count
     w = [0.5, 0.5]
     dist = np.zeros((n, n))
-    for i in range(n): 
-        dist[: , i] = w[0] * ((x_[: , 0] - x_[i, 0]) ** 2) + w[1] * ((x_[: , 1] - x_[i, 1]) ** 2)
+    for i in range(n):
+        dist[:, i] = w[0] * ((x_[:, 0] - x_[i, 0]) ** 2) + w[1] * ((x_[:, 1] - x_[i, 1]) ** 2)
     dist = np.sqrt(dist)
     max_dist = np.max(dist)
     k = max_dist
     N = []
-    for i in range(len(dist)): 
-        for j in range(len(dist[0])): 
+    for i in range(len(dist)):
+        for j in range(len(dist[0])):
             Ni, Nj = j, i
             N.append((Ni, Nj))
 
     N = np.array(N)
     u = np.zeros(n)
     SLDR = np.zeros(n)
-    N_i = N[: , 0]
-    N_j = N[: , 1]
+    N_i = N[:, 0]
+    N_j = N[:, 1]
 
-    for i in range(n): 
+    for i in range(n):
         tmp = np.argwhere(N_j == i)
         tmp_E = int(max(tmp))
         tmp_S = int(min(tmp))
-        tmp_N = N[tmp_S: tmp_E + 1,: ]
+        tmp_N = N[tmp_S: tmp_E + 1, :]
         tmp_D = []
-        for j in range(len(tmp_N)): 
+        for j in range(len(tmp_N)):
             a, b = tmp_N[j]
             tmp_D.append(dist[a, b])
         tmp_ji = tmp_E - tmp_S + 1
@@ -170,7 +170,7 @@ def sldf(x):
         SLDR[i] = sum(tmp_c) / tmp_ji
 
     SLDIR = np.zeros(n)
-    for i in range(n): 
+    for i in range(n):
         tmp = np.argwhere(N_j == i)
         tmp_E = int(max(tmp))
         tmp_S = int(min(tmp))
@@ -179,70 +179,70 @@ def sldf(x):
 
     SLDF = SLDR / SLDIR
     # print(SLDF.shape, x.shape)
-    selected_index = np.argsort(SLDF)[: int(0.8 * len(SLDF) + 1)]
+    selected_index = np.argsort(SLDF)[:int(0.8 * len(SLDF) + 1)]
     # print(selected_index.shape)
     SLDF_new = SLDF[selected_index]
-    result = np.concatenate((x[selected_index], SLDF_new[: , np.newaxis]), axis=1)
+    result = np.concatenate((x[selected_index], SLDF_new[:, np.newaxis]), axis=1)
     return result
 
-def data_write(file_path, datas): 
+def data_write(file_path, datas):
     &#34;&#34;&#34;
        This function is for saving files
 
        Args:
-           file_path: The path for saving files
-           datas: The data to be saved
+           file_path : The path for saving files
+           datas:The data to be saved
 
        Returns:
-           True: Omitted
+           True:Omitted
     &#34;&#34;&#34;
     f = xlwt.Workbook()
     sheet1 = f.add_sheet(u&#39;sheet1&#39;, cell_overwrite_ok=True)  # Create a sheet
     i = 0
-    for data in datas: 
-        for j in range(len(data)): 
+    for data in datas:
+        for j in range(len(data)):
             sheet1.write(i, j, str(data[j]))
         i = i + 1
     f.save(file_path)
 
 
-#Coordinate conversion from WebMercator to wgs84
-def webmercator2wgs84(a, b): 
+#Coordinate conversion from Web Mercator to wgs84
+def webmercator2wgs84(a, b):
     &#34;&#34;&#34;
-       This function is for Mercator coordinates conversion into  geographical ones
+       This function is for Web Mercator coordinates conversion into  geographical ones
 
        Args:
-           a: The Mercator coordinates of longitude
-           b: The Mercator coordinates of latitude
+           a: The Web Mercator coordinates of longitude
+           b: The Web Mercator coordinates of latitude
 
        Returns:
            lon: The geographical coordinates of longitude
-           lat: The geographical coordinates of latitude
+           lat:The geographical coordinates of latitude
     &#34;&#34;&#34;
     lon = a / 20037508.34 * 180
     lat = b / 20037508.34 * 180
     lat = 180 / math.pi * (2 * math.atan(math.exp(lat * math.pi / 180)) - math.pi / 2)
     return lon, lat
 
-# def gam_pic(gam,data,save_path,key): 
-def gam_pic(gam,save_path,csv_name,key,x_y): 
+# def gam_pic(gam,data,save_path,key):
+def gam_pic(gam,save_path,csv_name,key,x_y):
     &#34;&#34;&#34;
        This function is for drawing the gam figures
 
        Args:
            gam: The usage of gam model
            save_path: The path for saving the result file
-           csv_name: The species name being processed
-           key: The number for file naming
-           x_y: The choice for Lat or Lon when file naming
+           csv_name:The species name being processed
+           key:The number for file naming
+           x_y:The choice for Lat or Lon when file naming
 
        Returns:
-           True: Omitted
+           True:Omitted
     &#34;&#34;&#34;
     XX = gam.generate_X_grid(term=0, n=365)
     # plt.scatter([data for data in range(364)], data, color=&#39;b&#39;, marker=&#39;o&#39;)
-    plt.plot(XX[: , 0], gam.partial_dependence(term=0, X=XX))
-    plt.plot(XX[: , 0], gam.partial_dependence(term=0, X=XX, width=.95)[1], c=&#39;r&#39;, ls=&#39;--&#39;)
+    plt.plot(XX[:, 0], gam.partial_dependence(term=0, X=XX))
+    plt.plot(XX[:, 0], gam.partial_dependence(term=0, X=XX, width=.95)[1], c=&#39;r&#39;, ls=&#39;--&#39;)
     plt.xlabel(&#39;Date&#39;, labelpad=10)
     plt.ylabel(x_y)
 
@@ -250,22 +250,22 @@ def gam_pic(gam,save_path,csv_name,key,x_y):
     plt.savefig(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;, &#39;&#39;), &#39;gam{}{}.jpg&#39;.format(x_y,key + 1)))
     plt.close()
 
-#gam() for fitting longitude and latitude with time
-def gam(save_path, csv_name,key): 
+#gam() for fitting longitude and latitude in Web Mercator system with time; Coordinate conversion from WebMercator to wgs84 with webmercator2wgs84() 
+def gam(save_path, csv_name,key):
     &#34;&#34;&#34;
        This function is for gam algorithm
 
        Args:
            save_path: The path for saving the result file
-           csv_name: The species name being processed
-           key: The number for file naming
+           csv_name:The species name being processed
+           key:The number for file naming
 
        Returns:
-           Lon: The longitude after gam algorithm
-           Lat: The latitude after gam algorithm
+           Lon:The longitude after gam algorithm
+           Lat:The latitude after gam algorithm
 
     &#34;&#34;&#34;
-    df = pd.read_excel(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;,&#39;&#39;), &#39;ni_traj{}.xls&#39;.format(key + 1)), sheet_name=&#39;Sheet1&#39;)
+    df = pd.read_excel(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;,&#39;&#39;), &#39;ni_traj{}.xlsx&#39;.format(key + 1)), sheet_name=&#39;Sheet1&#39;)
     date = df[&#34;date&#34;]
     x = df[&#34;X&#34;]
     y = df[&#34;Y&#34;]
@@ -277,67 +277,68 @@ def gam(save_path, csv_name,key):
     predictions_y = gam_model.predict(date)
     datas = [[&#34;X*&#34;, &#34;Y*&#34;,&#34;date&#34;]]
     # datas = []
-    for i in range(len(x)): 
+    for i in range(len(x)):
         datas.append([predictions_x[i], predictions_y[i],date[i]])
     data_write(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;,&#39;&#39;), &#39;result_{}.xls&#39;.format(key + 1)), datas)
-
+    
+#Coordinate conversion from WebMercator to wgs84 
     Lat = []
     Lon = []
-    for i in range(len(x)): 
+    for i in range(len(x)):
         res = webmercator2wgs84(predictions_y[i], predictions_x[i])
         Lon.append(res[0])
         Lat.append(res[1])
     return Lon, Lat
 
 #Coordinate conversion from wgs84 to WebMercator
-def wgs84towebmercator_single(lat, lon): 
+def wgs84towebmercator_single(lat, lon):
     &#34;&#34;&#34;
-       This function is for coordinates conversion into Mercator ones
+       This function is for coordinates conversion into Web Mercator ones
 
        Args:
            lat: Latitude data
            lon: Longitude data
 
        Returns:
-           m: The Mercator coordinates of latitude
-           n: The Mercator coordinates of longitude
+           m: The Web Mercator coordinates of latitude
+           n:The Web Mercator coordinates of longitude
     &#34;&#34;&#34;
     transformer = Transformer.from_crs(crs_WGS84, crs_WebMercator)
     m, n = transformer.transform(lat, lon)
     return n, m
 
 
-# Data preprocessing: convert original latitude and longitude data to Mercator coordinates with wgs84towebmercator_Single()
-def get_initial_data(x,y,date,length): 
+# Data preprocessing: convert original latitude and longitude data to Web Mercator coordinates with wgs84towebmercator_Single()
+def get_initial_data(x,y,date,length):
     &#34;&#34;&#34;
-       This function is for converting the geodetic coordinates into Mercator ones
+       This function is for converting the geographical coordinates into Web Mercator ones
 
        Args:
            x: Latitude data
            y: Longitude data
            date: The observation date
-           length: The length of the data
+           length:The length of the data
 
        Returns:
-           initial_data: The Mercator coordinates after converting
+           initial_data: The Web Mercator coordinates after converting
     &#34;&#34;&#34;
     initial_data = []
     initial_data.append([&#34;LATITUDE&#34;, &#34;LONGITUDE&#34;, &#34;OBSERVATION DATE&#34;])
-    for i in range(length): 
+    for i in range(length):
         result = wgs84towebmercator_single(x[i], y[i])
         initial_data.append([result[0], result[1], date[i]])
 
     return initial_data
 
 #Data preprocessing: Interpolation for missing data
-def interpolation(date,length,initial_data): 
+def interpolation(date,length,initial_data):
     &#34;&#34;&#34;
        This function is to finish interpolation for missing data
 
        Args:
            date: The observation date
-           length: The length of the data
-           initial_data: The data after coordinates conversion
+           length:The length of the data
+           initial_data:The data after coordinates conversion
 
        Returns:
            initial_data: The data results after interpolation
@@ -346,35 +347,35 @@ def interpolation(date,length,initial_data):
     lose_date = []
     now_date = []
     all_date = [i for i in range(k, k + 365)]
-    for i in range(length): 
+    for i in range(length):
         now_date.append(date[i])
-    for i in all_date: 
-        if i not in now_date: 
+    for i in all_date:
+        if i not in now_date:
             lose_date.append(i)
     # print(lose_date)
 
 
-    for lose in lose_date: 
+    for lose in lose_date:
         x = []
         y = []
-        for data in initial_data: 
-            if data[2] == &#34;OBSERVATION DATE&#34;: 
+        for data in initial_data:
+            if data[2] == &#34;OBSERVATION DATE&#34;:
                 continue
-            if 0 &lt; lose - int(data[2]) &lt;= 2: 
+            if 0 &lt; lose - int(data[2]) &lt;= 2:
                 x.append(data[0])
                 y.append(data[1])
         initial_data.append([sum(x) / len(x), sum(y) / len(y), lose])
     return initial_data
 
-##Data preprocessing: Smooth the data by rolling window algorithm with window width=7
-def rolling_window(initial_data,save_path,csv_name): 
+##Data preprocessing:Smooth the data by rolling window algorithm with window width=7
+def rolling_window(initial_data,save_path,csv_name):
     &#34;&#34;&#34;
        This function is for rolling_window algorithm
 
        Args:
            initial_data: The data after interpolation
-           save_path: The path for saving the result file
-           csv_name: The species name being processed
+           save_path:The path for saving the result file
+           csv_name:The species name being processed
 
        Returns:
            rolling_window_data_df: The data results after rolling_window
@@ -383,28 +384,28 @@ def rolling_window(initial_data,save_path,csv_name):
     Rolling_window_data.append([&#34;LATITUDE&#34;, &#34;LONGITUDE&#34;, &#34;OBSERVATION DATE&#34;])
 
     k = 43101
-    for i in range(k, k + 365): 
-        for data in initial_data: 
-            if data[2] == &#34;OBSERVATION DATE&#34;: 
+    for i in range(k, k + 365):
+        for data in initial_data:
+            if data[2] == &#34;OBSERVATION DATE&#34;:
                 continue
-            if -3 &lt; data[2] - i &lt;= 3: 
+            if -3 &lt; data[2] - i &lt;= 3:
                 Rolling_window_data.append([data[0], data[1], i])
 
     # window_data_df = pd.DataFrame(window_data, columns=False)
     # window_data_df.to_csv(&#39;426.csv&#39;, index=False)
-    Rolling_window_data_df = pd.DataFrame(Rolling_window_data[1: ], columns=Rolling_window_data[0])
+    Rolling_window_data_df = pd.DataFrame(Rolling_window_data[1:], columns=Rolling_window_data[0])
     Rolling_window_data_df.to_csv(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;,&#39;&#39;), &#39;Rolling_window_data.csv&#39;), index=False)
     return Rolling_window_data_df
 
-#Data preprocessing: Outlier detectiobn through SLDF
-def get_sldf(window_data_df,save_path,csv_name): 
+#Data preprocessing:Outlier detectiobn through SLDF
+def get_sldf(window_data_df,save_path,csv_name):
     &#34;&#34;&#34;
        This function is for saving the results after sldf outlier detection
 
        Args:
            window_data_df: The data after rolling_window
-           save_path: The path for saving the result file
-           csv_name: The species name being processed
+           save_path:The path for saving the result file
+           csv_name:The species name being processed
 
        Returns:
            sldf_df: The data results after sldf outlier detection
@@ -414,16 +415,16 @@ def get_sldf(window_data_df,save_path,csv_name):
 
     day_index = dict()
     day_index[43101] = 0
-    for index, i in enumerate(xall[: , 2]): 
-        if i not in day_index: 
+    for index, i in enumerate(xall[:, 2]):
+        if i not in day_index:
             day_index[i] = index
 
-    for day in range(1, 366): 
+    for day in range(1, 366):
         date = day + 43100
-        if day != 365: 
-            temp = xall[day_index[date]: day_index[date + 1],: 2]
-        else: 
-            temp = xall[day_index[date]: ,: 2]
+        if day != 365:
+            temp = xall[day_index[date]:day_index[date + 1], :2]
+        else:
+            temp = xall[day_index[date]:, :2]
         outl = sldf(temp)
         t = date * np.ones((outl.shape[0], 1))
         outl = np.concatenate((outl, t), axis=1)
@@ -434,15 +435,15 @@ def get_sldf(window_data_df,save_path,csv_name):
     SLDF_df.to_csv(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;,&#39;&#39;), &#39;sldf.csv&#39;), index=False)
     return SLDF_df
 
-#Path estimation: Get daily population centroids by Meanshift algorithm
-def mean_shift(SLDF_df,save_path,csv_name): 
+#Trajectory estimation: Get daily population centroids by Meanshift algorithm
+def mean_shift(SLDF_df,save_path,csv_name):
     &#34;&#34;&#34;
        This function is for getting daily population centroids by Meanshift algorithm
 
        Args:
            SLDF_df: The data after sldf outlier detection
-           save_path: The path for saving the result file
-           csv_name: The species name being processed
+           save_path:The path for saving the result file
+           csv_name:The species name being processed
 
         Returns:
            result: The data results after meanshift clustering
@@ -451,13 +452,13 @@ def mean_shift(SLDF_df,save_path,csv_name):
     datas = SLDF_df.drop([&#39;SLDF&#39;], axis=1)
     result = []
     result.append([&#34;LATITUDE&#34;, &#34;LONGITUDE&#34;, &#34;OBSERVATION DATE&#34;])
-    for date in tqdm(range(43101, 43466)): 
-    #for date in range(43101, 43119): 
+    for date in tqdm(range(43101, 43466)):
+    #for date in range(43101, 43119):
         #print(date)
         data = datas.loc[date == datas[&#39;OBSERVATION DATE&#39;]]  # .values.tolist()#[&#34;answer&#34;]
-        data = data.iloc[: ,: 2]
+        data = data.iloc[:, :2]
         data = np.array(data)
-        if len(data) == 0: 
+        if len(data) == 0:
             continue
 
         ms = MeanShift()
@@ -468,12 +469,12 @@ def mean_shift(SLDF_df,save_path,csv_name):
         labels_unique = np.unique(labels)
         n_clusters = len(labels_unique)
 
-        for c in cluster_centers: 
+        for c in cluster_centers:
             result.append([float(c[0]), float(c[1]), date])
 
         colors = cycle(&#39;bcmyk&#39;)
-        if date % 20 == 0: 
-            for k, color in zip(range(n_clusters), colors): 
+        if date % 20 == 0:
+            for k, color in zip(range(n_clusters), colors):
                 # current_member indicates true if the label is k and false if not
                 current_member = labels == k
                 cluster_center = cluster_centers[k]
@@ -493,15 +494,15 @@ def mean_shift(SLDF_df,save_path,csv_name):
             plt.close()
     return result
 
-#Path estimation: Group the daily population centroids according to the minimum distance principle
-def group(csv_path,save_path,csv_name): 
+#Trajectory estimation: Group the daily population centroids according to the minimum distance principle
+def group(csv_path,save_path,csv_name):
     &#34;&#34;&#34;
        This function is for grouping the daily population centroids
 
        Args:
            csv_path: The path for the data file after Meanshift algorithm
-           save_path: The path for saving the result file
-           csv_name: The species name being processed
+           save_path:The path for saving the result file
+           csv_name:The species name being processed
 
        Returns:
             True: Omitted
@@ -511,12 +512,12 @@ def group(csv_path,save_path,csv_name):
     A3 = np.array([[0], [0]])
 
     datas = pd.read_excel(csv_path)
-    #datas = datas.iloc[1: ,: ]
+    #datas = datas.iloc[1:, :]
 
     result_list = []
-    for date in range(43101, 43466): 
+    for date in range(43101, 43466):
         data = datas.loc[date == datas[&#39;OBSERVATION DATE&#39;]]
-        data = data.iloc[: ,: 2].values.tolist()
+        data = data.iloc[:, :2].values.tolist()
         A1 = np.hstack((A1, np.array(list(data)).T))
         A3 = np.hstack((A3, np.array([[int(len(data))], [A3[1, -1] + int(len(data))]])))
 
@@ -543,156 +544,156 @@ def group(csv_path,save_path,csv_name):
     guiji = {}
     abc = np.zeros((10000, 10000), dtype=int)
 
-#Traversal calculations of the centroid distance between adjacent days in the annual circle
-    for b1 in range(2, N3): 
-        if LL6 &gt; 0: 
+#Traversal calculations of the centroid distance between two adjacent days in the annual circle
+    for b1 in range(2, N3):
+        if LL6 &gt; 0:
             LL1 = A3[1, b1 - 2]
             LL2 = A3[1, b1 - 1]
             LL3 = A3[1, b1]
             O1 = A3[0, b1 - 2]
             O2 = new2
             O3 = A3[0, b1]
-            KK1 = A1[: , np.arange(LL4, LL1)]
+            KK1 = A1[:, np.arange(LL4, LL1)]
             KK2 = new1
-            KK3 = A1[: , np.arange(LL2, LL3)]
+            KK3 = A1[:, np.arange(LL2, LL3)]
             LL4 = LL1
             LL5 = LL5 + 1
-        if LL6 == 0: 
+        if LL6 == 0:
             LL1 = A3[1, b1 - 2]
             LL2 = A3[1, b1 - 1]
             LL3 = A3[1, b1]
             O1 = A3[0, b1 - 2]
             O2 = A3[0, b1 - 1]
             O3 = A3[0, b1]
-            KK1 = A1[: , np.arange(LL4, LL1)]
-            KK2 = A1[: , np.arange(LL1, LL2)]
-            KK3 = A1[: , np.arange(LL2, LL3)]
+            KK1 = A1[:, np.arange(LL4, LL1)]
+            KK2 = A1[:, np.arange(LL1, LL2)]
+            KK3 = A1[:, np.arange(LL2, LL3)]
             LL4 = LL1
             LL5 = LL5 + 1
 
 #Store centroid coordinates
         guodu1 = KK2.shape[1]
-        for pp1 in range(1, guodu1 + 1): 
-            kk2 = KK2[: , pp1 - 1]
+        for pp1 in range(1, guodu1 + 1):
+            kk2 = KK2[:, pp1 - 1]
             kk2 = np.transpose(kk2)
-            KKK2[: , np.arange(pp1 * 2 - 2, pp1 * 2)] = kk2
+            KKK2[:, np.arange(pp1 * 2 - 2, pp1 * 2)] = kk2
         guodu2 = KK3.shape[1]
-        for pp1 in range(1, guodu2 + 1): 
-            kk3 = KK3[: , pp1 - 1]
+        for pp1 in range(1, guodu2 + 1):
+            kk3 = KK3[:, pp1 - 1]
             kk3 = np.transpose(kk3)
-            KKK3[: , np.arange(pp1 * 2 - 2, pp1 * 2)] = kk3
+            KKK3[:, np.arange(pp1 * 2 - 2, pp1 * 2)] = kk3
 
 #Perform centroid distance traversal calculation when the number of centroids on the later day is greater than the previous day
 #The calculation order needs to consider from O2 to O3 and from O3 to O2 to ensure that all centroids in O3 can be connected.
         jl = np.zeros((100, 100))
-        if O3 &gt; O2: 
+        if O3 &gt; O2:
             new2 = O3
             dddd = dddd + 1
-            for t1 in range(1, O2 + 1): 
-                for t2 in range(1, O3 + 1): 
+            for t1 in range(1, O2 + 1):
+                for t2 in range(1, O3 + 1):
                     jl[t1 - 1, t2 - 1] = np.sqrt(
                         (KK2[0, t1 - 1] - KK3[0, t2 - 1]) ** 2 + (KK2[1, t1 - 1] - KK3[1, t2 - 1]) ** 2)
-            index = np.argmin(jl[: O2,: O3], axis=1)
-            for t3 in range(1, O2 + 1): 
+            index = np.argmin(jl[:O2, :O3], axis=1)
+            for t3 in range(1, O2 + 1):
                 aaa = int(index[t3 - 1] + 1)
-                if dddd == 1: 
+                if dddd == 1:
                     shuju1 = np.vstack(
-                        (KKK2[: , np.arange(t3 * 2 - 2, t3 * 2)], KKK3[: , np.arange(aaa * 2 - 2, aaa * 2)]))
-                    new1[: , t3 - 1] = KK3[: , aaa - 1]
+                        (KKK2[:, np.arange(t3 * 2 - 2, t3 * 2)], KKK3[:, np.arange(aaa * 2 - 2, aaa * 2)]))
+                    new1[:, t3 - 1] = KK3[:, aaa - 1]
                     LL6 = LL6 + 1
-                if dddd &gt; 1: 
-                    shuju1 = np.vstack((guiji[t3 - 1], KKK3[: , np.arange(aaa * 2 - 2, aaa * 2)]))
-                    new1[: , t3 - 1] = KK3[: , aaa - 1]
+                if dddd &gt; 1:
+                    shuju1 = np.vstack((guiji[t3 - 1], KKK3[:, np.arange(aaa * 2 - 2, aaa * 2)]))
+                    new1[:, t3 - 1] = KK3[:, aaa - 1]
                 zhongjian[t3 - 1] = shuju1
-                # zhongjian[t3-1][np.all(shuju1 == 0, axis=1),: ].fill(0)
+                # zhongjian[t3-1][np.all(shuju1 == 0, axis=1),:].fill(0)
             jl = np.zeros((100, 100))
-            for t1 in range(1, O3 + 1): 
-                for t2 in range(1, O2 + 1): 
+            for t1 in range(1, O3 + 1):
+                for t2 in range(1, O2 + 1):
                     jl[t1 - 1, t2 - 1] = np.sqrt(
                         (KK3[0, t1 - 1] - KK2[0, t2 - 1]) ** 2 + (KK3[1, t1 - 1] - KK2[1, t2 - 1]) ** 2)
-            index = np.argmin(jl[: O3,: O2], axis=1)
+            index = np.argmin(jl[:O3, :O2], axis=1)
             XX = np.unique(index)
             nnp = O3 - O2
             nnn = 1
-            for i in range(1, len(XX) + 1): 
+            for i in range(1, len(XX) + 1):
                 m = (index == XX[i - 1]).nonzero()[0]
-                if len(m) &gt;= 2: 
+                if len(m) &gt;= 2:
                     abc[nnn - 1, 0] = XX[i - 1] + 1
                     abc[nnn - 1, 1] = len(m)
                     nnn = nnn + 1
-                if len(m) &gt;= 2: 
-                    for nnc in range(1, nnp + 1): 
-                        if nnn - 1 &gt; 0: 
+                if len(m) &gt;= 2:
+                    for nnc in range(1, nnp + 1):
+                        if nnn - 1 &gt; 0:
                             aaa = int(index[abc[nnn - 2, 0]] + 1)
-                        if nnn - 1 &gt; 1: 
+                        if nnn - 1 &gt; 1:
                             aaa = int(index[abc[nnn - 2, 0]] + 1)
                             nnn = nnn - 1
-                        if dddd &gt; 1: 
-                            shuju1 = np.vstack((guiji[abc[nnn - 2, 0]], KKK3[: , np.arange(aaa * 2 - 2, aaa * 2)]))
-                        if dddd == 1: 
-                            shuju1 = np.vstack((KKK2[: , np.arange(abc[nnn - 2, 0] * 2 - 2, abc[nnn - 2, 0] * 2)],
-                                                KKK3[: , np.arange(aaa * 2 - 2, aaa * 2)]))
-                        new1[: , O2 + nnc - 1] = KK3[: , aaa - 1]
+                        if dddd &gt; 1:
+                            shuju1 = np.vstack((guiji[abc[nnn - 2, 0]], KKK3[:, np.arange(aaa * 2 - 2, aaa * 2)]))
+                        if dddd == 1:
+                            shuju1 = np.vstack((KKK2[:, np.arange(abc[nnn - 2, 0] * 2 - 2, abc[nnn - 2, 0] * 2)],
+                                                KKK3[:, np.arange(aaa * 2 - 2, aaa * 2)]))
+                        new1[:, O2 + nnc - 1] = KK3[:, aaa - 1]
                         zhongjian[O2 + nnc - 1] = shuju1
-                        # zhongjian[O2 + nnc-1][np.all(shuju1 == 0,axis=1),: ].fill(0)
-            for t10 in range(0, O3): 
+                        # zhongjian[O2 + nnc-1][np.all(shuju1 == 0,axis=1),:].fill(0)
+            for t10 in range(0, O3):
                 guiji[t10] = zhongjian[t10]
 
 #Perform centroid distance traversal calculation when the number of centroids on the later day is less than the previous day
 
-        if O3 &lt;= O2: 
+        if O3 &lt;= O2:
             new2 = O2
             dddd = dddd + 1
-            for t1 in range(1, O2 + 1): 
-                for t2 in range(1, O3 + 1): 
+            for t1 in range(1, O2 + 1):
+                for t2 in range(1, O3 + 1):
                     jl[t1 - 1, t2 - 1] = np.sqrt(
                         (KK2[0, t1 - 1] - KK3[0, t2 - 1]) ** 2 + (KK2[1, t1 - 1] - KK3[1, t2 - 1]) ** 2)
-            index = np.argmin(jl[: O2,: O3], axis=1)
-            for t3 in range(1, O2 + 1): 
+            index = np.argmin(jl[:O2, :O3], axis=1)
+            for t3 in range(1, O2 + 1):
                 aaa = int(index[t3 - 1] + 1)
-                if dddd == 1: 
+                if dddd == 1:
                     shuju1 = np.vstack(
-                        (KKK2[: , np.arange(t3 * 2 - 2, t3 * 2)], KKK3[: , np.arange(aaa * 2 - 2, aaa * 2)]))
-                    new1[: , t3 - 1] = KK3[: , aaa - 1]
+                        (KKK2[:, np.arange(t3 * 2 - 2, t3 * 2)], KKK3[:, np.arange(aaa * 2 - 2, aaa * 2)]))
+                    new1[:, t3 - 1] = KK3[:, aaa - 1]
                     LL6 = LL6 + 1
-                if dddd &gt; 1: 
-                    shuju1 = np.vstack((guiji[t3 - 1], KKK3[: , np.arange(aaa * 2 - 2, aaa * 2)]))
-                    new1[: , t3 - 1] = KK3[: , aaa - 1]
+                if dddd &gt; 1:
+                    shuju1 = np.vstack((guiji[t3 - 1], KKK3[:, np.arange(aaa * 2 - 2, aaa * 2)]))
+                    new1[:, t3 - 1] = KK3[:, aaa - 1]
                     LL6 = LL6 + 1
                 guiji[t3 - 1] = shuju1
-                # guiji[t3][np.all(shuju1 == 0, axis=1),: ].fill(0)
+                # guiji[t3][np.all(shuju1 == 0, axis=1),:].fill(0)
 
-    for key, value in guiji.items(): 
+    for key, value in guiji.items():
         value = np.hstack((np.array(value), np.arange(1, len(value) + 1).reshape((len(value), 1))))
         df = pd.DataFrame(value)
         names = [&#39;X&#39;, &#39;Y&#39;, &#39;date&#39;]
         df.columns = names
-        df.to_excel(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;,&#39;&#39;), &#39;ni_traj{}.xls&#39;.format(key + 1)), sheet_name=&#39;Sheet1&#39;, index=False)
+        df.to_excel(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;,&#39;&#39;), &#39;ni_traj{}.xlsx&#39;.format(key + 1)), sheet_name=&#39;Sheet1&#39;, index=False)
 
-#Path estimation: Show the estimation results on the map
-def map_1(save_path,csv_name): 
+#Trajectory estimation:Show the estimation results on the map
+def map_1(save_path,csv_name):
     &#34;&#34;&#34;
        This function is for showing the result figure on the map
 
        Args:
-           save_path: The path for storing the result figures
+           save_path : The path for storing the result figures
            csv_name: The name of the species to be processed
 
        Returns:
-           True: Omitted
+           True:Omitted
     &#34;&#34;&#34;
     # plt.rcParams[&#39;figure.figsize&#39;] = (28, 8)
     # plt.show()
 
     excel_list = os.listdir(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;, &#39;&#39;)))
     excel_list1 = []
-    for csv_excel in excel_list: 
-        if &#39;ni_traj&#39; in csv_excel: 
+    for csv_excel in excel_list:
+        if &#39;ni_traj&#39; in csv_excel:
             excel_list1.append(csv_excel)
 
     LON = []
     LAT = []
-    for i in range(len(excel_list1)): 
+    for i in range(len(excel_list1)):
         Lon, Lat = gam(save_path, csv_name, i)
         LON.append(Lon)
         LAT.append(Lat)
@@ -706,7 +707,7 @@ def map_1(save_path,csv_name):
     m.drawparallels(parallels, labels=[False, True, True, False], color=&#39;none&#39;)
     meridians = np.arange(-180., 180., 20.)  # Draw the longitude with a range of [-180,180] and an interval of 10
     m.drawmeridians(meridians, labels=[True, False, False, True], color=&#39;none&#39;)
-    for doc in range(0, len(LON)): 
+    for doc in range(0, len(LON)):
         colorMap = [&#39;red&#39;, &#39;darkorange&#39;, &#39;gold&#39;, &#39;greenyellow&#39;, &#39;pink&#39;, &#39;limegreen&#39;, &#39;mediumturquoise&#39;,
                     &#39;dodgerblue&#39;,
                     &#39;navy&#39;, &#39;blue&#39;, &#39;mediumorchid&#39;, &#39;fuchsia&#39;]
@@ -720,30 +721,30 @@ def map_1(save_path,csv_name):
         flag = True
 
 
-        for i in range(0, len(LON[doc]) - 30, 30): 
+        for i in range(0, len(LON[doc]) - 30, 30):
             # print(i)
-            if doc == 0: 
-                m.plot(LON[doc][i: i + 30], LAT[doc][i: i + 30], marker=marker[doc], linewidth=0.4,
+            if doc == 0:
+                m.plot(LON[doc][i:i + 30], LAT[doc][i:i + 30], marker=marker[doc], linewidth=0.4,
                        color=colorMap[j],
                        markersize=0.5, label=label[
                         j])
                 # plt.show()
                 j += 1
-                if j == 12: 
+                if j == 12:
                     j = 0
-                    if flag: 
+                    if flag:
                         plt.legend(loc=&#39;lower left&#39;, shadow=True)
                         flag = False
                     continue
-            else: 
-                m.plot(LON[doc][i: i + 30], LAT[doc][i: i + 30], marker=marker[doc], linewidth=0.4,
+            else:
+                m.plot(LON[doc][i:i + 30], LAT[doc][i:i + 30], marker=marker[doc], linewidth=0.4,
                        color=colorMap[j],
                        markersize=0.5)
                 # plt.show()
                 j += 1
-                if j == 12: 
+                if j == 12:
                     j = 0
-                    if flag: 
+                    if flag:
                         plt.legend(loc=&#39;lower left&#39;, shadow=True)
                         flag = False
                     continue
@@ -773,12 +774,12 @@ def map_1(save_path,csv_name):
 <dd>The folder path</dd>
 </dl>
 <p>Returns:
-True: Omitted</p></div>
+True:Omitted</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def create_folder(inputpath): 
+<pre><code class="python">def create_folder(inputpath):
     &#34;&#34;&#34;
        This function is for creating folders
 
@@ -786,9 +787,9 @@ True: Omitted</p></div>
            inputpath: The folder path
 
         Returns:
-           True: Omitted
+           True:Omitted
     &#34;&#34;&#34;
-    if not os.path.exists(inputpath): 
+    if not os.path.exists(inputpath):
         os.makedirs(inputpath)</code></pre>
 </details>
 </dd>
@@ -798,37 +799,30 @@ True: Omitted</p></div>
 <dd>
 <div class="desc"><p>This function is for saving files</p>
 <h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>file_path</code></strong></dt>
-<dd>The path for saving files</dd>
-<dt><strong><code>datas</code></strong></dt>
-<dd>The data to be saved</dd>
-</dl>
+<p>file_path : The path for saving files
+datas:The data to be saved</p>
 <h2 id="returns">Returns</h2>
-<dl>
-<dt><code>True</code></dt>
-<dd>Omitted</dd>
-</dl></div>
+<p>True:Omitted</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def data_write(file_path, datas): 
+<pre><code class="python">def data_write(file_path, datas):
     &#34;&#34;&#34;
        This function is for saving files
 
        Args:
-           file_path: The path for saving files
-           datas: The data to be saved
+           file_path : The path for saving files
+           datas:The data to be saved
 
        Returns:
-           True: Omitted
+           True:Omitted
     &#34;&#34;&#34;
     f = xlwt.Workbook()
     sheet1 = f.add_sheet(u&#39;sheet1&#39;, cell_overwrite_ok=True)  # Create a sheet
     i = 0
-    for data in datas: 
-        for j in range(len(data)): 
+    for data in datas:
+        for j in range(len(data)):
             sheet1.write(i, j, str(data[j]))
         i = i + 1
     f.save(file_path)</code></pre>
@@ -846,15 +840,12 @@ True: Omitted</p></div>
 to be looped over</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<dl>
-<dt><code>namelist</code></dt>
-<dd>The files list</dd>
-</dl></div>
+<p>namelist:The files list</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def file_names(inputpath): 
+<pre><code class="python">def file_names(inputpath):
     &#34;&#34;&#34;
        This function is for looping over files
 
@@ -862,11 +853,11 @@ to be looped over</dd>
            inputpath: The folder path  to be looped over
 
        Returns:
-           namelist: The files list
+           namelist:The files list
     &#34;&#34;&#34;
     namelist = []
     filePath = inputpath
-    for i, j, k in os.walk(filePath): 
+    for i, j, k in os.walk(filePath):
         namelist.append([i, j, k])
     return namelist</code></pre>
 </details>
@@ -880,37 +871,31 @@ to be looped over</dd>
 <dl>
 <dt><strong><code>save_path</code></strong></dt>
 <dd>The path for saving the result file</dd>
-<dt><strong><code>csv_name</code></strong></dt>
-<dd>The species name being processed</dd>
-<dt><strong><code>key</code></strong></dt>
-<dd>The number for file naming</dd>
 </dl>
+<p>csv_name:The species name being processed
+key:The number for file naming</p>
 <h2 id="returns">Returns</h2>
-<dl>
-<dt><code>Lon</code></dt>
-<dd>The longitude after gam algorithm</dd>
-<dt><code>Lat</code></dt>
-<dd>The latitude after gam algorithm</dd>
-</dl></div>
+<p>Lon:The longitude after gam algorithm
+Lat:The latitude after gam algorithm</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def gam(save_path, csv_name,key): 
+<pre><code class="python">def gam(save_path, csv_name,key):
     &#34;&#34;&#34;
        This function is for gam algorithm
 
        Args:
            save_path: The path for saving the result file
-           csv_name: The species name being processed
-           key: The number for file naming
+           csv_name:The species name being processed
+           key:The number for file naming
 
        Returns:
-           Lon: The longitude after gam algorithm
-           Lat: The latitude after gam algorithm
+           Lon:The longitude after gam algorithm
+           Lat:The latitude after gam algorithm
 
     &#34;&#34;&#34;
-    df = pd.read_excel(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;,&#39;&#39;), &#39;ni_traj{}.xls&#39;.format(key + 1)), sheet_name=&#39;Sheet1&#39;)
+    df = pd.read_excel(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;,&#39;&#39;), &#39;ni_traj{}.xlsx&#39;.format(key + 1)), sheet_name=&#39;Sheet1&#39;)
     date = df[&#34;date&#34;]
     x = df[&#34;X&#34;]
     y = df[&#34;Y&#34;]
@@ -922,13 +907,14 @@ to be looped over</dd>
     predictions_y = gam_model.predict(date)
     datas = [[&#34;X*&#34;, &#34;Y*&#34;,&#34;date&#34;]]
     # datas = []
-    for i in range(len(x)): 
+    for i in range(len(x)):
         datas.append([predictions_x[i], predictions_y[i],date[i]])
     data_write(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;,&#39;&#39;), &#39;result_{}.xls&#39;.format(key + 1)), datas)
-
+    
+#Coordinate conversion from WebMercator to wgs84 
     Lat = []
     Lon = []
-    for i in range(len(x)): 
+    for i in range(len(x)):
         res = webmercator2wgs84(predictions_y[i], predictions_x[i])
         Lon.append(res[0])
         Lat.append(res[1])
@@ -946,40 +932,34 @@ to be looped over</dd>
 <dd>The usage of gam model</dd>
 <dt><strong><code>save_path</code></strong></dt>
 <dd>The path for saving the result file</dd>
-<dt><strong><code>csv_name</code></strong></dt>
-<dd>The species name being processed</dd>
-<dt><strong><code>key</code></strong></dt>
-<dd>The number for file naming</dd>
-<dt><strong><code>x_y</code></strong></dt>
-<dd>The choice for Lat or Lon when file naming</dd>
 </dl>
+<p>csv_name:The species name being processed
+key:The number for file naming
+x_y:The choice for Lat or Lon when file naming</p>
 <h2 id="returns">Returns</h2>
-<dl>
-<dt><code>True</code></dt>
-<dd>Omitted</dd>
-</dl></div>
+<p>True:Omitted</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def gam_pic(gam,save_path,csv_name,key,x_y): 
+<pre><code class="python">def gam_pic(gam,save_path,csv_name,key,x_y):
     &#34;&#34;&#34;
        This function is for drawing the gam figures
 
        Args:
            gam: The usage of gam model
            save_path: The path for saving the result file
-           csv_name: The species name being processed
-           key: The number for file naming
-           x_y: The choice for Lat or Lon when file naming
+           csv_name:The species name being processed
+           key:The number for file naming
+           x_y:The choice for Lat or Lon when file naming
 
        Returns:
-           True: Omitted
+           True:Omitted
     &#34;&#34;&#34;
     XX = gam.generate_X_grid(term=0, n=365)
     # plt.scatter([data for data in range(364)], data, color=&#39;b&#39;, marker=&#39;o&#39;)
-    plt.plot(XX[: , 0], gam.partial_dependence(term=0, X=XX))
-    plt.plot(XX[: , 0], gam.partial_dependence(term=0, X=XX, width=.95)[1], c=&#39;r&#39;, ls=&#39;--&#39;)
+    plt.plot(XX[:, 0], gam.partial_dependence(term=0, X=XX))
+    plt.plot(XX[:, 0], gam.partial_dependence(term=0, X=XX, width=.95)[1], c=&#39;r&#39;, ls=&#39;--&#39;)
     plt.xlabel(&#39;Date&#39;, labelpad=10)
     plt.ylabel(x_y)
 
@@ -999,15 +979,12 @@ to be looped over</dd>
 <dd>The folder path of storing the csv files</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<dl>
-<dt><code>all_csv</code></dt>
-<dd>All the csv files</dd>
-</dl></div>
+<p>all_csv:All the csv files</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_all_csv(data_path): 
+<pre><code class="python">def get_all_csv(data_path):
     &#34;&#34;&#34;
        This function is for getting all csv files
 
@@ -1015,16 +992,16 @@ to be looped over</dd>
            data_path: The folder path of storing the csv files
 
        Returns:
-           all_csv: All the csv files
+           all_csv:All the csv files
     &#34;&#34;&#34;
 
     excel_list = file_names(data_path)
     all_csv = []
-    for i in range(len(excel_list)): 
+    for i in range(len(excel_list)):
         folder_attribute = excel_list[i]
-        if len(folder_attribute[2])&gt;0: 
-            for fileName in folder_attribute[2]: 
-                if fileName[-1] == &#39;v&#39;: 
+        if len(folder_attribute[2])&gt;0:
+            for fileName in folder_attribute[2]:
+                if fileName[-1] == &#39;v&#39;:
                     all_csv.append(fileName)
     return all_csv</code></pre>
 </details>
@@ -1033,7 +1010,7 @@ to be looped over</dd>
 <span>def <span class="ident">get_initial_data</span></span>(<span>x, y, date, length)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This function is for converting the geodetic coordinates into Mercator ones</p>
+<div class="desc"><p>This function is for converting the geographical coordinates into Web Mercator ones</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>x</code></strong></dt>
@@ -1042,34 +1019,33 @@ to be looped over</dd>
 <dd>Longitude data</dd>
 <dt><strong><code>date</code></strong></dt>
 <dd>The observation date</dd>
-<dt><strong><code>length</code></strong></dt>
-<dd>The length of the data</dd>
 </dl>
+<p>length:The length of the data</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>initial_data</code></dt>
-<dd>The Mercator coordinates after converting</dd>
+<dd>The Web Mercator coordinates after converting</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_initial_data(x,y,date,length): 
+<pre><code class="python">def get_initial_data(x,y,date,length):
     &#34;&#34;&#34;
-       This function is for converting the geodetic coordinates into Mercator ones
+       This function is for converting the geographical coordinates into Web Mercator ones
 
        Args:
            x: Latitude data
            y: Longitude data
            date: The observation date
-           length: The length of the data
+           length:The length of the data
 
        Returns:
-           initial_data: The Mercator coordinates after converting
+           initial_data: The Web Mercator coordinates after converting
     &#34;&#34;&#34;
     initial_data = []
     initial_data.append([&#34;LATITUDE&#34;, &#34;LONGITUDE&#34;, &#34;OBSERVATION DATE&#34;])
-    for i in range(length): 
+    for i in range(length):
         result = wgs84towebmercator_single(x[i], y[i])
         initial_data.append([result[0], result[1], date[i]])
 
@@ -1085,11 +1061,9 @@ to be looped over</dd>
 <dl>
 <dt><strong><code>window_data_df</code></strong></dt>
 <dd>The data after rolling_window</dd>
-<dt><strong><code>save_path</code></strong></dt>
-<dd>The path for saving the result file</dd>
-<dt><strong><code>csv_name</code></strong></dt>
-<dd>The species name being processed</dd>
 </dl>
+<p>save_path:The path for saving the result file
+csv_name:The species name being processed</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>sldf_df</code></dt>
@@ -1099,14 +1073,14 @@ to be looped over</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_sldf(window_data_df,save_path,csv_name): 
+<pre><code class="python">def get_sldf(window_data_df,save_path,csv_name):
     &#34;&#34;&#34;
        This function is for saving the results after sldf outlier detection
 
        Args:
            window_data_df: The data after rolling_window
-           save_path: The path for saving the result file
-           csv_name: The species name being processed
+           save_path:The path for saving the result file
+           csv_name:The species name being processed
 
        Returns:
            sldf_df: The data results after sldf outlier detection
@@ -1116,16 +1090,16 @@ to be looped over</dd>
 
     day_index = dict()
     day_index[43101] = 0
-    for index, i in enumerate(xall[: , 2]): 
-        if i not in day_index: 
+    for index, i in enumerate(xall[:, 2]):
+        if i not in day_index:
             day_index[i] = index
 
-    for day in range(1, 366): 
+    for day in range(1, 366):
         date = day + 43100
-        if day != 365: 
-            temp = xall[day_index[date]: day_index[date + 1],: 2]
-        else: 
-            temp = xall[day_index[date]: ,: 2]
+        if day != 365:
+            temp = xall[day_index[date]:day_index[date + 1], :2]
+        else:
+            temp = xall[day_index[date]:, :2]
         outl = sldf(temp)
         t = date * np.ones((outl.shape[0], 1))
         outl = np.concatenate((outl, t), axis=1)
@@ -1146,11 +1120,9 @@ to be looped over</dd>
 <dl>
 <dt><strong><code>csv_path</code></strong></dt>
 <dd>The path for the data file after Meanshift algorithm</dd>
-<dt><strong><code>save_path</code></strong></dt>
-<dd>The path for saving the result file</dd>
-<dt><strong><code>csv_name</code></strong></dt>
-<dd>The species name being processed</dd>
 </dl>
+<p>save_path:The path for saving the result file
+csv_name:The species name being processed</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>True</code></dt>
@@ -1160,14 +1132,14 @@ to be looped over</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def group(csv_path,save_path,csv_name): 
+<pre><code class="python">def group(csv_path,save_path,csv_name):
     &#34;&#34;&#34;
        This function is for grouping the daily population centroids
 
        Args:
            csv_path: The path for the data file after Meanshift algorithm
-           save_path: The path for saving the result file
-           csv_name: The species name being processed
+           save_path:The path for saving the result file
+           csv_name:The species name being processed
 
        Returns:
             True: Omitted
@@ -1177,12 +1149,12 @@ to be looped over</dd>
     A3 = np.array([[0], [0]])
 
     datas = pd.read_excel(csv_path)
-    #datas = datas.iloc[1: ,: ]
+    #datas = datas.iloc[1:, :]
 
     result_list = []
-    for date in range(43101, 43466): 
+    for date in range(43101, 43466):
         data = datas.loc[date == datas[&#39;OBSERVATION DATE&#39;]]
-        data = data.iloc[: ,: 2].values.tolist()
+        data = data.iloc[:, :2].values.tolist()
         A1 = np.hstack((A1, np.array(list(data)).T))
         A3 = np.hstack((A3, np.array([[int(len(data))], [A3[1, -1] + int(len(data))]])))
 
@@ -1209,131 +1181,131 @@ to be looped over</dd>
     guiji = {}
     abc = np.zeros((10000, 10000), dtype=int)
 
-#Traversal calculations of the centroid distance between adjacent days in the annual circle
-    for b1 in range(2, N3): 
-        if LL6 &gt; 0: 
+#Traversal calculations of the centroid distance between two adjacent days in the annual circle
+    for b1 in range(2, N3):
+        if LL6 &gt; 0:
             LL1 = A3[1, b1 - 2]
             LL2 = A3[1, b1 - 1]
             LL3 = A3[1, b1]
             O1 = A3[0, b1 - 2]
             O2 = new2
             O3 = A3[0, b1]
-            KK1 = A1[: , np.arange(LL4, LL1)]
+            KK1 = A1[:, np.arange(LL4, LL1)]
             KK2 = new1
-            KK3 = A1[: , np.arange(LL2, LL3)]
+            KK3 = A1[:, np.arange(LL2, LL3)]
             LL4 = LL1
             LL5 = LL5 + 1
-        if LL6 == 0: 
+        if LL6 == 0:
             LL1 = A3[1, b1 - 2]
             LL2 = A3[1, b1 - 1]
             LL3 = A3[1, b1]
             O1 = A3[0, b1 - 2]
             O2 = A3[0, b1 - 1]
             O3 = A3[0, b1]
-            KK1 = A1[: , np.arange(LL4, LL1)]
-            KK2 = A1[: , np.arange(LL1, LL2)]
-            KK3 = A1[: , np.arange(LL2, LL3)]
+            KK1 = A1[:, np.arange(LL4, LL1)]
+            KK2 = A1[:, np.arange(LL1, LL2)]
+            KK3 = A1[:, np.arange(LL2, LL3)]
             LL4 = LL1
             LL5 = LL5 + 1
 
 #Store centroid coordinates
         guodu1 = KK2.shape[1]
-        for pp1 in range(1, guodu1 + 1): 
-            kk2 = KK2[: , pp1 - 1]
+        for pp1 in range(1, guodu1 + 1):
+            kk2 = KK2[:, pp1 - 1]
             kk2 = np.transpose(kk2)
-            KKK2[: , np.arange(pp1 * 2 - 2, pp1 * 2)] = kk2
+            KKK2[:, np.arange(pp1 * 2 - 2, pp1 * 2)] = kk2
         guodu2 = KK3.shape[1]
-        for pp1 in range(1, guodu2 + 1): 
-            kk3 = KK3[: , pp1 - 1]
+        for pp1 in range(1, guodu2 + 1):
+            kk3 = KK3[:, pp1 - 1]
             kk3 = np.transpose(kk3)
-            KKK3[: , np.arange(pp1 * 2 - 2, pp1 * 2)] = kk3
+            KKK3[:, np.arange(pp1 * 2 - 2, pp1 * 2)] = kk3
 
 #Perform centroid distance traversal calculation when the number of centroids on the later day is greater than the previous day
 #The calculation order needs to consider from O2 to O3 and from O3 to O2 to ensure that all centroids in O3 can be connected.
         jl = np.zeros((100, 100))
-        if O3 &gt; O2: 
+        if O3 &gt; O2:
             new2 = O3
             dddd = dddd + 1
-            for t1 in range(1, O2 + 1): 
-                for t2 in range(1, O3 + 1): 
+            for t1 in range(1, O2 + 1):
+                for t2 in range(1, O3 + 1):
                     jl[t1 - 1, t2 - 1] = np.sqrt(
                         (KK2[0, t1 - 1] - KK3[0, t2 - 1]) ** 2 + (KK2[1, t1 - 1] - KK3[1, t2 - 1]) ** 2)
-            index = np.argmin(jl[: O2,: O3], axis=1)
-            for t3 in range(1, O2 + 1): 
+            index = np.argmin(jl[:O2, :O3], axis=1)
+            for t3 in range(1, O2 + 1):
                 aaa = int(index[t3 - 1] + 1)
-                if dddd == 1: 
+                if dddd == 1:
                     shuju1 = np.vstack(
-                        (KKK2[: , np.arange(t3 * 2 - 2, t3 * 2)], KKK3[: , np.arange(aaa * 2 - 2, aaa * 2)]))
-                    new1[: , t3 - 1] = KK3[: , aaa - 1]
+                        (KKK2[:, np.arange(t3 * 2 - 2, t3 * 2)], KKK3[:, np.arange(aaa * 2 - 2, aaa * 2)]))
+                    new1[:, t3 - 1] = KK3[:, aaa - 1]
                     LL6 = LL6 + 1
-                if dddd &gt; 1: 
-                    shuju1 = np.vstack((guiji[t3 - 1], KKK3[: , np.arange(aaa * 2 - 2, aaa * 2)]))
-                    new1[: , t3 - 1] = KK3[: , aaa - 1]
+                if dddd &gt; 1:
+                    shuju1 = np.vstack((guiji[t3 - 1], KKK3[:, np.arange(aaa * 2 - 2, aaa * 2)]))
+                    new1[:, t3 - 1] = KK3[:, aaa - 1]
                 zhongjian[t3 - 1] = shuju1
-                # zhongjian[t3-1][np.all(shuju1 == 0, axis=1),: ].fill(0)
+                # zhongjian[t3-1][np.all(shuju1 == 0, axis=1),:].fill(0)
             jl = np.zeros((100, 100))
-            for t1 in range(1, O3 + 1): 
-                for t2 in range(1, O2 + 1): 
+            for t1 in range(1, O3 + 1):
+                for t2 in range(1, O2 + 1):
                     jl[t1 - 1, t2 - 1] = np.sqrt(
                         (KK3[0, t1 - 1] - KK2[0, t2 - 1]) ** 2 + (KK3[1, t1 - 1] - KK2[1, t2 - 1]) ** 2)
-            index = np.argmin(jl[: O3,: O2], axis=1)
+            index = np.argmin(jl[:O3, :O2], axis=1)
             XX = np.unique(index)
             nnp = O3 - O2
             nnn = 1
-            for i in range(1, len(XX) + 1): 
+            for i in range(1, len(XX) + 1):
                 m = (index == XX[i - 1]).nonzero()[0]
-                if len(m) &gt;= 2: 
+                if len(m) &gt;= 2:
                     abc[nnn - 1, 0] = XX[i - 1] + 1
                     abc[nnn - 1, 1] = len(m)
                     nnn = nnn + 1
-                if len(m) &gt;= 2: 
-                    for nnc in range(1, nnp + 1): 
-                        if nnn - 1 &gt; 0: 
+                if len(m) &gt;= 2:
+                    for nnc in range(1, nnp + 1):
+                        if nnn - 1 &gt; 0:
                             aaa = int(index[abc[nnn - 2, 0]] + 1)
-                        if nnn - 1 &gt; 1: 
+                        if nnn - 1 &gt; 1:
                             aaa = int(index[abc[nnn - 2, 0]] + 1)
                             nnn = nnn - 1
-                        if dddd &gt; 1: 
-                            shuju1 = np.vstack((guiji[abc[nnn - 2, 0]], KKK3[: , np.arange(aaa * 2 - 2, aaa * 2)]))
-                        if dddd == 1: 
-                            shuju1 = np.vstack((KKK2[: , np.arange(abc[nnn - 2, 0] * 2 - 2, abc[nnn - 2, 0] * 2)],
-                                                KKK3[: , np.arange(aaa * 2 - 2, aaa * 2)]))
-                        new1[: , O2 + nnc - 1] = KK3[: , aaa - 1]
+                        if dddd &gt; 1:
+                            shuju1 = np.vstack((guiji[abc[nnn - 2, 0]], KKK3[:, np.arange(aaa * 2 - 2, aaa * 2)]))
+                        if dddd == 1:
+                            shuju1 = np.vstack((KKK2[:, np.arange(abc[nnn - 2, 0] * 2 - 2, abc[nnn - 2, 0] * 2)],
+                                                KKK3[:, np.arange(aaa * 2 - 2, aaa * 2)]))
+                        new1[:, O2 + nnc - 1] = KK3[:, aaa - 1]
                         zhongjian[O2 + nnc - 1] = shuju1
-                        # zhongjian[O2 + nnc-1][np.all(shuju1 == 0,axis=1),: ].fill(0)
-            for t10 in range(0, O3): 
+                        # zhongjian[O2 + nnc-1][np.all(shuju1 == 0,axis=1),:].fill(0)
+            for t10 in range(0, O3):
                 guiji[t10] = zhongjian[t10]
 
 #Perform centroid distance traversal calculation when the number of centroids on the later day is less than the previous day
 
-        if O3 &lt;= O2: 
+        if O3 &lt;= O2:
             new2 = O2
             dddd = dddd + 1
-            for t1 in range(1, O2 + 1): 
-                for t2 in range(1, O3 + 1): 
+            for t1 in range(1, O2 + 1):
+                for t2 in range(1, O3 + 1):
                     jl[t1 - 1, t2 - 1] = np.sqrt(
                         (KK2[0, t1 - 1] - KK3[0, t2 - 1]) ** 2 + (KK2[1, t1 - 1] - KK3[1, t2 - 1]) ** 2)
-            index = np.argmin(jl[: O2,: O3], axis=1)
-            for t3 in range(1, O2 + 1): 
+            index = np.argmin(jl[:O2, :O3], axis=1)
+            for t3 in range(1, O2 + 1):
                 aaa = int(index[t3 - 1] + 1)
-                if dddd == 1: 
+                if dddd == 1:
                     shuju1 = np.vstack(
-                        (KKK2[: , np.arange(t3 * 2 - 2, t3 * 2)], KKK3[: , np.arange(aaa * 2 - 2, aaa * 2)]))
-                    new1[: , t3 - 1] = KK3[: , aaa - 1]
+                        (KKK2[:, np.arange(t3 * 2 - 2, t3 * 2)], KKK3[:, np.arange(aaa * 2 - 2, aaa * 2)]))
+                    new1[:, t3 - 1] = KK3[:, aaa - 1]
                     LL6 = LL6 + 1
-                if dddd &gt; 1: 
-                    shuju1 = np.vstack((guiji[t3 - 1], KKK3[: , np.arange(aaa * 2 - 2, aaa * 2)]))
-                    new1[: , t3 - 1] = KK3[: , aaa - 1]
+                if dddd &gt; 1:
+                    shuju1 = np.vstack((guiji[t3 - 1], KKK3[:, np.arange(aaa * 2 - 2, aaa * 2)]))
+                    new1[:, t3 - 1] = KK3[:, aaa - 1]
                     LL6 = LL6 + 1
                 guiji[t3 - 1] = shuju1
-                # guiji[t3][np.all(shuju1 == 0, axis=1),: ].fill(0)
+                # guiji[t3][np.all(shuju1 == 0, axis=1),:].fill(0)
 
-    for key, value in guiji.items(): 
+    for key, value in guiji.items():
         value = np.hstack((np.array(value), np.arange(1, len(value) + 1).reshape((len(value), 1))))
         df = pd.DataFrame(value)
         names = [&#39;X&#39;, &#39;Y&#39;, &#39;date&#39;]
         df.columns = names
-        df.to_excel(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;,&#39;&#39;), &#39;ni_traj{}.xls&#39;.format(key + 1)), sheet_name=&#39;Sheet1&#39;, index=False)</code></pre>
+        df.to_excel(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;,&#39;&#39;), &#39;ni_traj{}.xlsx&#39;.format(key + 1)), sheet_name=&#39;Sheet1&#39;, index=False)</code></pre>
 </details>
 </dd>
 <dt id="came.Part_2_functions_for_eachstep.interpolation"><code class="name flex">
@@ -1345,11 +1317,9 @@ to be looped over</dd>
 <dl>
 <dt><strong><code>date</code></strong></dt>
 <dd>The observation date</dd>
-<dt><strong><code>length</code></strong></dt>
-<dd>The length of the data</dd>
-<dt><strong><code>initial_data</code></strong></dt>
-<dd>The data after coordinates conversion</dd>
 </dl>
+<p>length:The length of the data
+initial_data:The data after coordinates conversion</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>initial_data</code></dt>
@@ -1359,14 +1329,14 @@ to be looped over</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def interpolation(date,length,initial_data): 
+<pre><code class="python">def interpolation(date,length,initial_data):
     &#34;&#34;&#34;
        This function is to finish interpolation for missing data
 
        Args:
            date: The observation date
-           length: The length of the data
-           initial_data: The data after coordinates conversion
+           length:The length of the data
+           initial_data:The data after coordinates conversion
 
        Returns:
            initial_data: The data results after interpolation
@@ -1375,21 +1345,21 @@ to be looped over</dd>
     lose_date = []
     now_date = []
     all_date = [i for i in range(k, k + 365)]
-    for i in range(length): 
+    for i in range(length):
         now_date.append(date[i])
-    for i in all_date: 
-        if i not in now_date: 
+    for i in all_date:
+        if i not in now_date:
             lose_date.append(i)
     # print(lose_date)
 
 
-    for lose in lose_date: 
+    for lose in lose_date:
         x = []
         y = []
-        for data in initial_data: 
-            if data[2] == &#34;OBSERVATION DATE&#34;: 
+        for data in initial_data:
+            if data[2] == &#34;OBSERVATION DATE&#34;:
                 continue
-            if 0 &lt; lose - int(data[2]) &lt;= 2: 
+            if 0 &lt; lose - int(data[2]) &lt;= 2:
                 x.append(data[0])
                 y.append(data[1])
         initial_data.append([sum(x) / len(x), sum(y) / len(y), lose])
@@ -1403,43 +1373,39 @@ to be looped over</dd>
 <div class="desc"><p>This function is for showing the result figure on the map</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>save_path</code></strong></dt>
-<dd>The path for storing the result figures</dd>
+<dt>save_path : The path for storing the result figures</dt>
 <dt><strong><code>csv_name</code></strong></dt>
 <dd>The name of the species to be processed</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<dl>
-<dt><code>True</code></dt>
-<dd>Omitted</dd>
-</dl></div>
+<p>True:Omitted</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def map_1(save_path,csv_name): 
+<pre><code class="python">def map_1(save_path,csv_name):
     &#34;&#34;&#34;
        This function is for showing the result figure on the map
 
        Args:
-           save_path: The path for storing the result figures
+           save_path : The path for storing the result figures
            csv_name: The name of the species to be processed
 
        Returns:
-           True: Omitted
+           True:Omitted
     &#34;&#34;&#34;
     # plt.rcParams[&#39;figure.figsize&#39;] = (28, 8)
     # plt.show()
 
     excel_list = os.listdir(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;, &#39;&#39;)))
     excel_list1 = []
-    for csv_excel in excel_list: 
-        if &#39;ni_traj&#39; in csv_excel: 
+    for csv_excel in excel_list:
+        if &#39;ni_traj&#39; in csv_excel:
             excel_list1.append(csv_excel)
 
     LON = []
     LAT = []
-    for i in range(len(excel_list1)): 
+    for i in range(len(excel_list1)):
         Lon, Lat = gam(save_path, csv_name, i)
         LON.append(Lon)
         LAT.append(Lat)
@@ -1453,7 +1419,7 @@ to be looped over</dd>
     m.drawparallels(parallels, labels=[False, True, True, False], color=&#39;none&#39;)
     meridians = np.arange(-180., 180., 20.)  # Draw the longitude with a range of [-180,180] and an interval of 10
     m.drawmeridians(meridians, labels=[True, False, False, True], color=&#39;none&#39;)
-    for doc in range(0, len(LON)): 
+    for doc in range(0, len(LON)):
         colorMap = [&#39;red&#39;, &#39;darkorange&#39;, &#39;gold&#39;, &#39;greenyellow&#39;, &#39;pink&#39;, &#39;limegreen&#39;, &#39;mediumturquoise&#39;,
                     &#39;dodgerblue&#39;,
                     &#39;navy&#39;, &#39;blue&#39;, &#39;mediumorchid&#39;, &#39;fuchsia&#39;]
@@ -1467,30 +1433,30 @@ to be looped over</dd>
         flag = True
 
 
-        for i in range(0, len(LON[doc]) - 30, 30): 
+        for i in range(0, len(LON[doc]) - 30, 30):
             # print(i)
-            if doc == 0: 
-                m.plot(LON[doc][i: i + 30], LAT[doc][i: i + 30], marker=marker[doc], linewidth=0.4,
+            if doc == 0:
+                m.plot(LON[doc][i:i + 30], LAT[doc][i:i + 30], marker=marker[doc], linewidth=0.4,
                        color=colorMap[j],
                        markersize=0.5, label=label[
                         j])
                 # plt.show()
                 j += 1
-                if j == 12: 
+                if j == 12:
                     j = 0
-                    if flag: 
+                    if flag:
                         plt.legend(loc=&#39;lower left&#39;, shadow=True)
                         flag = False
                     continue
-            else: 
-                m.plot(LON[doc][i: i + 30], LAT[doc][i: i + 30], marker=marker[doc], linewidth=0.4,
+            else:
+                m.plot(LON[doc][i:i + 30], LAT[doc][i:i + 30], marker=marker[doc], linewidth=0.4,
                        color=colorMap[j],
                        markersize=0.5)
                 # plt.show()
                 j += 1
-                if j == 12: 
+                if j == 12:
                     j = 0
-                    if flag: 
+                    if flag:
                         plt.legend(loc=&#39;lower left&#39;, shadow=True)
                         flag = False
                     continue
@@ -1511,25 +1477,23 @@ to be looped over</dd>
 <dl>
 <dt><strong><code>SLDF_df</code></strong></dt>
 <dd>The data after sldf outlier detection</dd>
-<dt><strong><code>save_path</code></strong></dt>
-<dd>The path for saving the result file</dd>
-<dt><strong><code>csv_name</code></strong></dt>
-<dd>The species name being processed</dd>
 </dl>
-<p>Returns:
+<p>save_path:The path for saving the result file
+csv_name:The species name being processed
+Returns:
 result: The data results after meanshift clustering</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def mean_shift(SLDF_df,save_path,csv_name): 
+<pre><code class="python">def mean_shift(SLDF_df,save_path,csv_name):
     &#34;&#34;&#34;
        This function is for getting daily population centroids by Meanshift algorithm
 
        Args:
            SLDF_df: The data after sldf outlier detection
-           save_path: The path for saving the result file
-           csv_name: The species name being processed
+           save_path:The path for saving the result file
+           csv_name:The species name being processed
 
         Returns:
            result: The data results after meanshift clustering
@@ -1538,13 +1502,13 @@ result: The data results after meanshift clustering</p></div>
     datas = SLDF_df.drop([&#39;SLDF&#39;], axis=1)
     result = []
     result.append([&#34;LATITUDE&#34;, &#34;LONGITUDE&#34;, &#34;OBSERVATION DATE&#34;])
-    for date in tqdm(range(43101, 43466)): 
-    #for date in range(43101, 43119): 
+    for date in tqdm(range(43101, 43466)):
+    #for date in range(43101, 43119):
         #print(date)
         data = datas.loc[date == datas[&#39;OBSERVATION DATE&#39;]]  # .values.tolist()#[&#34;answer&#34;]
-        data = data.iloc[: ,: 2]
+        data = data.iloc[:, :2]
         data = np.array(data)
-        if len(data) == 0: 
+        if len(data) == 0:
             continue
 
         ms = MeanShift()
@@ -1555,12 +1519,12 @@ result: The data results after meanshift clustering</p></div>
         labels_unique = np.unique(labels)
         n_clusters = len(labels_unique)
 
-        for c in cluster_centers: 
+        for c in cluster_centers:
             result.append([float(c[0]), float(c[1]), date])
 
         colors = cycle(&#39;bcmyk&#39;)
-        if date % 20 == 0: 
-            for k, color in zip(range(n_clusters), colors): 
+        if date % 20 == 0:
+            for k, color in zip(range(n_clusters), colors):
                 # current_member indicates true if the label is k and false if not
                 current_member = labels == k
                 cluster_center = cluster_centers[k]
@@ -1590,11 +1554,9 @@ result: The data results after meanshift clustering</p></div>
 <dl>
 <dt><strong><code>initial_data</code></strong></dt>
 <dd>The data after interpolation</dd>
-<dt><strong><code>save_path</code></strong></dt>
-<dd>The path for saving the result file</dd>
-<dt><strong><code>csv_name</code></strong></dt>
-<dd>The species name being processed</dd>
 </dl>
+<p>save_path:The path for saving the result file
+csv_name:The species name being processed</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>rolling_window_data_df</code></dt>
@@ -1604,14 +1566,14 @@ result: The data results after meanshift clustering</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def rolling_window(initial_data,save_path,csv_name): 
+<pre><code class="python">def rolling_window(initial_data,save_path,csv_name):
     &#34;&#34;&#34;
        This function is for rolling_window algorithm
 
        Args:
            initial_data: The data after interpolation
-           save_path: The path for saving the result file
-           csv_name: The species name being processed
+           save_path:The path for saving the result file
+           csv_name:The species name being processed
 
        Returns:
            rolling_window_data_df: The data results after rolling_window
@@ -1620,16 +1582,16 @@ result: The data results after meanshift clustering</p></div>
     Rolling_window_data.append([&#34;LATITUDE&#34;, &#34;LONGITUDE&#34;, &#34;OBSERVATION DATE&#34;])
 
     k = 43101
-    for i in range(k, k + 365): 
-        for data in initial_data: 
-            if data[2] == &#34;OBSERVATION DATE&#34;: 
+    for i in range(k, k + 365):
+        for data in initial_data:
+            if data[2] == &#34;OBSERVATION DATE&#34;:
                 continue
-            if -3 &lt; data[2] - i &lt;= 3: 
+            if -3 &lt; data[2] - i &lt;= 3:
                 Rolling_window_data.append([data[0], data[1], i])
 
     # window_data_df = pd.DataFrame(window_data, columns=False)
     # window_data_df.to_csv(&#39;426.csv&#39;, index=False)
-    Rolling_window_data_df = pd.DataFrame(Rolling_window_data[1: ], columns=Rolling_window_data[0])
+    Rolling_window_data_df = pd.DataFrame(Rolling_window_data[1:], columns=Rolling_window_data[0])
     Rolling_window_data_df.to_csv(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;,&#39;&#39;), &#39;Rolling_window_data.csv&#39;), index=False)
     return Rolling_window_data_df</code></pre>
 </details>
@@ -1640,28 +1602,22 @@ result: The data results after meanshift clustering</p></div>
 <dd>
 <div class="desc"><p>This function is for outlier detection based on sldf values</p>
 <h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>x</code></strong></dt>
-<dd>The input data</dd>
-</dl>
+<p>x : The input data</p>
 <h2 id="returns">Returns</h2>
-<dl>
-<dt><code>result</code></dt>
-<dd>The result after sldf outlier detection</dd>
-</dl></div>
+<p>result:The result after sldf outlier detection</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def sldf(x): 
+<pre><code class="python">def sldf(x):
     &#34;&#34;&#34;
        This function is for outlier detection based on sldf values
 
        Args:
-           x: The input data
+           x : The input data
 
        Returns:
-           result: The result after sldf outlier detection
+           result:The result after sldf outlier detection
     &#34;&#34;&#34;
     n = len(x)
     column = len(x[0])
@@ -1672,16 +1628,16 @@ result: The data results after meanshift clustering</p></div>
     lens = 1 / k
     position_x = np.ceil(x_ / lens)
 
-    for i in range(len(position_x)): 
-        for j in range(len(position_x[0])): 
-            if position_x[i][j] == 0: 
+    for i in range(len(position_x)):
+        for j in range(len(position_x[0])):
+            if position_x[i][j] == 0:
                 position_x[i][j] = 1
 
-    B = np.lexsort([position_x[: , 1], position_x[: , 0]])
-    A = position_x[B,: ]
+    B = np.lexsort([position_x[:, 1], position_x[:, 0]])
+    A = position_x[B, :]
     A = A.astype(int)
     count = np.zeros((k, k))
-    for i in range(n): 
+    for i in range(n):
         count[A[i][0] - 1][A[i][1] - 1] += 1
     max_count = np.max(count)
 
@@ -1689,30 +1645,30 @@ result: The data results after meanshift clustering</p></div>
     q = q * max_count
     w = [0.5, 0.5]
     dist = np.zeros((n, n))
-    for i in range(n): 
-        dist[: , i] = w[0] * ((x_[: , 0] - x_[i, 0]) ** 2) + w[1] * ((x_[: , 1] - x_[i, 1]) ** 2)
+    for i in range(n):
+        dist[:, i] = w[0] * ((x_[:, 0] - x_[i, 0]) ** 2) + w[1] * ((x_[:, 1] - x_[i, 1]) ** 2)
     dist = np.sqrt(dist)
     max_dist = np.max(dist)
     k = max_dist
     N = []
-    for i in range(len(dist)): 
-        for j in range(len(dist[0])): 
+    for i in range(len(dist)):
+        for j in range(len(dist[0])):
             Ni, Nj = j, i
             N.append((Ni, Nj))
 
     N = np.array(N)
     u = np.zeros(n)
     SLDR = np.zeros(n)
-    N_i = N[: , 0]
-    N_j = N[: , 1]
+    N_i = N[:, 0]
+    N_j = N[:, 1]
 
-    for i in range(n): 
+    for i in range(n):
         tmp = np.argwhere(N_j == i)
         tmp_E = int(max(tmp))
         tmp_S = int(min(tmp))
-        tmp_N = N[tmp_S: tmp_E + 1,: ]
+        tmp_N = N[tmp_S: tmp_E + 1, :]
         tmp_D = []
-        for j in range(len(tmp_N)): 
+        for j in range(len(tmp_N)):
             a, b = tmp_N[j]
             tmp_D.append(dist[a, b])
         tmp_ji = tmp_E - tmp_S + 1
@@ -1721,7 +1677,7 @@ result: The data results after meanshift clustering</p></div>
         SLDR[i] = sum(tmp_c) / tmp_ji
 
     SLDIR = np.zeros(n)
-    for i in range(n): 
+    for i in range(n):
         tmp = np.argwhere(N_j == i)
         tmp_E = int(max(tmp))
         tmp_S = int(min(tmp))
@@ -1730,10 +1686,10 @@ result: The data results after meanshift clustering</p></div>
 
     SLDF = SLDR / SLDIR
     # print(SLDF.shape, x.shape)
-    selected_index = np.argsort(SLDF)[: int(0.8 * len(SLDF) + 1)]
+    selected_index = np.argsort(SLDF)[:int(0.8 * len(SLDF) + 1)]
     # print(selected_index.shape)
     SLDF_new = SLDF[selected_index]
-    result = np.concatenate((x[selected_index], SLDF_new[: , np.newaxis]), axis=1)
+    result = np.concatenate((x[selected_index], SLDF_new[:, np.newaxis]), axis=1)
     return result</code></pre>
 </details>
 </dd>
@@ -1741,37 +1697,36 @@ result: The data results after meanshift clustering</p></div>
 <span>def <span class="ident">webmercator2wgs84</span></span>(<span>a, b)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This function is for Mercator coordinates conversion into
+<div class="desc"><p>This function is for Web Mercator coordinates conversion into
 geographical ones</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>a</code></strong></dt>
-<dd>The Mercator coordinates of longitude</dd>
+<dd>The Web Mercator coordinates of longitude</dd>
 <dt><strong><code>b</code></strong></dt>
-<dd>The Mercator coordinates of latitude</dd>
+<dd>The Web Mercator coordinates of latitude</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>lon</code></dt>
 <dd>The geographical coordinates of longitude</dd>
-<dt><code>lat</code></dt>
-<dd>The geographical coordinates of latitude</dd>
-</dl></div>
+</dl>
+<p>lat:The geographical coordinates of latitude</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def webmercator2wgs84(a, b): 
+<pre><code class="python">def webmercator2wgs84(a, b):
     &#34;&#34;&#34;
-       This function is for Mercator coordinates conversion into  geographical ones
+       This function is for Web Mercator coordinates conversion into  geographical ones
 
        Args:
-           a: The Mercator coordinates of longitude
-           b: The Mercator coordinates of latitude
+           a: The Web Mercator coordinates of longitude
+           b: The Web Mercator coordinates of latitude
 
        Returns:
            lon: The geographical coordinates of longitude
-           lat: The geographical coordinates of latitude
+           lat:The geographical coordinates of latitude
     &#34;&#34;&#34;
     lon = a / 20037508.34 * 180
     lat = b / 20037508.34 * 180
@@ -1783,7 +1738,7 @@ geographical ones</p>
 <span>def <span class="ident">wgs84towebmercator_single</span></span>(<span>lat, lon)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This function is for coordinates conversion into Mercator ones</p>
+<div class="desc"><p>This function is for coordinates conversion into Web Mercator ones</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>lat</code></strong></dt>
@@ -1794,25 +1749,24 @@ geographical ones</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>m</code></dt>
-<dd>The Mercator coordinates of latitude</dd>
-<dt><code>n</code></dt>
-<dd>The Mercator coordinates of longitude</dd>
-</dl></div>
+<dd>The Web Mercator coordinates of latitude</dd>
+</dl>
+<p>n:The Web Mercator coordinates of longitude</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def wgs84towebmercator_single(lat, lon): 
+<pre><code class="python">def wgs84towebmercator_single(lat, lon):
     &#34;&#34;&#34;
-       This function is for coordinates conversion into Mercator ones
+       This function is for coordinates conversion into Web Mercator ones
 
        Args:
            lat: Latitude data
            lon: Longitude data
 
        Returns:
-           m: The Mercator coordinates of latitude
-           n: The Mercator coordinates of longitude
+           m: The Web Mercator coordinates of latitude
+           n:The Web Mercator coordinates of longitude
     &#34;&#34;&#34;
     transformer = Transformer.from_crs(crs_WGS84, crs_WebMercator)
     m, n = transformer.transform(lat, lon)
