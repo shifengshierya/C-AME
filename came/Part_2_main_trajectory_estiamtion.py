@@ -35,7 +35,7 @@ def part2(data_path='./ProcessFiles/', save_path='./ResultFiles/'):
         y = df["LONGITUDE"]
         date = df["OBSERVATION DATE"]
         length = len(x)
-# Data preprocessing:convert original latitude and longitude data to WebMercator coordinates by WGS84ToWebMercator_Single()
+# Data preprocessing: Convert original latitude and longitude data to WebMercator coordinates by WGS84ToWebMercator_Single()
         initial_data = get_initial_data(x, y, date, length)
         initial_data_df = pd.DataFrame(initial_data[1:], columns=initial_data[0])
         initial_data_df.to_csv(os.path.join(save_path, csv_name.replace('.csv', ''), 'initial_data.csv'), index=False)
@@ -45,11 +45,11 @@ def part2(data_path='./ProcessFiles/', save_path='./ResultFiles/'):
         initial_data = interpolation(date, length, initial_data)
         print('{},Step2 finished'.format(csv_name))
 
-#Data preprocessing:Smooth the data by rolling_window()
+#Data preprocessing: Smooth the data by rolling_window()
         Rolling_window_data_df = rolling_window(initial_data, save_path, csv_name)
         print('{},Step3 finished'.format(csv_name))
 
-#Data preprocessing:Outlier detectiobn by get_sldf()
+#Data preprocessing: Outlier detectiobn by get_sldf()
         SLDF_df = get_sldf(Rolling_window_data_df, save_path, csv_name)
         print('{}, Get SLDF_df'.format(csv_name))
 
