@@ -37,7 +37,7 @@ warnings.filterwarnings(&#39;ignore&#39;)
 from Part_3_avg_distance import avg_distance
 
 
-def part2(data_path=&#39;./source/&#39;, save_path=&#39;./target/&#39;):
+def part2(data_path=&#39;./ProcessFiles/&#39;, save_path=&#39;./ResultFiles/&#39;):
 #Run by input paths from the terminal
     # data_path = input(&#39;Please set part2 input folder &#39;)
     # data_path = data_path + &#39;/&#39;
@@ -63,7 +63,7 @@ def part2(data_path=&#39;./source/&#39;, save_path=&#39;./target/&#39;):
         y = df[&#34;LONGITUDE&#34;]
         date = df[&#34;OBSERVATION DATE&#34;]
         length = len(x)
-# Data preprocessing:convert original latitude and longitude data to WebMercator coordinates by WGS84ToWebMercator_Single()
+# Data preprocessing: Convert original latitude and longitude data to WebMercator coordinates by WGS84ToWebMercator_Single()
         initial_data = get_initial_data(x, y, date, length)
         initial_data_df = pd.DataFrame(initial_data[1:], columns=initial_data[0])
         initial_data_df.to_csv(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;, &#39;&#39;), &#39;initial_data.csv&#39;), index=False)
@@ -73,11 +73,11 @@ def part2(data_path=&#39;./source/&#39;, save_path=&#39;./target/&#39;):
         initial_data = interpolation(date, length, initial_data)
         print(&#39;{},Step2 finished&#39;.format(csv_name))
 
-#Data preprocessing:Smooth the data by rolling_window()
+#Data preprocessing: Smooth the data by rolling_window()
         Rolling_window_data_df = rolling_window(initial_data, save_path, csv_name)
         print(&#39;{},Step3 finished&#39;.format(csv_name))
 
-#Data preprocessing:Outlier detectiobn by get_sldf()
+#Data preprocessing: Outlier detectiobn by get_sldf()
         SLDF_df = get_sldf(Rolling_window_data_df, save_path, csv_name)
         print(&#39;{}, Get SLDF_df&#39;.format(csv_name))
 
@@ -119,7 +119,7 @@ if __name__ == &#39;__main__&#39;:
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="came.Part_2_main_trajectory_estiamtion.part2"><code class="name flex">
-<span>def <span class="ident">part2</span></span>(<span>data_path='./source/', save_path='./target/')</span>
+<span>def <span class="ident">part2</span></span>(<span>data_path='./ProcessFiles/', save_path='./ResultFiles/')</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -127,7 +127,7 @@ if __name__ == &#39;__main__&#39;:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def part2(data_path=&#39;./source/&#39;, save_path=&#39;./target/&#39;):
+<pre><code class="python">def part2(data_path=&#39;./ProcessFiles/&#39;, save_path=&#39;./ResultFiles/&#39;):
 #Run by input paths from the terminal
     # data_path = input(&#39;Please set part2 input folder &#39;)
     # data_path = data_path + &#39;/&#39;
@@ -153,7 +153,7 @@ if __name__ == &#39;__main__&#39;:
         y = df[&#34;LONGITUDE&#34;]
         date = df[&#34;OBSERVATION DATE&#34;]
         length = len(x)
-# Data preprocessing:convert original latitude and longitude data to WebMercator coordinates by WGS84ToWebMercator_Single()
+# Data preprocessing: Convert original latitude and longitude data to WebMercator coordinates by WGS84ToWebMercator_Single()
         initial_data = get_initial_data(x, y, date, length)
         initial_data_df = pd.DataFrame(initial_data[1:], columns=initial_data[0])
         initial_data_df.to_csv(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;, &#39;&#39;), &#39;initial_data.csv&#39;), index=False)
@@ -163,11 +163,11 @@ if __name__ == &#39;__main__&#39;:
         initial_data = interpolation(date, length, initial_data)
         print(&#39;{},Step2 finished&#39;.format(csv_name))
 
-#Data preprocessing:Smooth the data by rolling_window()
+#Data preprocessing: Smooth the data by rolling_window()
         Rolling_window_data_df = rolling_window(initial_data, save_path, csv_name)
         print(&#39;{},Step3 finished&#39;.format(csv_name))
 
-#Data preprocessing:Outlier detectiobn by get_sldf()
+#Data preprocessing: Outlier detectiobn by get_sldf()
         SLDF_df = get_sldf(Rolling_window_data_df, save_path, csv_name)
         print(&#39;{}, Get SLDF_df&#39;.format(csv_name))
 

@@ -43,7 +43,8 @@ def file_names(inputpath):
            inputpath: The folder path  to be looped over
 
        Returns:
-           namelist:The files list
+           namelist: The files list
+           
     &#34;&#34;&#34;
     namelist = []
     filePath = inputpath
@@ -57,11 +58,12 @@ def savecsvs(path,item,model = &#39;a&#39;):
 
        Args:
            path: The  path for saving csv files
-           item:The data to be saved
-           model:The default parameter
+           item: The data to be saved
+           model: The default parameter
 
        Returns:
-           True:Omitted
+           True: Omitted
+           
     &#34;&#34;&#34;
     while True:
         # try:
@@ -77,11 +79,12 @@ def savecsv(path,item,model = &#39;a&#39;):
 
        Args:
            path: The  path for saving csv files
-           item:The data to be saved
-           model:The default parameter
+           item: The data to be saved
+           model: The default parameter
 
        Returns:
-           True:Omitted
+           True: Omitted
+           
     &#34;&#34;&#34;
     while True:
         try:
@@ -102,7 +105,8 @@ def get_file_list(path):
            path: The  path for files
 
        Returns:
-            file_list:The file list
+            file_list: The file list
+            
     &#34;&#34;&#34;
 
     file_list = []
@@ -119,10 +123,11 @@ def get_distance_point2line(point, line):
 
        Args:
            point: The observation points
-           line:A line
+           line: A line
 
        Returns:
-           distance:The distance from points to the line
+           distance: The distance from points to the line
+           
     &#34;&#34;&#34;
     line_point1, line_point2 = np.array(line[0:2]), np.array(line[2:])
     vec1 = line_point1 - point
@@ -136,10 +141,11 @@ def calculate_distance(path_list):
        This function is for getting migration axis and  offset distance
 
       Args:
-         path_list : The files in the path
+         path_list: The files in the path
 
       Returns:
           list11: The offset distances
+          
     &#34;&#34;&#34;
     list_distance = []
     for l in path_list:
@@ -210,10 +216,11 @@ def off_distance_main(path):
        This function is for saving and drawing the results
 
        Args:
-           path : The file path
+           path: The file path
 
        Returns:
            True: Omitted
+           
     &#34;&#34;&#34;
     path1 = get_file_list(path)
     result = calculate_distance(path1)
@@ -273,6 +280,7 @@ def off_distance(data_path):
 
         Returns:
             True: Omitted
+            
     &#34;&#34;&#34;
     # --------------------------------------------
     excel_list = file_names(data_path)
@@ -310,7 +318,10 @@ def off_distance(data_path):
 <div class="desc"><p>This function is for getting migration axis and
 offset distance</p>
 <h2 id="args">Args</h2>
-<p>path_list : The files in the path</p>
+<dl>
+<dt><strong><code>path_list</code></strong></dt>
+<dd>The files in the path</dd>
+</dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>list11</code></dt>
@@ -325,10 +336,11 @@ offset distance</p>
        This function is for getting migration axis and  offset distance
 
       Args:
-         path_list : The files in the path
+         path_list: The files in the path
 
       Returns:
           list11: The offset distances
+          
     &#34;&#34;&#34;
     list_distance = []
     for l in path_list:
@@ -407,7 +419,10 @@ offset distance</p>
 to be looped over</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>namelist:The files list</p></div>
+<dl>
+<dt><code>namelist</code></dt>
+<dd>The files list</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -420,7 +435,8 @@ to be looped over</dd>
            inputpath: The folder path  to be looped over
 
        Returns:
-           namelist:The files list
+           namelist: The files list
+           
     &#34;&#34;&#34;
     namelist = []
     filePath = inputpath
@@ -438,10 +454,14 @@ to be looped over</dd>
 <dl>
 <dt><strong><code>point</code></strong></dt>
 <dd>The observation points</dd>
+<dt><strong><code>line</code></strong></dt>
+<dd>A line</dd>
 </dl>
-<p>line:A line</p>
 <h2 id="returns">Returns</h2>
-<p>distance:The distance from points to the line</p></div>
+<dl>
+<dt><code>distance</code></dt>
+<dd>The distance from points to the line</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -452,10 +472,11 @@ to be looped over</dd>
 
        Args:
            point: The observation points
-           line:A line
+           line: A line
 
        Returns:
-           distance:The distance from points to the line
+           distance: The distance from points to the line
+           
     &#34;&#34;&#34;
     line_point1, line_point2 = np.array(line[0:2]), np.array(line[2:])
     vec1 = line_point1 - point
@@ -476,7 +497,10 @@ to be looped over</dd>
 path for files</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>file_list:The file list</p></div>
+<dl>
+<dt><code>file_list</code></dt>
+<dd>The file list</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -489,7 +513,8 @@ path for files</dd>
            path: The  path for files
 
        Returns:
-            file_list:The file list
+            file_list: The file list
+            
     &#34;&#34;&#34;
 
     file_list = []
@@ -528,6 +553,7 @@ path for files</dd>
 
         Returns:
             True: Omitted
+            
     &#34;&#34;&#34;
     # --------------------------------------------
     excel_list = file_names(data_path)
@@ -557,7 +583,10 @@ path for files</dd>
 <dd>
 <div class="desc"><p>This function is for saving and drawing the results</p>
 <h2 id="args">Args</h2>
-<p>path : The file path</p>
+<dl>
+<dt><strong><code>path</code></strong></dt>
+<dd>The file path</dd>
+</dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>True</code></dt>
@@ -572,10 +601,11 @@ path for files</dd>
        This function is for saving and drawing the results
 
        Args:
-           path : The file path
+           path: The file path
 
        Returns:
            True: Omitted
+           
     &#34;&#34;&#34;
     path1 = get_file_list(path)
     result = calculate_distance(path1)
@@ -637,11 +667,16 @@ path for files</dd>
 <dt><strong><code>path</code></strong></dt>
 <dd>The
 path for saving csv files</dd>
+<dt><strong><code>item</code></strong></dt>
+<dd>The data to be saved</dd>
+<dt><strong><code>model</code></strong></dt>
+<dd>The default parameter</dd>
 </dl>
-<p>item:The data to be saved
-model:The default parameter</p>
 <h2 id="returns">Returns</h2>
-<p>True:Omitted</p></div>
+<dl>
+<dt><code>True</code></dt>
+<dd>Omitted</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -652,11 +687,12 @@ model:The default parameter</p>
 
        Args:
            path: The  path for saving csv files
-           item:The data to be saved
-           model:The default parameter
+           item: The data to be saved
+           model: The default parameter
 
        Returns:
-           True:Omitted
+           True: Omitted
+           
     &#34;&#34;&#34;
     while True:
         try:
@@ -680,11 +716,16 @@ model:The default parameter</p>
 <dt><strong><code>path</code></strong></dt>
 <dd>The
 path for saving csv files</dd>
+<dt><strong><code>item</code></strong></dt>
+<dd>The data to be saved</dd>
+<dt><strong><code>model</code></strong></dt>
+<dd>The default parameter</dd>
 </dl>
-<p>item:The data to be saved
-model:The default parameter</p>
 <h2 id="returns">Returns</h2>
-<p>True:Omitted</p></div>
+<dl>
+<dt><code>True</code></dt>
+<dd>Omitted</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -695,11 +736,12 @@ model:The default parameter</p>
 
        Args:
            path: The  path for saving csv files
-           item:The data to be saved
-           model:The default parameter
+           item: The data to be saved
+           model: The default parameter
 
        Returns:
-           True:Omitted
+           True: Omitted
+           
     &#34;&#34;&#34;
     while True:
         # try:

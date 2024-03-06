@@ -41,7 +41,8 @@ def file_names(inputpath):
            inputpath: The folder path  to be looped over
 
        Returns:
-           namelist:The files list
+           namelist: The files list
+           
     &#34;&#34;&#34;
     namelist = []
     filePath = inputpath
@@ -55,11 +56,12 @@ def savecsvs(path,item,model = &#39;a&#39;):
 
        Args:
            path: The  path for saving csv files
-           item:The data to be saved
-           model:The default parameter
+           item: The data to be saved
+           model: The default parameter
 
         Returns:
-           True:Omitted
+           True: Omitted
+           
     &#34;&#34;&#34;
     while True:
         # try:
@@ -75,11 +77,12 @@ def savecsv(path,item,model = &#39;a&#39;):
 
         Args:
             path: The  path for saving csv files
-            item:The data to be saved
-            model:The default parameter
+            item: The data to be saved
+            model: The default parameter
 
         Returns:
-            True:Omitted
+            True: Omitted
+            
      &#34;&#34;&#34;
     while True:
         try:
@@ -100,7 +103,8 @@ def get_file_list(path):
            path: The  path for files
 
        Returns:
-            file_list:The file list
+            file_list: The file list
+            
     &#34;&#34;&#34;
     file_list = []
     for root, dirs, files in os.walk(path):
@@ -115,10 +119,11 @@ def calculate_speed(path):
         This function is for calculating the speed
 
         Args:
-            path : The file path
+            path: The file path
 
         Returns:
             list_speed: The speed results
+            
     &#34;&#34;&#34;
     df = pd.read_excel(path, header=None)
     list_speed = [0]
@@ -135,10 +140,11 @@ def speed_main(path):
        This function is for saving and drawing the results
 
        Args:
-           path : The file path
+           path: The file path
 
        Returns:
            True: Omitted
+           
     &#34;&#34;&#34;
     path1 = get_file_list(path)
     list_averange = []
@@ -195,6 +201,7 @@ def speed(data_path):
 
        Returns:
            True: Omitted
+           
     &#34;&#34;&#34;
     # --------------------------------------------
     excel_list = file_names(data_path)
@@ -231,7 +238,10 @@ def speed(data_path):
 <dd>
 <div class="desc"><p>This function is for calculating the speed</p>
 <h2 id="args">Args</h2>
-<p>path : The file path</p>
+<dl>
+<dt><strong><code>path</code></strong></dt>
+<dd>The file path</dd>
+</dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>list_speed</code></dt>
@@ -246,10 +256,11 @@ def speed(data_path):
         This function is for calculating the speed
 
         Args:
-            path : The file path
+            path: The file path
 
         Returns:
             list_speed: The speed results
+            
     &#34;&#34;&#34;
     df = pd.read_excel(path, header=None)
     list_speed = [0]
@@ -274,7 +285,10 @@ def speed(data_path):
 to be looped over</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>namelist:The files list</p></div>
+<dl>
+<dt><code>namelist</code></dt>
+<dd>The files list</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -287,7 +301,8 @@ to be looped over</dd>
            inputpath: The folder path  to be looped over
 
        Returns:
-           namelist:The files list
+           namelist: The files list
+           
     &#34;&#34;&#34;
     namelist = []
     filePath = inputpath
@@ -308,7 +323,10 @@ to be looped over</dd>
 path for files</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>file_list:The file list</p></div>
+<dl>
+<dt><code>file_list</code></dt>
+<dd>The file list</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -321,7 +339,8 @@ path for files</dd>
            path: The  path for files
 
        Returns:
-            file_list:The file list
+            file_list: The file list
+            
     &#34;&#34;&#34;
     file_list = []
     for root, dirs, files in os.walk(path):
@@ -341,11 +360,16 @@ path for files</dd>
 <dt><strong><code>path</code></strong></dt>
 <dd>The
 path for saving csv files</dd>
+<dt><strong><code>item</code></strong></dt>
+<dd>The data to be saved</dd>
+<dt><strong><code>model</code></strong></dt>
+<dd>The default parameter</dd>
 </dl>
-<p>item:The data to be saved
-model:The default parameter</p>
 <h2 id="returns">Returns</h2>
-<p>True:Omitted</p></div>
+<dl>
+<dt><code>True</code></dt>
+<dd>Omitted</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -356,11 +380,12 @@ model:The default parameter</p>
 
         Args:
             path: The  path for saving csv files
-            item:The data to be saved
-            model:The default parameter
+            item: The data to be saved
+            model: The default parameter
 
         Returns:
-            True:Omitted
+            True: Omitted
+            
      &#34;&#34;&#34;
     while True:
         try:
@@ -384,11 +409,13 @@ model:The default parameter</p>
 <dt><strong><code>path</code></strong></dt>
 <dd>The
 path for saving csv files</dd>
+<dt><strong><code>item</code></strong></dt>
+<dd>The data to be saved</dd>
+<dt><strong><code>model</code></strong></dt>
+<dd>The default parameter</dd>
 </dl>
-<p>item:The data to be saved
-model:The default parameter
-Returns:
-True:Omitted</p></div>
+<p>Returns:
+True: Omitted</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -399,11 +426,12 @@ True:Omitted</p></div>
 
        Args:
            path: The  path for saving csv files
-           item:The data to be saved
-           model:The default parameter
+           item: The data to be saved
+           model: The default parameter
 
         Returns:
-           True:Omitted
+           True: Omitted
+           
     &#34;&#34;&#34;
     while True:
         # try:
@@ -442,6 +470,7 @@ True:Omitted</p></div>
 
        Returns:
            True: Omitted
+           
     &#34;&#34;&#34;
     # --------------------------------------------
     excel_list = file_names(data_path)
@@ -471,7 +500,10 @@ True:Omitted</p></div>
 <dd>
 <div class="desc"><p>This function is for saving and drawing the results</p>
 <h2 id="args">Args</h2>
-<p>path : The file path</p>
+<dl>
+<dt><strong><code>path</code></strong></dt>
+<dd>The file path</dd>
+</dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>True</code></dt>
@@ -486,10 +518,11 @@ True:Omitted</p></div>
        This function is for saving and drawing the results
 
        Args:
-           path : The file path
+           path: The file path
 
        Returns:
            True: Omitted
+           
     &#34;&#34;&#34;
     path1 = get_file_list(path)
     list_averange = []

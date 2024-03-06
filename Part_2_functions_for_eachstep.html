@@ -58,7 +58,7 @@ def create_folder(inputpath):
            inputpath: The folder path
 
         Returns:
-           True:Omitted
+           True: Omitted
     &#34;&#34;&#34;
     if not os.path.exists(inputpath):
         os.makedirs(inputpath)
@@ -71,7 +71,7 @@ def file_names(inputpath):
            inputpath: The folder path  to be looped over
 
        Returns:
-           namelist:The files list
+           namelist: The files list
     &#34;&#34;&#34;
     namelist = []
     filePath = inputpath
@@ -88,7 +88,7 @@ def get_all_csv(data_path):
            data_path: The folder path of storing the csv files
 
        Returns:
-           all_csv:All the csv files
+           all_csv: All the csv files
     &#34;&#34;&#34;
 
     excel_list = file_names(data_path)
@@ -107,10 +107,10 @@ def sldf(x):
        This function is for outlier detection based on sldf values
 
        Args:
-           x : The input data
+           x: The input data
 
        Returns:
-           result:The result after sldf outlier detection
+           result: The result after sldf outlier detection
     &#34;&#34;&#34;
     n = len(x)
     column = len(x[0])
@@ -190,11 +190,11 @@ def data_write(file_path, datas):
        This function is for saving files
 
        Args:
-           file_path : The path for saving files
-           datas:The data to be saved
+           file_path: The path for saving files
+           datas: The data to be saved
 
        Returns:
-           True:Omitted
+           True: Omitted
     &#34;&#34;&#34;
     f = xlwt.Workbook()
     sheet1 = f.add_sheet(u&#39;sheet1&#39;, cell_overwrite_ok=True)  # Create a sheet
@@ -217,7 +217,7 @@ def webmercator2wgs84(a, b):
 
        Returns:
            lon: The geographical coordinates of longitude
-           lat:The geographical coordinates of latitude
+           lat: The geographical coordinates of latitude
     &#34;&#34;&#34;
     lon = a / 20037508.34 * 180
     lat = b / 20037508.34 * 180
@@ -232,12 +232,12 @@ def gam_pic(gam,save_path,csv_name,key,x_y):
        Args:
            gam: The usage of gam model
            save_path: The path for saving the result file
-           csv_name:The species name being processed
-           key:The number for file naming
-           x_y:The choice for Lat or Lon when file naming
+           csv_name: The species name being processed
+           key: The number for file naming
+           x_y: The choice for Lat or Lon when file naming
 
        Returns:
-           True:Omitted
+           True: Omitted
     &#34;&#34;&#34;
     XX = gam.generate_X_grid(term=0, n=365)
     # plt.scatter([data for data in range(364)], data, color=&#39;b&#39;, marker=&#39;o&#39;)
@@ -257,12 +257,12 @@ def gam(save_path, csv_name,key):
 
        Args:
            save_path: The path for saving the result file
-           csv_name:The species name being processed
-           key:The number for file naming
+           csv_name: The species name being processed
+           key: The number for file naming
 
        Returns:
-           Lon:The longitude after gam algorithm
-           Lat:The latitude after gam algorithm
+           Lon: The longitude after gam algorithm
+           Lat: The latitude after gam algorithm
 
     &#34;&#34;&#34;
     df = pd.read_excel(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;,&#39;&#39;), &#39;ni_traj{}.xlsx&#39;.format(key + 1)), sheet_name=&#39;Sheet1&#39;)
@@ -301,7 +301,7 @@ def wgs84towebmercator_single(lat, lon):
 
        Returns:
            m: The Web Mercator coordinates of latitude
-           n:The Web Mercator coordinates of longitude
+           n: The Web Mercator coordinates of longitude
     &#34;&#34;&#34;
     transformer = Transformer.from_crs(crs_WGS84, crs_WebMercator)
     m, n = transformer.transform(lat, lon)
@@ -317,7 +317,7 @@ def get_initial_data(x,y,date,length):
            x: Latitude data
            y: Longitude data
            date: The observation date
-           length:The length of the data
+           length: The length of the data
 
        Returns:
            initial_data: The Web Mercator coordinates after converting
@@ -337,8 +337,8 @@ def interpolation(date,length,initial_data):
 
        Args:
            date: The observation date
-           length:The length of the data
-           initial_data:The data after coordinates conversion
+           length: The length of the data
+           initial_data: The data after coordinates conversion
 
        Returns:
            initial_data: The data results after interpolation
@@ -374,8 +374,8 @@ def rolling_window(initial_data,save_path,csv_name):
 
        Args:
            initial_data: The data after interpolation
-           save_path:The path for saving the result file
-           csv_name:The species name being processed
+           save_path: The path for saving the result file
+           csv_name: The species name being processed
 
        Returns:
            rolling_window_data_df: The data results after rolling_window
@@ -404,8 +404,8 @@ def get_sldf(window_data_df,save_path,csv_name):
 
        Args:
            window_data_df: The data after rolling_window
-           save_path:The path for saving the result file
-           csv_name:The species name being processed
+           save_path: The path for saving the result file
+           csv_name: The species name being processed
 
        Returns:
            sldf_df: The data results after sldf outlier detection
@@ -442,11 +442,12 @@ def mean_shift(SLDF_df,save_path,csv_name):
 
        Args:
            SLDF_df: The data after sldf outlier detection
-           save_path:The path for saving the result file
-           csv_name:The species name being processed
+           save_path: The path for saving the result file
+           csv_name: The species name being processed
 
         Returns:
            result: The data results after meanshift clustering
+           
     &#34;&#34;&#34;
     # datas = pd.read_excel(&#39;data/clean_window_data.xlsx&#39;)
     datas = SLDF_df.drop([&#39;SLDF&#39;], axis=1)
@@ -473,7 +474,7 @@ def mean_shift(SLDF_df,save_path,csv_name):
             result.append([float(c[0]), float(c[1]), date])
 
         colors = cycle(&#39;bcmyk&#39;)
-        if date % 20 == 0:
+        if date % 10 == 0:
             for k, color in zip(range(n_clusters), colors):
                 # current_member indicates true if the label is k and false if not
                 current_member = labels == k
@@ -501,8 +502,8 @@ def group(csv_path,save_path,csv_name):
 
        Args:
            csv_path: The path for the data file after Meanshift algorithm
-           save_path:The path for saving the result file
-           csv_name:The species name being processed
+           save_path: The path for saving the result file
+           csv_name: The species name being processed
 
        Returns:
             True: Omitted
@@ -670,17 +671,18 @@ def group(csv_path,save_path,csv_name):
         df.columns = names
         df.to_excel(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;,&#39;&#39;), &#39;ni_traj{}.xlsx&#39;.format(key + 1)), sheet_name=&#39;Sheet1&#39;, index=False)
 
-#Trajectory estimation:Show the estimation results on the map
+#Trajectory estimation: Show the estimation results on the map
 def map_1(save_path,csv_name):
     &#34;&#34;&#34;
        This function is for showing the result figure on the map
 
        Args:
-           save_path : The path for storing the result figures
+           save_path: The path for storing the result figures
            csv_name: The name of the species to be processed
 
        Returns:
-           True:Omitted
+           True: Omitted
+           
     &#34;&#34;&#34;
     # plt.rcParams[&#39;figure.figsize&#39;] = (28, 8)
     # plt.show()
@@ -774,7 +776,7 @@ def map_1(save_path,csv_name):
 <dd>The folder path</dd>
 </dl>
 <p>Returns:
-True:Omitted</p></div>
+True: Omitted</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -787,7 +789,7 @@ True:Omitted</p></div>
            inputpath: The folder path
 
         Returns:
-           True:Omitted
+           True: Omitted
     &#34;&#34;&#34;
     if not os.path.exists(inputpath):
         os.makedirs(inputpath)</code></pre>
@@ -799,10 +801,17 @@ True:Omitted</p></div>
 <dd>
 <div class="desc"><p>This function is for saving files</p>
 <h2 id="args">Args</h2>
-<p>file_path : The path for saving files
-datas:The data to be saved</p>
+<dl>
+<dt><strong><code>file_path</code></strong></dt>
+<dd>The path for saving files</dd>
+<dt><strong><code>datas</code></strong></dt>
+<dd>The data to be saved</dd>
+</dl>
 <h2 id="returns">Returns</h2>
-<p>True:Omitted</p></div>
+<dl>
+<dt><code>True</code></dt>
+<dd>Omitted</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -812,11 +821,11 @@ datas:The data to be saved</p>
        This function is for saving files
 
        Args:
-           file_path : The path for saving files
-           datas:The data to be saved
+           file_path: The path for saving files
+           datas: The data to be saved
 
        Returns:
-           True:Omitted
+           True: Omitted
     &#34;&#34;&#34;
     f = xlwt.Workbook()
     sheet1 = f.add_sheet(u&#39;sheet1&#39;, cell_overwrite_ok=True)  # Create a sheet
@@ -840,7 +849,10 @@ datas:The data to be saved</p>
 to be looped over</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>namelist:The files list</p></div>
+<dl>
+<dt><code>namelist</code></dt>
+<dd>The files list</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -853,7 +865,7 @@ to be looped over</dd>
            inputpath: The folder path  to be looped over
 
        Returns:
-           namelist:The files list
+           namelist: The files list
     &#34;&#34;&#34;
     namelist = []
     filePath = inputpath
@@ -871,12 +883,18 @@ to be looped over</dd>
 <dl>
 <dt><strong><code>save_path</code></strong></dt>
 <dd>The path for saving the result file</dd>
+<dt><strong><code>csv_name</code></strong></dt>
+<dd>The species name being processed</dd>
+<dt><strong><code>key</code></strong></dt>
+<dd>The number for file naming</dd>
 </dl>
-<p>csv_name:The species name being processed
-key:The number for file naming</p>
 <h2 id="returns">Returns</h2>
-<p>Lon:The longitude after gam algorithm
-Lat:The latitude after gam algorithm</p></div>
+<dl>
+<dt><code>Lon</code></dt>
+<dd>The longitude after gam algorithm</dd>
+<dt><code>Lat</code></dt>
+<dd>The latitude after gam algorithm</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -887,12 +905,12 @@ Lat:The latitude after gam algorithm</p></div>
 
        Args:
            save_path: The path for saving the result file
-           csv_name:The species name being processed
-           key:The number for file naming
+           csv_name: The species name being processed
+           key: The number for file naming
 
        Returns:
-           Lon:The longitude after gam algorithm
-           Lat:The latitude after gam algorithm
+           Lon: The longitude after gam algorithm
+           Lat: The latitude after gam algorithm
 
     &#34;&#34;&#34;
     df = pd.read_excel(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;,&#39;&#39;), &#39;ni_traj{}.xlsx&#39;.format(key + 1)), sheet_name=&#39;Sheet1&#39;)
@@ -932,12 +950,18 @@ Lat:The latitude after gam algorithm</p></div>
 <dd>The usage of gam model</dd>
 <dt><strong><code>save_path</code></strong></dt>
 <dd>The path for saving the result file</dd>
+<dt><strong><code>csv_name</code></strong></dt>
+<dd>The species name being processed</dd>
+<dt><strong><code>key</code></strong></dt>
+<dd>The number for file naming</dd>
+<dt><strong><code>x_y</code></strong></dt>
+<dd>The choice for Lat or Lon when file naming</dd>
 </dl>
-<p>csv_name:The species name being processed
-key:The number for file naming
-x_y:The choice for Lat or Lon when file naming</p>
 <h2 id="returns">Returns</h2>
-<p>True:Omitted</p></div>
+<dl>
+<dt><code>True</code></dt>
+<dd>Omitted</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -949,12 +973,12 @@ x_y:The choice for Lat or Lon when file naming</p>
        Args:
            gam: The usage of gam model
            save_path: The path for saving the result file
-           csv_name:The species name being processed
-           key:The number for file naming
-           x_y:The choice for Lat or Lon when file naming
+           csv_name: The species name being processed
+           key: The number for file naming
+           x_y: The choice for Lat or Lon when file naming
 
        Returns:
-           True:Omitted
+           True: Omitted
     &#34;&#34;&#34;
     XX = gam.generate_X_grid(term=0, n=365)
     # plt.scatter([data for data in range(364)], data, color=&#39;b&#39;, marker=&#39;o&#39;)
@@ -979,7 +1003,10 @@ x_y:The choice for Lat or Lon when file naming</p>
 <dd>The folder path of storing the csv files</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>all_csv:All the csv files</p></div>
+<dl>
+<dt><code>all_csv</code></dt>
+<dd>All the csv files</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -992,7 +1019,7 @@ x_y:The choice for Lat or Lon when file naming</p>
            data_path: The folder path of storing the csv files
 
        Returns:
-           all_csv:All the csv files
+           all_csv: All the csv files
     &#34;&#34;&#34;
 
     excel_list = file_names(data_path)
@@ -1019,8 +1046,9 @@ x_y:The choice for Lat or Lon when file naming</p>
 <dd>Longitude data</dd>
 <dt><strong><code>date</code></strong></dt>
 <dd>The observation date</dd>
+<dt><strong><code>length</code></strong></dt>
+<dd>The length of the data</dd>
 </dl>
-<p>length:The length of the data</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>initial_data</code></dt>
@@ -1038,7 +1066,7 @@ x_y:The choice for Lat or Lon when file naming</p>
            x: Latitude data
            y: Longitude data
            date: The observation date
-           length:The length of the data
+           length: The length of the data
 
        Returns:
            initial_data: The Web Mercator coordinates after converting
@@ -1061,9 +1089,11 @@ x_y:The choice for Lat or Lon when file naming</p>
 <dl>
 <dt><strong><code>window_data_df</code></strong></dt>
 <dd>The data after rolling_window</dd>
+<dt><strong><code>save_path</code></strong></dt>
+<dd>The path for saving the result file</dd>
+<dt><strong><code>csv_name</code></strong></dt>
+<dd>The species name being processed</dd>
 </dl>
-<p>save_path:The path for saving the result file
-csv_name:The species name being processed</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>sldf_df</code></dt>
@@ -1079,8 +1109,8 @@ csv_name:The species name being processed</p>
 
        Args:
            window_data_df: The data after rolling_window
-           save_path:The path for saving the result file
-           csv_name:The species name being processed
+           save_path: The path for saving the result file
+           csv_name: The species name being processed
 
        Returns:
            sldf_df: The data results after sldf outlier detection
@@ -1120,9 +1150,11 @@ csv_name:The species name being processed</p>
 <dl>
 <dt><strong><code>csv_path</code></strong></dt>
 <dd>The path for the data file after Meanshift algorithm</dd>
+<dt><strong><code>save_path</code></strong></dt>
+<dd>The path for saving the result file</dd>
+<dt><strong><code>csv_name</code></strong></dt>
+<dd>The species name being processed</dd>
 </dl>
-<p>save_path:The path for saving the result file
-csv_name:The species name being processed</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>True</code></dt>
@@ -1138,8 +1170,8 @@ csv_name:The species name being processed</p>
 
        Args:
            csv_path: The path for the data file after Meanshift algorithm
-           save_path:The path for saving the result file
-           csv_name:The species name being processed
+           save_path: The path for saving the result file
+           csv_name: The species name being processed
 
        Returns:
             True: Omitted
@@ -1317,9 +1349,11 @@ csv_name:The species name being processed</p>
 <dl>
 <dt><strong><code>date</code></strong></dt>
 <dd>The observation date</dd>
+<dt><strong><code>length</code></strong></dt>
+<dd>The length of the data</dd>
+<dt><strong><code>initial_data</code></strong></dt>
+<dd>The data after coordinates conversion</dd>
 </dl>
-<p>length:The length of the data
-initial_data:The data after coordinates conversion</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>initial_data</code></dt>
@@ -1335,8 +1369,8 @@ initial_data:The data after coordinates conversion</p>
 
        Args:
            date: The observation date
-           length:The length of the data
-           initial_data:The data after coordinates conversion
+           length: The length of the data
+           initial_data: The data after coordinates conversion
 
        Returns:
            initial_data: The data results after interpolation
@@ -1373,12 +1407,16 @@ initial_data:The data after coordinates conversion</p>
 <div class="desc"><p>This function is for showing the result figure on the map</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt>save_path : The path for storing the result figures</dt>
+<dt><strong><code>save_path</code></strong></dt>
+<dd>The path for storing the result figures</dd>
 <dt><strong><code>csv_name</code></strong></dt>
 <dd>The name of the species to be processed</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>True:Omitted</p></div>
+<dl>
+<dt><code>True</code></dt>
+<dd>Omitted</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1388,11 +1426,12 @@ initial_data:The data after coordinates conversion</p>
        This function is for showing the result figure on the map
 
        Args:
-           save_path : The path for storing the result figures
+           save_path: The path for storing the result figures
            csv_name: The name of the species to be processed
 
        Returns:
-           True:Omitted
+           True: Omitted
+           
     &#34;&#34;&#34;
     # plt.rcParams[&#39;figure.figsize&#39;] = (28, 8)
     # plt.show()
@@ -1477,10 +1516,12 @@ initial_data:The data after coordinates conversion</p>
 <dl>
 <dt><strong><code>SLDF_df</code></strong></dt>
 <dd>The data after sldf outlier detection</dd>
+<dt><strong><code>save_path</code></strong></dt>
+<dd>The path for saving the result file</dd>
+<dt><strong><code>csv_name</code></strong></dt>
+<dd>The species name being processed</dd>
 </dl>
-<p>save_path:The path for saving the result file
-csv_name:The species name being processed
-Returns:
+<p>Returns:
 result: The data results after meanshift clustering</p></div>
 <details class="source">
 <summary>
@@ -1492,11 +1533,12 @@ result: The data results after meanshift clustering</p></div>
 
        Args:
            SLDF_df: The data after sldf outlier detection
-           save_path:The path for saving the result file
-           csv_name:The species name being processed
+           save_path: The path for saving the result file
+           csv_name: The species name being processed
 
         Returns:
            result: The data results after meanshift clustering
+           
     &#34;&#34;&#34;
     # datas = pd.read_excel(&#39;data/clean_window_data.xlsx&#39;)
     datas = SLDF_df.drop([&#39;SLDF&#39;], axis=1)
@@ -1523,7 +1565,7 @@ result: The data results after meanshift clustering</p></div>
             result.append([float(c[0]), float(c[1]), date])
 
         colors = cycle(&#39;bcmyk&#39;)
-        if date % 20 == 0:
+        if date % 10 == 0:
             for k, color in zip(range(n_clusters), colors):
                 # current_member indicates true if the label is k and false if not
                 current_member = labels == k
@@ -1554,9 +1596,11 @@ result: The data results after meanshift clustering</p></div>
 <dl>
 <dt><strong><code>initial_data</code></strong></dt>
 <dd>The data after interpolation</dd>
+<dt><strong><code>save_path</code></strong></dt>
+<dd>The path for saving the result file</dd>
+<dt><strong><code>csv_name</code></strong></dt>
+<dd>The species name being processed</dd>
 </dl>
-<p>save_path:The path for saving the result file
-csv_name:The species name being processed</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>rolling_window_data_df</code></dt>
@@ -1572,8 +1616,8 @@ csv_name:The species name being processed</p>
 
        Args:
            initial_data: The data after interpolation
-           save_path:The path for saving the result file
-           csv_name:The species name being processed
+           save_path: The path for saving the result file
+           csv_name: The species name being processed
 
        Returns:
            rolling_window_data_df: The data results after rolling_window
@@ -1602,9 +1646,15 @@ csv_name:The species name being processed</p>
 <dd>
 <div class="desc"><p>This function is for outlier detection based on sldf values</p>
 <h2 id="args">Args</h2>
-<p>x : The input data</p>
+<dl>
+<dt><strong><code>x</code></strong></dt>
+<dd>The input data</dd>
+</dl>
 <h2 id="returns">Returns</h2>
-<p>result:The result after sldf outlier detection</p></div>
+<dl>
+<dt><code>result</code></dt>
+<dd>The result after sldf outlier detection</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1614,10 +1664,10 @@ csv_name:The species name being processed</p>
        This function is for outlier detection based on sldf values
 
        Args:
-           x : The input data
+           x: The input data
 
        Returns:
-           result:The result after sldf outlier detection
+           result: The result after sldf outlier detection
     &#34;&#34;&#34;
     n = len(x)
     column = len(x[0])
@@ -1710,8 +1760,9 @@ geographical ones</p>
 <dl>
 <dt><code>lon</code></dt>
 <dd>The geographical coordinates of longitude</dd>
-</dl>
-<p>lat:The geographical coordinates of latitude</p></div>
+<dt><code>lat</code></dt>
+<dd>The geographical coordinates of latitude</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1726,7 +1777,7 @@ geographical ones</p>
 
        Returns:
            lon: The geographical coordinates of longitude
-           lat:The geographical coordinates of latitude
+           lat: The geographical coordinates of latitude
     &#34;&#34;&#34;
     lon = a / 20037508.34 * 180
     lat = b / 20037508.34 * 180
@@ -1750,8 +1801,9 @@ geographical ones</p>
 <dl>
 <dt><code>m</code></dt>
 <dd>The Web Mercator coordinates of latitude</dd>
-</dl>
-<p>n:The Web Mercator coordinates of longitude</p></div>
+<dt><code>n</code></dt>
+<dd>The Web Mercator coordinates of longitude</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1766,7 +1818,7 @@ geographical ones</p>
 
        Returns:
            m: The Web Mercator coordinates of latitude
-           n:The Web Mercator coordinates of longitude
+           n: The Web Mercator coordinates of longitude
     &#34;&#34;&#34;
     transformer = Transformer.from_crs(crs_WGS84, crs_WebMercator)
     m, n = transformer.transform(lat, lon)

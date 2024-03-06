@@ -45,10 +45,10 @@ def datelist(beginDate, endDate):
 
         Args:
             beginDate: The beginning date in the datelist
-            endDate:The end date in the datelist
+            endDate: The end date in the datelist
 
         Returns:
-            date_l:The datelist result
+            date_l: The datelist result
     &#34;&#34;&#34;
     date_l=[datetime.strftime(x,&#39;%Y-%m-%d&#39;) for x in list(pd.date_range(start=beginDate, end=endDate))]
     return date_l
@@ -61,7 +61,7 @@ def readcsv(path):
            path: The file  path
 
        Returns:
-           rows:The file data
+           rows: The file data
     &#34;&#34;&#34;
     try:
         with open(path, &#39;r&#39;,encoding=&#39;utf_8_sig&#39;) as f:
@@ -82,11 +82,11 @@ def savecsv(path,item,model = &#39;a&#39;):
 
        Args:
            path: The  path for saving csv files
-           item:The data to be saved
-           model:The default parameter
+           item: The data to be saved
+           model: The default parameter
 
        Returns:
-           True:Omitted
+           True: Omitted
     &#34;&#34;&#34;
     while True:
         try:
@@ -108,7 +108,7 @@ def file_names(inputpath):
            inputpath: The folder path  to be looped over
 
        Returns:
-           namelist:The files list
+           namelist: The files list
     &#34;&#34;&#34;
     namelist = []
     filePath = inputpath
@@ -122,11 +122,11 @@ def map_2(save_path,csv_name):
        This function is for showing the raw data on the map
 
        Args:
-           save_path : Path for storing the raw data figures
+           save_path: Path for storing the raw data figures
            csv_name: Name of the species to be processed
 
        Returns:
-           True:Omitted
+           True: Omitted
     &#34;&#34;&#34;
     m = Basemap(llcrnrlat=-60, urcrnrlat=90, llcrnrlon=-180, urcrnrlon=-20)  # Instantiate a map
     m.drawcoastlines()  # Draw the coastline
@@ -194,18 +194,18 @@ def map_2(save_path,csv_name):
 
 def main(path1=&#39;./RawData/&#39;, path2=&#39;./ProcessFiles/&#39;, save_path=&#39;./ResultFiles/&#39;, obs_count=3,lat_col=8,obs_date=11):
     &#34;&#34;&#34;
-       This function is for datetime format standardization
+       This function is for data format standardization
 
        Args:
-           path1:The directory of input data mentioned above (support for multiple files processing)
-           path2:Data format standardization results folder
+           path1: The directory of input data mentioned above (support for multiple files processing)
+           path2: Data format standardization results folder
            save_path: Final results storage folder
-           obs_count:The column number for observation count
-           lat_col:The column number for latitude
-           obs_date:The column number for observation date
+           obs_count: The column number for observation count
+           lat_col: The column number for latitude
+           obs_date: The column number for observation date
 
        Returns:
-           True:Omitted
+           True: Omitted
      &#34;&#34;&#34;
     #Absolute path
     # path1 = &#39;./2018/&#39;
@@ -226,7 +226,7 @@ def main(path1=&#39;./RawData/&#39;, path2=&#39;./ProcessFiles/&#39;, save_path=
         date1[date] = num
         num = num + 1
 
-#Extract three columns :LONGITUDE,LATITUDE, and OBS_DATE and name them as:LATITUDE&#39;, &#39;LONGITUDE&#39;, &#39;OBSERVATION DATE&#39;
+#Extract three columns: LONGITUDE, LATITUDE, and OBS_DATE and name them as: &#39;LATITUDE&#39;, &#39;LONGITUDE&#39;, &#39;OBSERVATION DATE&#39;
     csv_list = file_names(path1)[0][2]
     csv_list = [name for name in csv_list if &#39;.csv&#39; in name]
     for i in range(len(csv_list)):
@@ -289,10 +289,14 @@ if __name__ == &#39;__main__&#39;:
 <dl>
 <dt><strong><code>beginDate</code></strong></dt>
 <dd>The beginning date in the datelist</dd>
+<dt><strong><code>endDate</code></strong></dt>
+<dd>The end date in the datelist</dd>
 </dl>
-<p>endDate:The end date in the datelist</p>
 <h2 id="returns">Returns</h2>
-<p>date_l:The datelist result</p></div>
+<dl>
+<dt><code>date_l</code></dt>
+<dd>The datelist result</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -303,10 +307,10 @@ if __name__ == &#39;__main__&#39;:
 
         Args:
             beginDate: The beginning date in the datelist
-            endDate:The end date in the datelist
+            endDate: The end date in the datelist
 
         Returns:
-            date_l:The datelist result
+            date_l: The datelist result
     &#34;&#34;&#34;
     date_l=[datetime.strftime(x,&#39;%Y-%m-%d&#39;) for x in list(pd.date_range(start=beginDate, end=endDate))]
     return date_l</code></pre>
@@ -324,7 +328,10 @@ if __name__ == &#39;__main__&#39;:
 to be looped over</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>namelist:The files list</p></div>
+<dl>
+<dt><code>namelist</code></dt>
+<dd>The files list</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -337,7 +344,7 @@ to be looped over</dd>
            inputpath: The folder path  to be looped over
 
        Returns:
-           namelist:The files list
+           namelist: The files list
     &#34;&#34;&#34;
     namelist = []
     filePath = inputpath
@@ -350,37 +357,45 @@ to be looped over</dd>
 <span>def <span class="ident">main</span></span>(<span>path1='./RawData/', path2='./ProcessFiles/', save_path='./ResultFiles/', obs_count=3, lat_col=8, obs_date=11)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This function is for datetime format standardization</p>
+<div class="desc"><p>This function is for data format standardization</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt>path1:The directory of input data mentioned above (support for multiple files processing)</dt>
-<dt>path2:Data format standardization results folder</dt>
+<dt><strong><code>path1</code></strong></dt>
+<dd>The directory of input data mentioned above (support for multiple files processing)</dd>
+<dt><strong><code>path2</code></strong></dt>
+<dd>Data format standardization results folder</dd>
 <dt><strong><code>save_path</code></strong></dt>
 <dd>Final results storage folder</dd>
+<dt><strong><code>obs_count</code></strong></dt>
+<dd>The column number for observation count</dd>
+<dt><strong><code>lat_col</code></strong></dt>
+<dd>The column number for latitude</dd>
+<dt><strong><code>obs_date</code></strong></dt>
+<dd>The column number for observation date</dd>
 </dl>
-<p>obs_count:The column number for observation count
-lat_col:The column number for latitude
-obs_date:The column number for observation date</p>
 <h2 id="returns">Returns</h2>
-<p>True:Omitted</p></div>
+<dl>
+<dt><code>True</code></dt>
+<dd>Omitted</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def main(path1=&#39;./RawData/&#39;, path2=&#39;./ProcessFiles/&#39;, save_path=&#39;./ResultFiles/&#39;, obs_count=3,lat_col=8,obs_date=11):
     &#34;&#34;&#34;
-       This function is for datetime format standardization
+       This function is for data format standardization
 
        Args:
-           path1:The directory of input data mentioned above (support for multiple files processing)
-           path2:Data format standardization results folder
+           path1: The directory of input data mentioned above (support for multiple files processing)
+           path2: Data format standardization results folder
            save_path: Final results storage folder
-           obs_count:The column number for observation count
-           lat_col:The column number for latitude
-           obs_date:The column number for observation date
+           obs_count: The column number for observation count
+           lat_col: The column number for latitude
+           obs_date: The column number for observation date
 
        Returns:
-           True:Omitted
+           True: Omitted
      &#34;&#34;&#34;
     #Absolute path
     # path1 = &#39;./2018/&#39;
@@ -401,7 +416,7 @@ obs_date:The column number for observation date</p>
         date1[date] = num
         num = num + 1
 
-#Extract three columns :LONGITUDE,LATITUDE, and OBS_DATE and name them as:LATITUDE&#39;, &#39;LONGITUDE&#39;, &#39;OBSERVATION DATE&#39;
+#Extract three columns: LONGITUDE, LATITUDE, and OBS_DATE and name them as: &#39;LATITUDE&#39;, &#39;LONGITUDE&#39;, &#39;OBSERVATION DATE&#39;
     csv_list = file_names(path1)[0][2]
     csv_list = [name for name in csv_list if &#39;.csv&#39; in name]
     for i in range(len(csv_list)):
@@ -444,12 +459,16 @@ obs_date:The column number for observation date</p>
 <div class="desc"><p>This function is for showing the raw data on the map</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt>save_path : Path for storing the raw data figures</dt>
+<dt><strong><code>save_path</code></strong></dt>
+<dd>Path for storing the raw data figures</dd>
 <dt><strong><code>csv_name</code></strong></dt>
 <dd>Name of the species to be processed</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>True:Omitted</p></div>
+<dl>
+<dt><code>True</code></dt>
+<dd>Omitted</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -459,11 +478,11 @@ obs_date:The column number for observation date</p>
        This function is for showing the raw data on the map
 
        Args:
-           save_path : Path for storing the raw data figures
+           save_path: Path for storing the raw data figures
            csv_name: Name of the species to be processed
 
        Returns:
-           True:Omitted
+           True: Omitted
     &#34;&#34;&#34;
     m = Basemap(llcrnrlat=-60, urcrnrlat=90, llcrnrlon=-180, urcrnrlon=-20)  # Instantiate a map
     m.drawcoastlines()  # Draw the coastline
@@ -542,7 +561,10 @@ obs_date:The column number for observation date</p>
 path</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>rows:The file data</p></div>
+<dl>
+<dt><code>rows</code></dt>
+<dd>The file data</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -555,7 +577,7 @@ path</dd>
            path: The file  path
 
        Returns:
-           rows:The file data
+           rows: The file data
     &#34;&#34;&#34;
     try:
         with open(path, &#39;r&#39;,encoding=&#39;utf_8_sig&#39;) as f:
@@ -581,11 +603,16 @@ path</dd>
 <dt><strong><code>path</code></strong></dt>
 <dd>The
 path for saving csv files</dd>
+<dt><strong><code>item</code></strong></dt>
+<dd>The data to be saved</dd>
+<dt><strong><code>model</code></strong></dt>
+<dd>The default parameter</dd>
 </dl>
-<p>item:The data to be saved
-model:The default parameter</p>
 <h2 id="returns">Returns</h2>
-<p>True:Omitted</p></div>
+<dl>
+<dt><code>True</code></dt>
+<dd>Omitted</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -596,11 +623,11 @@ model:The default parameter</p>
 
        Args:
            path: The  path for saving csv files
-           item:The data to be saved
-           model:The default parameter
+           item: The data to be saved
+           model: The default parameter
 
        Returns:
-           True:Omitted
+           True: Omitted
     &#34;&#34;&#34;
     while True:
         try:
