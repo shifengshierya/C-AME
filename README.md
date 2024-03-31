@@ -8,22 +8,26 @@ We offer both a **Windows-only** application and the corresponding source code w
 2. **Navigate and Determine Folder Paths**
    - Navigate into the `cameMain` folder.
    - Determine the following folder paths to organize your data:
-     - Raw data folder (support for multiple files processing): Part 1 Input path
-     - Data format standardization results folder: Part 1 Output path
-     - Final results storage folder: Part 2 output path
-   - Note that we have set the default folder 'Raw Data' as the Part 1 Input path with the raw data in it, you need to set two empty folders, such as 'Process Files' and 'Result Files', as Part 1 Output path and Part 2 Output path in cameMain before you run it. 
+     - Raw data folder (support for multiple files processing): Part 1 Input Folder
+     - Data format standardization results folder: Part 1 Output Folder
+     - Processing results storage folder: Part 2 output Folder
+   - Note that we have set the default folder 'Raw Data' as the Part 1 Input Folder with the raw observation data in it to reproduce our method, you need to set two empty folders, such as 'Process Files' and 'Result Files', as Part 1 Output Folder and Part 2 Output Folder  before you run it. 
 3. **Execute the Application**
-   - Double click on the Application file named `cameMain.exe`, which is represented by a blue bird icon. This action will open a terminal window.
-4. **Configure Column Settings**
+   - Double click on the Application file named `cameMain.exe`, which is represented by a blue bird icon. This action will open the software terminal.
+4. **Parameter Settings**
    - Set the three paths you determined in Step 2 within the terminal window.
    - Ensure you select the correct columns for the following data:
      - Latitude
      - Longitude
-     - Obs_date
-     - Observation_count
-   - Note that we have set the default column mappings as follows:
-     - Column Latitude : Column_Obs_date = 8 : 11
-     - Default observation count (Column_Obs_count) is set to 3.
+     - Observation date
+     - Observation count
+   - Note that we have set the default column numbers as follows:
+     - Col# Latitude : Col# Observation Date = 8 : 11
+     - Col# Observation Count= 3.
+   -  Set the EPSG Code to define projection model:
+     - The default value of EPSG: 3857.
+   -  Choose the fitting model for grouped centroids:
+     -  Three alternative models to choose from: GAM, Random Forests, and K-NN
 5. **Run the Application**
    - Click on the "RUN" button to execute the application.
 
@@ -39,10 +43,9 @@ We use Python 3.10 for all the experiments. Install other dependencies via
 pip install -r requirements.txt
 ```
 ### Data Preparation
-We download data from [ebird Basic Dataset](https://ebird.org/data/download). According to Terms of Use about eBird Data Access, we are not allowed to publicly distribute eBird data in their original format. So we recommend to download the full eBird Basic Dataset (World), and process it to select the desired  observations, in our example the Sprague’s Pipit (Anthus spragueii) from Jan. 1st to Dec. 31st in 2018, using the auk package (Strimas et al., 2018) in R version 4.3.1 (R Core Team, 2023).  After saving the filtered data in CSV files, you can get the observation data file. A R script that can help implement the data extraction process above has been provided in the GitHub repository as Data_extraction_with_auk.R for reference. Noted that the EBD is updated monthly, and it’s likely to receive different versions of data，but data selection of eBird checklists can be limited to specific species during a certain time period for your use. The sample dataset is in: 'came'-> 'Raw Data'. Part of the data we use in our work is shown below:
-![data2](https://github.com/shifengshierya/C-AME/assets/50764534/70cac4c9-09ef-4b35-8a9a-dfa65cec966b)
+The raw observation data can be organized into lists, including the species with observation counts, observation dates and locations (latitude and longitude). In our case, raw data for Anthus spragueii, a small songbird in North America, is acquired from eBird and saved in the Part 1 Input Folder for our case study. It includes 2169 records from 2018/1/1 to 2018/12/31, and organized into lists, including common name, scientific name, observation count, country, state, county, latitude, longitude, observation date, and so on. The software tool can also be applied to other time-series latitude and longitude observation data of migratory species from different observation databases, such as GBIF, iNaturalist, the researchers themselves, or integrated data from multiple data sources. 
 
-### Usagethe
+### Usage
 Navigate into the source folder, and run 
 ```bash
 python Part_1_data_format_standardization.py --input_dir {INPUT_DIR} --data_dir {DATA_DIR} --save_dir {SAVE_DIR}
@@ -50,7 +53,7 @@ python Part_1_data_format_standardization.py --input_dir {INPUT_DIR} --data_dir 
 where 
 - `INPUT_DIR` refers to the directory of input data mentioned above (support for multiple files processing)
 - `DATA_DIR` refers to data format standardization results folder
-- `SAVE_DIR` refers to final results storage folder
+- `SAVE_DIR` refers to process results storage folder
 
 Then, you can get the results in the corresponding folders：
 #### Result Files
