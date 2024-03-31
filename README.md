@@ -48,7 +48,7 @@ The raw observation data can be organized into lists, including the species with
 ### Usage
 Navigate into the source folder, and run 
 ```bash
-python Part_1_data_format_standardization.py --input_dir {INPUT_DIR} --data_dir {DATA_DIR} --save_dir {SAVE_DIR} --obs_count {OBS_COUNT} --lat_col {LAT_COL} --obs_date {OBS_DATE} --projection {Projection} 
+python Part_1_data_format_standardization.py --input_dir {INPUT_DIR} --data_dir {DATA_DIR} --save_dir {SAVE_DIR} --obs_count {OBS_COUNT} --lat_col {LAT_COL} --obs_date {OBS_DATE} --projection {PROJECTION} 
 ```
 where 
 - `INPUT_DIR` refers to the directory of input data mentioned above (support for multiple files processing)
@@ -64,19 +64,21 @@ Then, you can get the results in the corresponding folders：
 | Item                               | Description                                                                               |
 |:------------------------------------:|-------------------------------------------------------------------------------------------|
 | `trajectories.jpg`                            | The migration trajectory estimation results                                                  |
-| `off_distance` folder                | The offset distance calculation results and its figure <br> - `d1.csv`-`d13.csv`: the offset distance for each trajectory <br> - `da.csv`: the average offset distance for the species|
-| `speed` folder                       | The speed calculation results and its figure <br> - `s1.csv`-`s13.csv`: the speed for each trajectory <br> - `da.csv`: the average speed for the species|
+| `off_distance` folder                | The offset distance calculation results and its figure <br> - `d1.csv`-`d13.csv`: the offset distance for each group <br> - `OffsetDistancePerDay.png`: the offset distance figure for the species|
+| `speed` folder                       | The speed calculation results and its figure <br> - `s1.csv`-`s13.csv`: the speed for each group <br> - `SpeedPerDay.png`: the speed figure for the species|
 | `ave_disatance.csv` & `avg_distance.png`| The average distance of daily centroids and its figure                                    |
 
 #### Processing Files
 |           Items           |                               Description                               |
 |:-------------------------:|:-----------------------------------------------------------------------:|
-|  initial_data.csv         | The data after data format standardization and interpolation          |
-|  Rolling_window_data.csv  |                The data after rolling window                            |
-|  sldf.csv                 |             The data after SLDF outlier detection                        |
-|  shift.xls                |                  The data after Meanshift algorithm                      |
-|  shift_43110.jpg-shift_43460.jpg | The figures showing the centroids during clustering                |
-|  ni_traj1.xls-ni_traj13.xls     | The centroids coordinates files after grouping                      |
-|  gamLat1.jpg-gamLon13.jpg       | The process figures for Gam algorithm                                |
-|  result1.xls-result13.xls       | The results after Gam algorithm                                      |
+|  Anthus_spragueii.csv     |                The data after data collection                           |
+|  Anthus_spragueii.jpg     |    The figure for raw observation data distribution                     |
+|  initial_data.csv         | The data after data format standardization and interpolation            |
+|  rolling_window_data.csv  |                The data after rolling window                            |
+|  sldf.csv                 |             The data after SLDF outlier detection                       |
+|  centroids.csv            |                  The centroids result by Meanshift algorithm            |
+|  centroids_43110.jpg-centroids_43460.jpg | The centroids figure during clustering                   |
+|  group1.csv-group13.csv     |              The results after centroid grouping                      |
+|  gam1.jpg-gam13.jpg /  randomforest1.jpg-randomforest13.jpg/ KNN1.jpg-KNN13.jpg   |        The fitting process figures for GAM/RF/K-NN algorithm      |
+|  fiitingresult1.csv-fittingresult13.csv       | The fitting results after GAM/RF/KNN algorithm       |
 
