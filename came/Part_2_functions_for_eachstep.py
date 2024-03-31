@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import numpy as np
 import xlwt
 import math
@@ -11,16 +12,24 @@ from sklearn.cluster import MeanShift
 from itertools import cycle
 import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap
+import pandas as pd
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.neighbors import KNeighborsRegressor
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.metrics import mean_squared_error, r2_score
+from data_writes import savecsvs,readcsv,savecsv
 
+projection = 0
 
 
 # WGS84 geographic coordinate system and Web Mercator coordinate system
-crs_WGS84 = CRS.from_epsg(4326)
-crs_WebMercator = CRS.from_epsg(3857)
-cell_size = 0.009330691929342804
-origin_level = 24
-EarthRadius = 6378137.0
-tile_size = 256
+# crs_WGS84 = CRS.from_epsg(4326)
+# crs_WebMercator = CRS.from_epsg(3857)
+# cell_size = 0.009330691929342804
+# origin_level = 24
+# EarthRadius = 6378137.0
+# tile_size = 256
 
 def create_folder(inputpath):
     """
@@ -29,7 +38,7 @@ def create_folder(inputpath):
        Args:
            inputpath: The folder path
 
-        Returns:
+       Returns:
            True: Omitted
     """
     if not os.path.exists(inputpath):
@@ -72,6 +81,140 @@ def get_all_csv(data_path):
                 if fileName[-1] == 'v':
                     all_csv.append(fileName)
     return all_csv
+
+#Coordinate conversion to wgs84
+def projection2wgs84(lat, lon):
+    """
+       This function is for coordinates conversion into  geographical ones
+
+       Args:
+           a: The coordinates of longitude
+           b: The coordinates of latitude
+
+       Returns:
+           lon: The geographical coordinates of longitude
+           lat: The geographical coordinates of latitude
+    """
+    global projection
+    crs_WGS84 = CRS.from_epsg(4326)
+    crs_projection = CRS.from_epsg(projection)
+    transformer = Transformer.from_crs(crs_projection, crs_WGS84)
+    m, n = transformer.transform(lat, lon)
+    return n, m
+
+
+#Coordinate conversion from wgs84 to 2D projection
+def wgs84toprojection(lat, lon):
+    global projection
+    """
+       This function is for coordinates conversion 
+
+       Args:
+           lat: The geographical coordinates of latitude
+           lon: The geographical coordinates of longitude
+
+       Returns:
+           m: The coordinates of latitude after conversion
+           n: The coordinates of longitude after conversion
+    """
+    crs_WGS84 = CRS.from_epsg(4326)
+    crs_projection = CRS.from_epsg(projection)
+    transformer = Transformer.from_crs(crs_WGS84, crs_projection)
+    m, n = transformer.transform(lat, lon)
+    return n, m
+
+
+# Data preprocessing: Coordinates conversion
+def get_initial_data(x,y,date,length,projection1):
+    global projection
+    projection = projection1
+    """
+       This function is for converting the geographical coordinates 
+
+       Args:
+           x: The geographical coordinates of latitude
+           y: The geographical coordinates of longitude
+           date: The observation date
+           length: The length of the data
+           projection1: The EPSG code
+
+       Returns:
+           initial_data: The coordinates after converting
+    """
+    initial_data = []
+    initial_data.append(["LATITUDE", "LONGITUDE", "OBSERVATION DATE"])
+    for i in range(length):
+        result = wgs84toprojection(x[i], y[i])
+        initial_data.append([result[0], result[1], date[i]])
+
+    return initial_data
+
+#Data preprocessing: Interpolation for missing date
+def interpolation(date,length,initial_data):
+    """
+       This function is to finish interpolation for missing dates
+
+       Args:
+           date: The observation date
+           length: The length of the data
+           initial_data: The data after coordinates conversion
+
+       Returns:
+           initial_data: The data results after interpolation
+    """
+    k = 43101
+    lose_date = []
+    now_date = []
+    all_date = [i for i in range(k, k + 365)]
+    for i in range(length):
+        now_date.append(date[i])
+    for i in all_date:
+        if i not in now_date:
+            lose_date.append(i)
+    # print(lose_date)
+
+
+    for lose in lose_date:
+        x = []
+        y = []
+        for data in initial_data:
+            if data[2] == "OBSERVATION DATE":
+                continue
+            if 0 < lose - int(data[2]) <= 2:
+                x.append(data[0])
+                y.append(data[1])
+        initial_data.append([sum(x) / len(x), sum(y) / len(y), lose])
+    return initial_data
+
+##Data preprocessing:Smooth the data by rolling window algorithm with window length=7
+def rolling_window(initial_data,save_path,csv_name):
+    """
+       This function is for rolling_window algorithm
+
+       Args:
+           initial_data: The data after interpolation
+           save_path: The path for saving the result file
+           csv_name: The species name being processed
+
+       Returns:
+           rolling_window_data_df: The data results after rolling_window
+    """
+    Rolling_window_data = []
+    Rolling_window_data.append(["LATITUDE", "LONGITUDE", "OBSERVATION DATE"])
+
+    k = 43101
+    for i in range(k, k + 365):
+        for data in initial_data:
+            if data[2] == "OBSERVATION DATE":
+                continue
+            if -3 < data[2] - i <= 3:
+                Rolling_window_data.append([data[0], data[1], i])
+
+    # window_data_df = pd.DataFrame(window_data, columns=False)
+    # window_data_df.to_csv('426.csv', index=False)
+    Rolling_window_data_df = pd.DataFrame(Rolling_window_data[1:], columns=Rolling_window_data[0])
+    Rolling_window_data_df.to_csv(os.path.join(save_path, csv_name.replace('.csv',''), 'rolling_window_data.csv'), index=False)
+    return Rolling_window_data_df
 
 #sldf() for outlier detection
 def sldf(x):
@@ -157,218 +300,6 @@ def sldf(x):
     result = np.concatenate((x[selected_index], SLDF_new[:, np.newaxis]), axis=1)
     return result
 
-def data_write(file_path, datas):
-    """
-       This function is for saving files
-
-       Args:
-           file_path: The path for saving files
-           datas: The data to be saved
-
-       Returns:
-           True: Omitted
-    """
-    f = xlwt.Workbook()
-    sheet1 = f.add_sheet(u'sheet1', cell_overwrite_ok=True)  # Create a sheet
-    i = 0
-    for data in datas:
-        for j in range(len(data)):
-            sheet1.write(i, j, str(data[j]))
-        i = i + 1
-    f.save(file_path)
-
-
-#Coordinate conversion from Web Mercator to wgs84
-def webmercator2wgs84(a, b):
-    """
-       This function is for Web Mercator coordinates conversion into  geographical ones
-
-       Args:
-           a: The Web Mercator coordinates of longitude
-           b: The Web Mercator coordinates of latitude
-
-       Returns:
-           lon: The geographical coordinates of longitude
-           lat: The geographical coordinates of latitude
-    """
-    lon = a / 20037508.34 * 180
-    lat = b / 20037508.34 * 180
-    lat = 180 / math.pi * (2 * math.atan(math.exp(lat * math.pi / 180)) - math.pi / 2)
-    return lon, lat
-
-# def gam_pic(gam,data,save_path,key):
-def gam_pic(gam,save_path,csv_name,key,x_y):
-    """
-       This function is for drawing the gam figures
-
-       Args:
-           gam: The usage of gam model
-           save_path: The path for saving the result file
-           csv_name: The species name being processed
-           key: The number for file naming
-           x_y: The choice for Lat or Lon when file naming
-
-       Returns:
-           True: Omitted
-    """
-    XX = gam.generate_X_grid(term=0, n=365)
-    # plt.scatter([data for data in range(364)], data, color='b', marker='o')
-    plt.plot(XX[:, 0], gam.partial_dependence(term=0, X=XX))
-    plt.plot(XX[:, 0], gam.partial_dependence(term=0, X=XX, width=.95)[1], c='r', ls='--')
-    plt.xlabel('Date', labelpad=10)
-    plt.ylabel(x_y)
-
-    # plt.show()
-    plt.savefig(os.path.join(save_path, csv_name.replace('.csv', ''), 'gam{}{}.jpg'.format(x_y,key + 1)))
-    plt.close()
-
-#gam() for fitting longitude and latitude in Web Mercator system with time; Coordinate conversion from WebMercator to wgs84 with webmercator2wgs84() 
-def gam(save_path, csv_name,key):
-    """
-       This function is for gam algorithm
-
-       Args:
-           save_path: The path for saving the result file
-           csv_name: The species name being processed
-           key: The number for file naming
-
-       Returns:
-           Lon: The longitude after gam algorithm
-           Lat: The latitude after gam algorithm
-
-    """
-    df = pd.read_excel(os.path.join(save_path, csv_name.replace('.csv',''), 'ni_traj{}.xlsx'.format(key + 1)), sheet_name='Sheet1')
-    date = df["date"]
-    x = df["X"]
-    y = df["Y"]
-    gam_model = LinearGAM().fit(date, x)
-    gam_pic(gam_model,save_path,csv_name,key,'Lat')
-    predictions_x = gam_model.predict(date)
-    gam_model = LinearGAM().fit(date, y)
-    gam_pic(gam_model, save_path,csv_name, key, 'Lon')
-    predictions_y = gam_model.predict(date)
-    datas = [["X*", "Y*","date"]]
-    # datas = []
-    for i in range(len(x)):
-        datas.append([predictions_x[i], predictions_y[i],date[i]])
-    data_write(os.path.join(save_path, csv_name.replace('.csv',''), 'result_{}.xls'.format(key + 1)), datas)
-    
-#Coordinate conversion from WebMercator to wgs84 
-    Lat = []
-    Lon = []
-    for i in range(len(x)):
-        res = webmercator2wgs84(predictions_y[i], predictions_x[i])
-        Lon.append(res[0])
-        Lat.append(res[1])
-    return Lon, Lat
-
-#Coordinate conversion from wgs84 to WebMercator
-def wgs84towebmercator_single(lat, lon):
-    """
-       This function is for coordinates conversion into Web Mercator ones
-
-       Args:
-           lat: Latitude data
-           lon: Longitude data
-
-       Returns:
-           m: The Web Mercator coordinates of latitude
-           n: The Web Mercator coordinates of longitude
-    """
-    transformer = Transformer.from_crs(crs_WGS84, crs_WebMercator)
-    m, n = transformer.transform(lat, lon)
-    return n, m
-
-
-# Data preprocessing: convert original latitude and longitude data to Web Mercator coordinates with wgs84towebmercator_Single()
-def get_initial_data(x,y,date,length):
-    """
-       This function is for converting the geographical coordinates into Web Mercator ones
-
-       Args:
-           x: Latitude data
-           y: Longitude data
-           date: The observation date
-           length: The length of the data
-
-       Returns:
-           initial_data: The Web Mercator coordinates after converting
-    """
-    initial_data = []
-    initial_data.append(["LATITUDE", "LONGITUDE", "OBSERVATION DATE"])
-    for i in range(length):
-        result = wgs84towebmercator_single(x[i], y[i])
-        initial_data.append([result[0], result[1], date[i]])
-
-    return initial_data
-
-#Data preprocessing: Interpolation for missing data
-def interpolation(date,length,initial_data):
-    """
-       This function is to finish interpolation for missing data
-
-       Args:
-           date: The observation date
-           length: The length of the data
-           initial_data: The data after coordinates conversion
-
-       Returns:
-           initial_data: The data results after interpolation
-    """
-    k = 43101
-    lose_date = []
-    now_date = []
-    all_date = [i for i in range(k, k + 365)]
-    for i in range(length):
-        now_date.append(date[i])
-    for i in all_date:
-        if i not in now_date:
-            lose_date.append(i)
-    # print(lose_date)
-
-
-    for lose in lose_date:
-        x = []
-        y = []
-        for data in initial_data:
-            if data[2] == "OBSERVATION DATE":
-                continue
-            if 0 < lose - int(data[2]) <= 2:
-                x.append(data[0])
-                y.append(data[1])
-        initial_data.append([sum(x) / len(x), sum(y) / len(y), lose])
-    return initial_data
-
-##Data preprocessing:Smooth the data by rolling window algorithm with window width=7
-def rolling_window(initial_data,save_path,csv_name):
-    """
-       This function is for rolling_window algorithm
-
-       Args:
-           initial_data: The data after interpolation
-           save_path: The path for saving the result file
-           csv_name: The species name being processed
-
-       Returns:
-           rolling_window_data_df: The data results after rolling_window
-    """
-    Rolling_window_data = []
-    Rolling_window_data.append(["LATITUDE", "LONGITUDE", "OBSERVATION DATE"])
-
-    k = 43101
-    for i in range(k, k + 365):
-        for data in initial_data:
-            if data[2] == "OBSERVATION DATE":
-                continue
-            if -3 < data[2] - i <= 3:
-                Rolling_window_data.append([data[0], data[1], i])
-
-    # window_data_df = pd.DataFrame(window_data, columns=False)
-    # window_data_df.to_csv('426.csv', index=False)
-    Rolling_window_data_df = pd.DataFrame(Rolling_window_data[1:], columns=Rolling_window_data[0])
-    Rolling_window_data_df.to_csv(os.path.join(save_path, csv_name.replace('.csv',''), 'Rolling_window_data.csv'), index=False)
-    return Rolling_window_data_df
-
 #Data preprocessing:Outlier detectiobn through SLDF
 def get_sldf(window_data_df,save_path,csv_name):
     """
@@ -410,7 +341,7 @@ def get_sldf(window_data_df,save_path,csv_name):
 #Trajectory estimation: Get daily population centroids by Meanshift algorithm
 def mean_shift(SLDF_df,save_path,csv_name):
     """
-       This function is for getting daily population centroids by Meanshift algorithm
+       This function is for getting centroids of high-density subpopulations by Meanshift algorithm
 
        Args:
            SLDF_df: The data after sldf outlier detection
@@ -418,8 +349,7 @@ def mean_shift(SLDF_df,save_path,csv_name):
            csv_name: The species name being processed
 
         Returns:
-           result: The data results after meanshift clustering
-           
+           result: The data results after Meanshift clustering
     """
     # datas = pd.read_excel('data/clean_window_data.xlsx')
     datas = SLDF_df.drop(['SLDF'], axis=1)
@@ -459,18 +389,18 @@ def mean_shift(SLDF_df,save_path,csv_name):
                          markeredgecolor='k',
                          markersize=14)
 
-                plt.xlabel('Latitude in Mercator system(meter)')
+                plt.xlabel('Latitude(meter)')
 
-                plt.ylabel('Longitude in Mercator system(meter)')
+                plt.ylabel('Longitude(meter)')
             # plt.show()
-            plt.savefig(os.path.join(save_path, csv_name.replace('.csv', ''), 'shift_{}.jpg'.format(date)), dpi=1000)
+            plt.savefig(os.path.join(save_path, csv_name.replace('.csv', ''), 'centroids_{}.jpg'.format(date)), dpi=1000)
             plt.close()
     return result
 
 #Trajectory estimation: Group the daily population centroids according to the minimum distance principle
 def group(csv_path,save_path,csv_name):
     """
-       This function is for grouping the daily population centroids
+       This function is for grouping the daily subpopulation centroids based on the minimum distance
 
        Args:
            csv_path: The path for the data file after Meanshift algorithm
@@ -478,13 +408,13 @@ def group(csv_path,save_path,csv_name):
            csv_name: The species name being processed
 
        Returns:
-            True: Omitted
+           True: Omitted
 
     """
     A1 = np.array([[0], [0]])
     A3 = np.array([[0], [0]])
 
-    datas = pd.read_excel(csv_path)
+    datas = pd.read_csv(csv_path)
     #datas = datas.iloc[1:, :]
 
     result_list = []
@@ -638,23 +568,287 @@ def group(csv_path,save_path,csv_name):
 
     for key, value in guiji.items():
         value = np.hstack((np.array(value), np.arange(1, len(value) + 1).reshape((len(value), 1))))
-        df = pd.DataFrame(value)
-        names = ['X', 'Y', 'date']
-        df.columns = names
-        df.to_excel(os.path.join(save_path, csv_name.replace('.csv',''), 'ni_traj{}.xlsx'.format(key + 1)), sheet_name='Sheet1', index=False)
+        df1 = value.tolist()
+        # df = pd.DataFrame(value)
+        names = [['X', 'Y', 'date_index']] + df1
+        # df.columns = names
+        # df.to_excel(os.path.join(save_path, csv_name.replace('.csv',''), 'ni_traj{}.xlsx'.format(key + 1)), sheet_name='Sheet1', index=False)
+        savecsvs(os.path.join(save_path, csv_name.replace('.csv',''), 'group{}.csv'.format(key + 1)),names)
+
+#Fitting longitude and latitude with time repectively with GAM
+def gam(save_path, csv_name, key):
+    """
+       This function is for gam algorithm
+
+       Args:
+           save_path: The path for saving the result file
+           csv_name: The species name being processed
+           key: The number for file naming
+
+       Returns:
+           Lon: The longitude after GAM fitting
+           Lat: The latitude after GAM fitting
+    """
+    df = pd.read_csv(os.path.join(save_path, csv_name.replace('.csv', ''), 'group{}.csv'.format(key + 1)))
+    date = df["date_index"]
+    x = df["X"]
+    y = df["Y"]
+    xx = df["date_index"]
+    xx = xx + 43100
+
+
+    gam_model_x = LinearGAM().fit(date, x)
+    gam_model_y = LinearGAM().fit(date, y)
+
+    predictions_x = gam_model_x.predict(date)
+    predictions_y = gam_model_y.predict(date)
+
+    # Draw the pictures
+    plt.figure(figsize=(16, 8))
+    plt.subplot(1, 2, 1)
+    plt.scatter(xx, y, color='darkorange', label='data')
+    plt.plot(xx, predictions_y, color='navy', lw=2, label='GAM')
+    # plt.plot(X_all, y_gb_longitude_pred, color='c', lw=2, label='Gradient Boosting')
+    plt.xlabel('Date')
+    plt.ylabel('Longitude(meter)')
+    #plt.title('Longitude')
+    plt.legend()
+
+    plt.subplot(1, 2, 2)
+    plt.scatter(xx, x, color='darkorange', label='data')
+    plt.plot(xx, predictions_x, color='navy', lw=2, label='GAM')
+    # plt.plot(X_all, y_gb_latitude_pred, color='c', lw=2, label='Gradient Boosting')
+    plt.xlabel('Date')
+    plt.ylabel('Latitude(meter)')
+    #plt.title('Latitude')
+    plt.legend()
+    plt.tight_layout()
+    # plt.show()
+    plt.savefig(os.path.join(save_path, csv_name.replace('.csv', ''), 'gam{}.jpg'.format(key + 1)))
+    plt.close()
+
+    # Calculate the indexes
+    mse_longitude = mean_squared_error(y, predictions_y)
+    mse_latitude = mean_squared_error(x, predictions_x)
+
+    rmse_longitude = np.sqrt(mse_longitude)
+    rmse_latitude = np.sqrt(mse_latitude)
+
+    r2_score_longitude = r2_score(y, predictions_y)
+    r2_score_latitude = r2_score(x, predictions_x)
+    try:
+        readcsv(save_path + csv_name.replace('.csv', '') + '/{}.csv'.format('evaluation_index'))
+    except:
+        savecsv(save_path + csv_name.replace('.csv', '') + '/{}.csv'.format('evaluation_index'),
+                ['mse_longitude', 'mse_latitude', 'rmse_longitude', 'rmse_latitude', 'r2_score_longitude',
+                 'r2_score_latitude'])
+    savecsv(save_path + csv_name.replace('.csv', '') + '/{}.csv'.format('evaluation_index'),
+            [mse_longitude, mse_latitude, rmse_longitude, rmse_latitude, r2_score_longitude, r2_score_latitude])
+
+    datas = [["X*", "Y*", "date_index"]]
+    # datas = []
+    for i in range(len(x)):
+        datas.append([predictions_x[i], predictions_y[i], date[i]])
+    # data_write(os.path.join(save_path, csv_name.replace('.csv', ''), 'result_{}.xls'.format(key + 1)), datas)
+    savecsvs(os.path.join(save_path, csv_name.replace('.csv', ''), 'fitting_result{}.csv'.format(key + 1)), datas)
+
+    # Coordinate conversion to wgs84
+    Lon,Lat = projection2wgs84(predictions_y,predictions_x)
+    return Lon, Lat
+
+
+#Fitting longitude and latitude with time repectively with RandomForests
+def randomforest(save_path, csv_name,key):
+    """
+       This function is for Random forests algorithm
+
+       Args:
+           save_path: The path for saving the result file
+           csv_name: The species name being processed
+           key: The number for file naming
+
+       Returns:
+           Lon: The longitude after Random Forests algorithm
+           Lat: The latitude after Random Forests algorithm
+
+    """
+    df = pd.read_csv(os.path.join(save_path, csv_name.replace('.csv', ''), 'group{}.csv'.format(key + 1)))
+    date = df["date_index"]
+    xx = df["date_index"]
+    xx = xx + 43100
+
+    X = df[['date_index']]  # Features (date)
+    y_longitude = df['Y']  # Target variable (longitude)
+    y_latitude = df['X']  # Target variable (latitude)
+
+    # Train the model
+    rf_longitude = RandomForestRegressor(n_estimators=100, random_state=42)
+    rf_latitude = RandomForestRegressor(n_estimators=100, random_state=42)
+    rf_longitude.fit(X, y_longitude)
+    rf_latitude.fit(X, y_latitude)
+
+    y_rf_longitude_pred = rf_longitude.predict(X)
+    y_rf_latitude_pred = rf_latitude.predict(X)
+
+
+    # Draw the pictures
+    plt.figure(figsize=(16, 8))
+    plt.subplot(1, 2, 1)
+    plt.scatter(xx, y_longitude, color='darkorange', label='data')
+    plt.plot(xx, y_rf_longitude_pred, color='navy', lw=2, label='Random Forest')
+    # plt.plot(X_all, y_gb_longitude_pred, color='c', lw=2, label='Gradient Boosting')
+    plt.xlabel('Date')
+    plt.ylabel('Longitude(meter)')
+    #plt.title('Longitude')
+    plt.legend()
+
+    plt.subplot(1, 2, 2)
+    plt.scatter(xx, y_latitude, color='darkorange', label='data')
+    plt.plot(xx, y_rf_latitude_pred, color='navy', lw=2, label='Random Forest')
+    # plt.plot(X_all, y_gb_latitude_pred, color='c', lw=2, label='Gradient Boosting')
+    plt.xlabel('Date')
+    plt.ylabel('Latitude(meter)')
+    #plt.title('Latitude')
+    plt.legend()
+    plt.tight_layout()
+    # plt.show()
+    plt.savefig(os.path.join(save_path, csv_name.replace('.csv', ''), 'randomforest{}.jpg'.format(key + 1)))
+    plt.close()
+
+
+    # Calculate the indexes
+    mse_longitude = mean_squared_error(y_longitude, y_rf_longitude_pred)
+    mse_latitude = mean_squared_error(y_latitude, y_rf_latitude_pred)
+
+    rmse_longitude = np.sqrt(mse_longitude)
+    rmse_latitude = np.sqrt(mse_latitude)
+
+    r2_score_longitude = r2_score(y_longitude, y_rf_longitude_pred)
+    r2_score_latitude = r2_score(y_latitude, y_rf_latitude_pred)
+    try:
+        readcsv(save_path + csv_name.replace('.csv','') + '/{}.csv'.format('evaluation_index'))
+    except:
+        savecsv(save_path + csv_name.replace('.csv', '') + '/{}.csv'.format('evaluation_index'),
+                ['mse_longitude', 'mse_latitude', 'rmse_longitude', 'rmse_latitude', 'r2_score_longitude', 'r2_score_latitude'])
+    savecsv(save_path + csv_name.replace('.csv','') + '/{}.csv'.format('evaluation_index'),
+            [mse_longitude,mse_latitude,rmse_longitude,rmse_latitude,r2_score_longitude,r2_score_latitude])
+
+
+    datas = [["X*", "Y*","date_index"]]
+    # datas = []
+    for i in range(len(date)):
+        datas.append([y_rf_latitude_pred[i], y_rf_longitude_pred[i],date[i]])
+    # data_write(os.path.join(save_path, csv_name.replace('.csv',''), 'result_{}.xls'.format(key + 1)), datas)
+    savecsvs(os.path.join(save_path, csv_name.replace('.csv',''), 'fitting_result{}.csv'.format(key + 1)), datas)
+
+#Coordinate conversion to wgs84
+
+    Lon, Lat = projection2wgs84(y_rf_longitude_pred, y_rf_latitude_pred)
+    return Lon, Lat
+
+#Fitting longitude and latitude with time repectively with KNN
+def knn(save_path, csv_name,key):
+    """
+       This function is for KNN algorithm
+
+       Args:
+           save_path: The path for saving the result file
+           csv_name: The species name being processed
+           key: The number for file naming
+
+       Returns:
+           Lon: The longitude after KNN fitting
+           Lat: The latitude after KNN fitting
+
+    """
+
+    df = pd.read_csv(os.path.join(save_path, csv_name.replace('.csv', ''), 'group{}.csv'.format(key + 1)))
+    date = df["date_index"]
+    xx = df["date_index"]
+    xx = xx + 43100
+
+    X = df[['date_index']]  # Features (date)
+    y_longitude = df['Y']  # Target variable (longitude)
+    y_latitude = df['X']  # Target variable (latitude)
+
+
+    # Train the model
+    knn_longitude = KNeighborsRegressor(n_neighbors=5)
+    knn_latitude = KNeighborsRegressor(n_neighbors=5)
+    knn_longitude.fit(X, y_longitude)
+    knn_latitude.fit(X, y_latitude)
+
+    y_knn_longitude_pred = knn_longitude.predict(X)
+    y_knn_latitude_pred = knn_latitude.predict(X)
+
+    # Draw the pictures
+    plt.figure(figsize=(16, 8))
+    plt.subplot(1, 2, 1)
+    plt.scatter(xx, y_longitude, color='darkorange', label='data')
+    plt.plot(xx, y_knn_longitude_pred, color='navy', lw=2, label='KNN')
+    # plt.plot(X_all, y_gb_longitude_pred, color='c', lw=2, label='Gradient Boosting')
+    plt.xlabel('Date')
+    plt.ylabel('Longitude(meter)')
+    #plt.title('Longitude')
+    plt.legend()
+
+    plt.subplot(1, 2, 2)
+    plt.scatter(xx, y_latitude, color='darkorange', label='data')
+    plt.plot(xx, y_knn_latitude_pred, color='navy', lw=2, label='KNN')
+    # plt.plot(X_all, y_gb_latitude_pred, color='c', lw=2, label='Gradient Boosting')
+    plt.xlabel('Date')
+    plt.ylabel('Latitude(meter)')
+    #plt.title('Latitude')
+    plt.legend()
+    plt.tight_layout()
+    # plt.show()
+    plt.savefig(os.path.join(save_path, csv_name.replace('.csv', ''), 'KNN{}.jpg'.format(key + 1)))
+    plt.close()
+
+    # Calculate the indexes
+    mse_longitude = mean_squared_error(y_longitude, y_knn_longitude_pred)
+    mse_latitude = mean_squared_error(y_latitude, y_knn_latitude_pred)
+
+    rmse_longitude = np.sqrt(mse_longitude)
+    rmse_latitude = np.sqrt(mse_latitude)
+
+    r2_score_longitude = r2_score(y_longitude, y_knn_longitude_pred)
+    r2_score_latitude = r2_score(y_latitude, y_knn_latitude_pred)
+    try:
+        readcsv(save_path + csv_name.replace('.csv', '') + '/{}.csv'.format('evaluation_index'))
+    except:
+        savecsv(save_path + csv_name.replace('.csv', '') + '/{}.csv'.format('evaluation_index'),
+                ['mse_longitude', 'mse_latitude', 'rmse_longitude', 'rmse_latitude', 'r2_score_longitude',
+                 'r2_score_latitude'])
+    savecsv(save_path + csv_name.replace('.csv', '') + '/{}.csv'.format('evaluation_index'),
+            [mse_longitude, mse_latitude, rmse_longitude, rmse_latitude, r2_score_longitude, r2_score_latitude])
+
+
+    datas = [["X*", "Y*","date_index"]]
+    # datas = []
+    for i in range(len(date)):
+        datas.append([y_knn_latitude_pred[i], y_knn_longitude_pred[i],date[i]])
+    # data_write(os.path.join(save_path, csv_name.replace('.csv',''), 'result_{}.xls'.format(key + 1)), datas)
+    savecsvs(os.path.join(save_path, csv_name.replace('.csv',''), 'fitting_result{}.csv'.format(key + 1)), datas)
+
+#Coordinate conversion to wgs84
+
+    Lon, Lat = projection2wgs84(y_knn_longitude_pred, y_knn_latitude_pred)
+    return Lon, Lat
 
 #Trajectory estimation: Show the estimation results on the map
-def map_1(save_path,csv_name):
+def map_1(save_path,csv_name,type_name):
     """
-       This function is for showing the result figure on the map
+       This function is for showing the trajectories on the map
 
        Args:
            save_path: The path for storing the result figures
            csv_name: The name of the species to be processed
+           type_name: The fitting model chosen for centroids fitting
 
        Returns:
            True: Omitted
-           
+
     """
     # plt.rcParams['figure.figsize'] = (28, 8)
     # plt.show()
@@ -662,13 +856,19 @@ def map_1(save_path,csv_name):
     excel_list = os.listdir(os.path.join(save_path, csv_name.replace('.csv', '')))
     excel_list1 = []
     for csv_excel in excel_list:
-        if 'ni_traj' in csv_excel:
+        if 'group' in csv_excel:
             excel_list1.append(csv_excel)
 
     LON = []
     LAT = []
     for i in range(len(excel_list1)):
-        Lon, Lat = gam(save_path, csv_name, i)
+        if type_name == 'gam':
+            Lon, Lat = gam(save_path, csv_name, i)
+        elif type_name == 'randomforest':
+            Lon, Lat = randomforest(save_path, csv_name, i)
+        elif type_name == 'knn':
+            Lon, Lat = knn(save_path, csv_name, i)
+
         LON.append(Lon)
         LAT.append(Lat)
 
@@ -689,7 +889,7 @@ def map_1(save_path,csv_name):
         label = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
                  'November', 'December']
 
-        marker = ['x', 'o', '.', '+', '<', '_', '^', 'v', 'H', '|', 's', '*','x', 'o', '.', '+', '<', '_', '^', 'v','x', 'o', '.', '+', '<', '_', '^', 'v']
+        marker = ['x', '.', 'o', '|', '*', '.', '<', '>', ',', '.', '.', 'v', 'x', 'o', '|', '*', '<', '^', '.', '*', 'v', '*', ',', 'y', '.', '.', '.', '.']
         j = 0
         # print(len(lon))
         flag = True
@@ -725,7 +925,7 @@ def map_1(save_path,csv_name):
 
     plt.xlabel('Lon', labelpad=10)
     plt.ylabel('Lat')
-    plt.savefig(os.path.join(save_path, csv_name.replace('.csv', ''), 'map.jpg'), dpi=1000)
+    plt.savefig(os.path.join(save_path, csv_name.replace('.csv', ''), 'trajectories.jpg'), dpi=1000)
     # plt.show()
     plt.close()
 

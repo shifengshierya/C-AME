@@ -8,68 +8,24 @@ from mpl_toolkits.basemap import Basemap
 import numpy as np
 import matplotlib.pyplot as plt
 from Part_2_main_trajectory_estiamtion import part2
+from datetime import datetime
+from data_writes import readcsv,savecsv
 
 
-# beginDate, endDate are datetime format like"20180101"
+# Get the datalist
 def datelist(beginDate, endDate):
     """
-        This function is for getting the datelist
+       This function is for getting the datelist
 
-        Args:
-            beginDate: The beginning date in the datelist
-            endDate: The end date in the datelist
+       Args:
+           beginDate: The beginning date in the datelist
+           endDate: The end date in the datelist
 
-        Returns:
-            date_l: The datelist result
+       Returns:
+           date_l: The datelist result
     """
     date_l=[datetime.strftime(x,'%Y-%m-%d') for x in list(pd.date_range(start=beginDate, end=endDate))]
     return date_l
-
-def readcsv(path):
-    """
-       This function is for reading csv files
-
-       Args:
-           path: The file  path
-
-       Returns:
-           rows: The file data
-    """
-    try:
-        with open(path, 'r',encoding='utf_8_sig') as f:
-        #with open(path, 'r',encoding='gb18030') as f:
-            reader = csv.reader(f)
-            rows = [row for row in reader]
-        return rows
-    except:
-        #with open(path, 'r',encoding='utf_8_sig') as f:
-        with open(path, 'r',encoding='gb18030') as f:
-            reader = csv.reader(f)
-            rows = [row for row in reader]
-        return rows
-
-def savecsv(path,item,model = 'a'):
-    """
-       This function is for saving csv files
-
-       Args:
-           path: The  path for saving csv files
-           item: The data to be saved
-           model: The default parameter
-
-       Returns:
-           True: Omitted
-    """
-    while True:
-        try:
-            with open(path, model, encoding='utf_8_sig', newline='') as f:
-            #with open(path, model, encoding='gb18030', newline='') as f:
-                w = csv.writer(f)
-                w.writerow(item)
-                return True
-        except:
-            print('Close')
-            time.sleep(1)
 
 #Read the names of all files and folders within the directory
 def file_names(inputpath):
@@ -91,10 +47,10 @@ def file_names(inputpath):
 #Show the raw data
 def map_2(save_path,csv_name):
     """
-       This function is for showing the raw data on the map
+       This function is for showing the distribution of raw observation data on the map
 
        Args:
-           save_path: Path for storing the raw data figures
+           save_path: Path for storing the raw data distribution figures
            csv_name: Name of the species to be processed
 
        Returns:
@@ -164,34 +120,28 @@ def map_2(save_path,csv_name):
     # plt.show()
     plt.close()
 
-def main(path1='./RawData/', path2='./ProcessFiles/', save_path='./ResultFiles/', obs_count=3,lat_col=8,obs_date=11):
+def main(path1='./RawData/', path2='./ProcessFiles/', save_path='./ResultFiles/', obs_count=3,lat_col=8,obs_date=11,projection=3857):
     """
-       This function is for data format standardization
+       This function is for data format standardization and EPSG code setting
 
        Args:
-           path1: The directory of input data mentioned above (support for multiple files processing)
+           path1: Raw observation data folder (support for multiple files processing)
            path2: Data format standardization results folder
-           save_path: Final results storage folder
+           save_path: Processing results storage folder
            obs_count: The column number for observation count
            lat_col: The column number for latitude
            obs_date: The column number for observation date
+           projection: The EPSG code setting
 
        Returns:
            True: Omitted
      """
-    #Absolute path
-    # path1 = './2018/'
-    # path2 = './source/'
-    #Terminal
-    # path1 = input('Please set part1 input folder ')
-    # path1 = path1 + '/'
-    # path2 = input('Please set part1 output folder')
-    # path2 = path2 + '/'
+
 
     year = '2018'
     date_list = datelist(f"{year}-01-01", f"{year}-12-31")
 
-#Datetime format standardization: 20180101 corresponds to 43101
+#Datetime format standardization
     date1 = {}
     num = 43101
     for date in date_list:
@@ -210,8 +160,14 @@ def main(path1='./RawData/', path2='./ProcessFiles/', save_path='./ResultFiles/'
 #Perform quantity correction according to observation count
         data2 = []
         for datas in datalist:
-            ctime = '2018' + datas[3][4:]
-            ctime = date1[ctime]
+            try:
+                ctime = '2018' + datas[3][4:]
+                ctime = date1[ctime]
+            except:
+                date_obj = datetime.strptime(datas[3], '%Y/%m/%d')
+                new_date_str = date_obj.strftime('%Y-%m-%d')
+                ctime = '2018' + new_date_str[4:]
+                ctime = date1[ctime]
             datas[3] = ctime
             if datas[0] == 'X':
                 num = 1
@@ -231,7 +187,7 @@ def main(path1='./RawData/', path2='./ProcessFiles/', save_path='./ResultFiles/'
         map_2(path2, csv_list[i])
         print(csv_list[i])
     print('Part 1 finished')
-    part2(path2, save_path)
+    part2(projection,path2, save_path)
 
 
 

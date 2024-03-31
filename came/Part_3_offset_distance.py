@@ -3,9 +3,8 @@ import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
 import os
-import csv
-import time
 from Part_2_functions_for_eachstep import create_folder
+from data_writes import data_write,savecsvs,readcsv
 
 def file_names(inputpath):
     """
@@ -24,51 +23,6 @@ def file_names(inputpath):
         namelist.append([i, j, k])
     return namelist
 
-def savecsvs(path,item,model = 'a'):
-    """
-        This function is for saving csv files
-
-       Args:
-           path: The  path for saving csv files
-           item: The data to be saved
-           model: The default parameter
-
-       Returns:
-           True: Omitted
-           
-    """
-    while True:
-        # try:
-        with open(path, model, encoding='utf_8_sig', newline='') as f:
-        #with open(path, model, encoding='gb18030', newline='') as f:
-            w = csv.writer(f)
-            w.writerows(item)
-            return True
-
-def savecsv(path,item,model = 'a'):
-    """
-       This function is for saving csv files
-
-       Args:
-           path: The  path for saving csv files
-           item: The data to be saved
-           model: The default parameter
-
-       Returns:
-           True: Omitted
-           
-    """
-    while True:
-        try:
-            with open(path, model, encoding='utf_8_sig', newline='') as f:
-            #with open(path, model, encoding='gb18030', newline='') as f:
-                w = csv.writer(f)
-                w.writerow(item)
-                return True
-        except:
-            print('Close the table or the program cannot write')
-            time.sleep(1)
-
 def get_file_list(path):
     """
        This function is for getting file lists
@@ -77,7 +31,7 @@ def get_file_list(path):
            path: The  path for files
 
        Returns:
-            file_list: The file list
+           file_list: The file list
             
     """
 
@@ -112,18 +66,18 @@ def calculate_distance(path_list):
     """
        This function is for getting migration axis and  offset distance
 
-      Args:
-         path_list: The files in the path
+       Args:
+           path_list: The files in the path
 
-      Returns:
-          list11: The offset distances
+       Returns:
+           list11: The offset distances
           
     """
     list_distance = []
     for l in path_list:
         name1 = os.path.basename(l)
-        if name1[0] == 'r':
-            tmp = pd.read_excel(l, header=None)
+        if name1[:2] == 'fi':
+            tmp = pd.read_csv(l, header=None)
             list_distance.append(tmp)
 
     mean_x = []
@@ -143,8 +97,8 @@ def calculate_distance(path_list):
     max_list_y = []
     for r in path_list:
         name1 = os.path.basename(r)
-        if name1[0:2] == 're':
-            tmp = pd.read_excel(r, header=None)
+        if name1[0:2] == 'fi':
+            tmp = pd.read_csv(r, header=None)
             for l in range(1,365):
                 x1 = float(tmp.iloc[1, 0])
                 y1 = float(tmp.iloc[1, 1])
@@ -173,8 +127,8 @@ def calculate_distance(path_list):
     for r in path_list:
         list_tmp = []
         name1 = os.path.basename(r)
-        if name1[0:2] == 're':
-            tmp = pd.read_excel(r, header=None)
+        if name1[0:2] == 'fi':
+            tmp = pd.read_csv(r, header=None)
             for p in range(1,365):
                 x = float(tmp.iloc[p, 0])
                 y = float(tmp.iloc[p, 1])
@@ -215,43 +169,34 @@ def off_distance_main(path):
     #savecsvs(os.path.join(path, 'off_distance', 'da.csv'), items)
 
     count = 1
+    xx = [i for i in range(43101, 43465)]
     for l in result:
         name = os.path.basename(path1[count])
         #plt.xlim(0,360)
-        plt.plot(l,label='d{}'.format(count))
+        plt.plot(xx,l,label='d{}'.format(count))
+        #plt.plot(xx, l)
         plt.xlabel("date")
-        plt.ylabel("distance")
+        plt.ylabel("offset distance(meter)")
         #plt.title('%s'%l)
         count += 1
         #plt.title('%s'%name)
 
-    #plt.legend()
-    #plt.savefig('q2/OffsetDistancePreDay.png')
-    #plt.show()
 
-    #plt.plot(result2,label='aveVar')
-    #plt.xlim(0,420)
-    #plt.ylim()
-    plt.xlabel("date")
-    plt.ylabel("distance")
-    #plt.title('averangeVar')
     plt.legend()
     plt.savefig(os.path.join(path, 'off_distance', 'OffsetDistancePerDay.png'))
     plt.show()
 
 
-    #plt.savefig(path + '\\variance\\VarPreDay.png')
-    plt.show()
 
 def off_distance(data_path):
     """
-        This function is for saving the results in the folder
+       This function is for saving the results in the folder
 
-        Args:
-            data_path: The data path
+       Args:
+           data_path: The data path
 
-        Returns:
-            True: Omitted
+       Returns:
+           True: Omitted
             
     """
     # --------------------------------------------
@@ -263,7 +208,7 @@ def off_distance(data_path):
 
         if len(folder_attribute[2]) > 0:
             for fileName in folder_attribute[2]:
-                if fileName[0:2] == 're':
+                if fileName[0:2] == 'fi':
                     path = folder_attribute[0]
                     create_folder(os.path.join(path, 'speed'))
                     create_folder(os.path.join(path, 'off_distance'))
@@ -275,3 +220,6 @@ def off_distance(data_path):
                     print('{}Result found'.format(path))
                     break
 
+if __name__ == '__main__':
+    data_path = r'D:\python\20240314\came\ResultFiles\Anthus_spragueii1'
+    off_distance(data_path)

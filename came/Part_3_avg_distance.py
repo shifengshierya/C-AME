@@ -5,31 +5,7 @@ from matplotlib import pyplot as plt
 import csv
 import time
 import os
-
-def savecsv(path,item,model = 'a'):
-    """
-       This function is for saving csv files
-
-       Args:
-           path: The  path for saving csv files
-           item: The data to be saved
-           model: The default parameter
-
-       Returns:
-            True: Omitted
-            
-    """
-    while True:
-        try:
-            with open(path, model, encoding='utf_8_sig', newline='') as f:
-            #with open(path, model, encoding='gb18030', newline='') as f:
-                w = csv.writer(f)
-                w.writerow(item)
-                return True
-        except:
-            print('Close the table or the program cannot write')
-            time.sleep(1)
-
+from data_writes import savecsv,savecsvs,readcsv
 
 def dist_eclud(data1, data2):
     """
@@ -43,6 +19,7 @@ def dist_eclud(data1, data2):
            data: The Euclidean distance
            
     """
+    #print(data2[0], data1[0], type(data2[0]), type(data1[0]))
     x = data2[0] - data1[0]
     y = data2[1] - data1[1]
     data = math.sqrt(x*x + y*y)
@@ -86,13 +63,13 @@ def get_same_date_list(date,excel_list):
 #Avarage distance 
 def get_avg(datalist):
     """
-        This function is for obtaining the average Euclidean distance
+       This function is for obtaining the average distance
 
-        Args:
-            datalist: The data to be  processed
+       Args:
+           datalist: The data to be processed
 
-        Returns:
-            avg: The average distance
+       Returns:
+           avg: The average distance
             
     """
     data1 = [datalist[0][0],datalist[0][1]]
@@ -109,7 +86,7 @@ def get_avg(datalist):
 #Calculate the average Euclidean distance for daily centroids
 def avg_distance(save_path):
     """
-       This function is for calculating the average Euclidean distance for daily centroids
+       This function is for calculating the average distance for daily centroids
 
        Args:
            save_path: The path of files
@@ -118,7 +95,7 @@ def avg_distance(save_path):
            True: Omitted
            
     """
-    df=pd.read_excel(os.path.join(save_path, 'shift.xlsx'))
+    df=pd.read_csv(os.path.join(save_path, 'centroids.csv'))
     train_data = np.array(df)
     excel_list = train_data.tolist()  # list
     # excel_list = excel_list[1:]
@@ -134,7 +111,7 @@ def avg_distance(save_path):
 
     plt.plot(datelist, avg_list, label="avg_distance")
     plt.xlabel("date")
-    plt.ylabel("avg_distance")
+    plt.ylabel("avg_distance(meter)")
     plt.legend(loc="best")
     plt.gca().ticklabel_format(axis="x", useOffset=False)
     plt.savefig(os.path.join(save_path, 'avg.png'))
