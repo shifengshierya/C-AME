@@ -48,18 +48,22 @@ The raw observation data can be organized into lists, including the species with
 ### Usage
 Navigate into the source folder, and run 
 ```bash
-python Part_1_data_format_standardization.py --input_dir {INPUT_DIR} --data_dir {DATA_DIR} --save_dir {SAVE_DIR}
+python Part_1_data_format_standardization.py --input_dir {INPUT_DIR} --data_dir {DATA_DIR} --save_dir {SAVE_DIR} --obs_count {OBS_COUNT} --lat_col {LAT_COL} --obs_date {OBS_DATE} --projection {Projection} 
 ```
 where 
 - `INPUT_DIR` refers to the directory of input data mentioned above (support for multiple files processing)
 - `DATA_DIR` refers to data format standardization results folder
 - `SAVE_DIR` refers to process results storage folder
+- `OBS_COUNT` refers to the column number for observation count
+- `LAT_COL` refers to the column number for latitude
+- `OBS_DATE` refers to the column number for observation date
+- `PRPJECTION` refers to the EPSG code
 
 Then, you can get the results in the corresponding folders：
 #### Result Files
 | Item                               | Description                                                                               |
 |:------------------------------------:|-------------------------------------------------------------------------------------------|
-| `map.jpg`                            | The migration trajectory estimation results                                                  |
+| `trajectories.jpg`                            | The migration trajectory estimation results                                                  |
 | `off_distance` folder                | The offset distance calculation results and its figure <br> - `d1.csv`-`d13.csv`: the offset distance for each trajectory <br> - `da.csv`: the average offset distance for the species|
 | `speed` folder                       | The speed calculation results and its figure <br> - `s1.csv`-`s13.csv`: the speed for each trajectory <br> - `da.csv`: the average speed for the species|
 | `ave_disatance.csv` & `avg_distance.png`| The average distance of daily centroids and its figure                                    |
