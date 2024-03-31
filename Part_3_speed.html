@@ -29,16 +29,15 @@
 <pre><code class="python">import os
 import pandas as pd
 from matplotlib import pyplot as plt
-import csv
-import time
 from Part_2_functions_for_eachstep import create_folder
+from data_writes import data_write,savecsvs,readcsv,savecsv
 
 def file_names(inputpath):
     &#34;&#34;&#34;
        This function is for looping over files
 
        Args:
-           inputpath: The folder path  to be looped over
+           inputpath: The folder path to be looped over
 
        Returns:
            namelist: The files list
@@ -49,51 +48,6 @@ def file_names(inputpath):
     for i, j, k in os.walk(filePath):
         namelist.append([i, j, k])
     return namelist
-
-def savecsvs(path,item,model = &#39;a&#39;):
-    &#34;&#34;&#34;
-       This function is for saving csv files
-
-       Args:
-           path: The  path for saving csv files
-           item: The data to be saved
-           model: The default parameter
-
-        Returns:
-           True: Omitted
-           
-    &#34;&#34;&#34;
-    while True:
-        # try:
-        with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f:
-        #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f:
-            w = csv.writer(f)
-            w.writerows(item)
-            return True
-
-def savecsv(path,item,model = &#39;a&#39;):
-    &#34;&#34;&#34;
-        This function is for saving csv files
-
-        Args:
-            path: The  path for saving csv files
-            item: The data to be saved
-            model: The default parameter
-
-        Returns:
-            True: Omitted
-            
-     &#34;&#34;&#34;
-    while True:
-        try:
-            with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f:
-            #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f:
-                w = csv.writer(f)
-                w.writerow(item)
-                return True
-        except:
-            print(&#39;Close the table or the program cannot write&#39;)
-            time.sleep(1)
 
 def get_file_list(path):
     &#34;&#34;&#34;
@@ -116,16 +70,16 @@ def get_file_list(path):
 #Index calculation of speed
 def calculate_speed(path):
     &#34;&#34;&#34;
-        This function is for calculating the speed
+       This function is for calculating the speed
 
-        Args:
-            path: The file path
+       Args:
+           path: The file path
 
-        Returns:
-            list_speed: The speed results
+       Returns:
+           list_speed: The speed results
             
     &#34;&#34;&#34;
-    df = pd.read_excel(path, header=None)
+    df = pd.read_csv(path, header=None)
     list_speed = [0]
     for i in range(1,364):
         # x1 = float(df.iloc[i + 1, 0])
@@ -149,19 +103,24 @@ def speed_main(path):
     path1 = get_file_list(path)
     list_averange = []
     index = 1
+    xx = [i for i in range(43101,43465)]
     for i in path1:
         name1 = os.path.basename(i)
-        if name1[0:2] == &#39;re&#39;:
+        if name1[0:2] == &#39;fi&#39;:
             #print(name1)
             result = calculate_speed(i)
-            result1 = [[datas] for datas in result ]
+            result1 = [[datas] for datas in result]
+            # result2 = []
+            # for k in range(len(result)):
+            #     result2.append([43101 + k,result[k]])
             savecsvs(os.path.join(path, &#39;speed&#39;, &#39;s{}.csv&#39;.format(str(index))),result1)
             list_averange.append(result)
 
             #plt.xlim(0,600)
-            plt.plot(result,label=&#39;s{}&#39;.format(str(index)))
+            plt.plot(xx,result,label=&#39;s{}&#39;.format(str(index)))
+            #plt.plot(xx, result)
             plt.xlabel(&#34;date&#34;)
-            plt.ylabel(&#34;speed&#34;)
+            plt.ylabel(&#34;speed(meter per day)&#34;)
             #plt.title(&#39;%s&#39;%i)
             index = index + 1
 
@@ -174,36 +133,25 @@ def speed_main(path):
         result2.append(sum/len(list_averange))
 
 
-    #plt.legend()
-    #plt.savefig(&#39;q1/SpeedPreDay.png&#39;)
-    #plt.show()
-    #plt.close()
-
-
-    #plt.xlim(0,500)
-    plt.ylim(0,110000)
-    #plt.plot(result2,label=&#39;averange&#39;)
-    #plt.xlabel(&#34;date&#34;)
-    #plt.ylabel(&#34;speed&#34;)
-    #plt.title(&#39;averangeSpeed&#39;)
 
     plt.legend()
     plt.savefig(os.path.join(path, &#39;speed&#39;, &#39;SpeedPerDay.png&#39;))
     plt.show()
-    plt.close()
+
 
 def speed(data_path):
     &#34;&#34;&#34;
        This function is for saving the results in the folder
 
        Args:
-          data_path: The data path
+           data_path: The data path
 
        Returns:
            True: Omitted
            
     &#34;&#34;&#34;
     # --------------------------------------------
+
     excel_list = file_names(data_path)
 
     for i in range(len(excel_list)):
@@ -212,7 +160,7 @@ def speed(data_path):
 
         if len(folder_attribute[2]) &gt; 0:
             for fileName in folder_attribute[2]:
-                if fileName[0:2] == &#39;re&#39;:
+                if fileName[0:2] == &#39;fi&#39;:
                     path = folder_attribute[0]
                     create_folder(os.path.join(path, &#39;speed&#39;))
                     create_folder(os.path.join(path, &#39;off_distance&#39;))
@@ -222,7 +170,11 @@ def speed(data_path):
 
                     # q4(&#39;result&#39;)
                     print(&#39;{}Result found&#39;.format(path))
-                    break</code></pre>
+                    break
+
+if __name__ == &#39;__main__&#39;:
+    data_path = r&#39;D:\python\20240314\came\ResultFiles\Anthus_spragueii1&#39;
+    speed(data_path)</code></pre>
 </details>
 </section>
 <section>
@@ -253,16 +205,16 @@ def speed(data_path):
 </summary>
 <pre><code class="python">def calculate_speed(path):
     &#34;&#34;&#34;
-        This function is for calculating the speed
+       This function is for calculating the speed
 
-        Args:
-            path: The file path
+       Args:
+           path: The file path
 
-        Returns:
-            list_speed: The speed results
+       Returns:
+           list_speed: The speed results
             
     &#34;&#34;&#34;
-    df = pd.read_excel(path, header=None)
+    df = pd.read_csv(path, header=None)
     list_speed = [0]
     for i in range(1,364):
         # x1 = float(df.iloc[i + 1, 0])
@@ -281,8 +233,7 @@ def speed(data_path):
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>inputpath</code></strong></dt>
-<dd>The folder path
-to be looped over</dd>
+<dd>The folder path to be looped over</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -298,7 +249,7 @@ to be looped over</dd>
        This function is for looping over files
 
        Args:
-           inputpath: The folder path  to be looped over
+           inputpath: The folder path to be looped over
 
        Returns:
            namelist: The files list
@@ -350,98 +301,6 @@ path for files</dd>
     return file_list</code></pre>
 </details>
 </dd>
-<dt id="came.Part_3_speed.savecsv"><code class="name flex">
-<span>def <span class="ident">savecsv</span></span>(<span>path, item, model='a')</span>
-</code></dt>
-<dd>
-<div class="desc"><p>This function is for saving csv files</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>path</code></strong></dt>
-<dd>The
-path for saving csv files</dd>
-<dt><strong><code>item</code></strong></dt>
-<dd>The data to be saved</dd>
-<dt><strong><code>model</code></strong></dt>
-<dd>The default parameter</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>True</code></dt>
-<dd>Omitted</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def savecsv(path,item,model = &#39;a&#39;):
-    &#34;&#34;&#34;
-        This function is for saving csv files
-
-        Args:
-            path: The  path for saving csv files
-            item: The data to be saved
-            model: The default parameter
-
-        Returns:
-            True: Omitted
-            
-     &#34;&#34;&#34;
-    while True:
-        try:
-            with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f:
-            #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f:
-                w = csv.writer(f)
-                w.writerow(item)
-                return True
-        except:
-            print(&#39;Close the table or the program cannot write&#39;)
-            time.sleep(1)</code></pre>
-</details>
-</dd>
-<dt id="came.Part_3_speed.savecsvs"><code class="name flex">
-<span>def <span class="ident">savecsvs</span></span>(<span>path, item, model='a')</span>
-</code></dt>
-<dd>
-<div class="desc"><p>This function is for saving csv files</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>path</code></strong></dt>
-<dd>The
-path for saving csv files</dd>
-<dt><strong><code>item</code></strong></dt>
-<dd>The data to be saved</dd>
-<dt><strong><code>model</code></strong></dt>
-<dd>The default parameter</dd>
-</dl>
-<p>Returns:
-True: Omitted</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def savecsvs(path,item,model = &#39;a&#39;):
-    &#34;&#34;&#34;
-       This function is for saving csv files
-
-       Args:
-           path: The  path for saving csv files
-           item: The data to be saved
-           model: The default parameter
-
-        Returns:
-           True: Omitted
-           
-    &#34;&#34;&#34;
-    while True:
-        # try:
-        with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f:
-        #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f:
-            w = csv.writer(f)
-            w.writerows(item)
-            return True</code></pre>
-</details>
-</dd>
 <dt id="came.Part_3_speed.speed"><code class="name flex">
 <span>def <span class="ident">speed</span></span>(<span>data_path)</span>
 </code></dt>
@@ -466,13 +325,14 @@ True: Omitted</p></div>
        This function is for saving the results in the folder
 
        Args:
-          data_path: The data path
+           data_path: The data path
 
        Returns:
            True: Omitted
            
     &#34;&#34;&#34;
     # --------------------------------------------
+
     excel_list = file_names(data_path)
 
     for i in range(len(excel_list)):
@@ -481,7 +341,7 @@ True: Omitted</p></div>
 
         if len(folder_attribute[2]) &gt; 0:
             for fileName in folder_attribute[2]:
-                if fileName[0:2] == &#39;re&#39;:
+                if fileName[0:2] == &#39;fi&#39;:
                     path = folder_attribute[0]
                     create_folder(os.path.join(path, &#39;speed&#39;))
                     create_folder(os.path.join(path, &#39;off_distance&#39;))
@@ -527,19 +387,24 @@ True: Omitted</p></div>
     path1 = get_file_list(path)
     list_averange = []
     index = 1
+    xx = [i for i in range(43101,43465)]
     for i in path1:
         name1 = os.path.basename(i)
-        if name1[0:2] == &#39;re&#39;:
+        if name1[0:2] == &#39;fi&#39;:
             #print(name1)
             result = calculate_speed(i)
-            result1 = [[datas] for datas in result ]
+            result1 = [[datas] for datas in result]
+            # result2 = []
+            # for k in range(len(result)):
+            #     result2.append([43101 + k,result[k]])
             savecsvs(os.path.join(path, &#39;speed&#39;, &#39;s{}.csv&#39;.format(str(index))),result1)
             list_averange.append(result)
 
             #plt.xlim(0,600)
-            plt.plot(result,label=&#39;s{}&#39;.format(str(index)))
+            plt.plot(xx,result,label=&#39;s{}&#39;.format(str(index)))
+            #plt.plot(xx, result)
             plt.xlabel(&#34;date&#34;)
-            plt.ylabel(&#34;speed&#34;)
+            plt.ylabel(&#34;speed(meter per day)&#34;)
             #plt.title(&#39;%s&#39;%i)
             index = index + 1
 
@@ -552,23 +417,10 @@ True: Omitted</p></div>
         result2.append(sum/len(list_averange))
 
 
-    #plt.legend()
-    #plt.savefig(&#39;q1/SpeedPreDay.png&#39;)
-    #plt.show()
-    #plt.close()
-
-
-    #plt.xlim(0,500)
-    plt.ylim(0,110000)
-    #plt.plot(result2,label=&#39;averange&#39;)
-    #plt.xlabel(&#34;date&#34;)
-    #plt.ylabel(&#34;speed&#34;)
-    #plt.title(&#39;averangeSpeed&#39;)
 
     plt.legend()
     plt.savefig(os.path.join(path, &#39;speed&#39;, &#39;SpeedPerDay.png&#39;))
-    plt.show()
-    plt.close()</code></pre>
+    plt.show()</code></pre>
 </details>
 </dd>
 </dl>
@@ -588,12 +440,10 @@ True: Omitted</p></div>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
-<ul class="two-column">
+<ul class="">
 <li><code><a title="came.Part_3_speed.calculate_speed" href="#came.Part_3_speed.calculate_speed">calculate_speed</a></code></li>
 <li><code><a title="came.Part_3_speed.file_names" href="#came.Part_3_speed.file_names">file_names</a></code></li>
 <li><code><a title="came.Part_3_speed.get_file_list" href="#came.Part_3_speed.get_file_list">get_file_list</a></code></li>
-<li><code><a title="came.Part_3_speed.savecsv" href="#came.Part_3_speed.savecsv">savecsv</a></code></li>
-<li><code><a title="came.Part_3_speed.savecsvs" href="#came.Part_3_speed.savecsvs">savecsvs</a></code></li>
 <li><code><a title="came.Part_3_speed.speed" href="#came.Part_3_speed.speed">speed</a></code></li>
 <li><code><a title="came.Part_3_speed.speed_main" href="#came.Part_3_speed.speed_main">speed_main</a></code></li>
 </ul>

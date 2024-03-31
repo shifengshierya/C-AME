@@ -27,6 +27,8 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">import xlwt
+import csv
+import time
 
 #Function for file storage
 def data_write(file_path, datas):
@@ -49,7 +51,79 @@ def data_write(file_path, datas):
         for j in range(len(data)):
             sheet1.write(i, j, str(data[j]))
         i = i + 1
-    f.save(file_path)</code></pre>
+    f.save(file_path)
+
+def savecsv(path, item, model=&#39;a&#39;):
+    &#34;&#34;&#34;
+       This function is for saving csv files
+
+       Args:
+           path: The  path for saving csv files
+           item: The data to be saved
+           model: The default parameter
+
+       Returns:
+           True: Omitted
+    &#34;&#34;&#34;
+    while True:
+        try:
+            with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f:
+                # with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f:
+                w = csv.writer(f)
+                w.writerow(item)
+                return True
+        except:
+            print(&#39;Close the table or the program cannot write&#39;)
+            time.sleep(1)
+
+
+def savecsvs(path,item,model = &#39;a&#39;):
+    &#34;&#34;&#34;
+       This function is for saving csv files
+
+       Args:
+           path: The  path for saving csv files
+           item: The data to be saved
+           model: The default parameter
+
+       Returns:
+           True: Omitted
+    &#34;&#34;&#34;
+    while True:
+        try:
+            with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f:
+            #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f:
+                w = csv.writer(f)
+                w.writerows(item)
+                return True
+        except Exception as e:
+            print(e)
+            print(&#39;请关闭表格，否则程序无法写入&#39;)
+            time.sleep(1)
+
+
+def readcsv(path):
+    &#34;&#34;&#34;
+       This function is for reading csv files
+
+       Args:
+           path: The file  path
+
+       Returns:
+           rows: The file data
+    &#34;&#34;&#34;
+    try:
+        with open(path, &#39;r&#39;,encoding=&#39;utf_8_sig&#39;) as f:
+        #with open(path, &#39;r&#39;,encoding=&#39;gb18030&#39;) as f:
+            reader = csv.reader(f)
+            rows = [row for row in reader]
+        return rows
+    except:
+        #with open(path, &#39;r&#39;,encoding=&#39;utf_8_sig&#39;) as f:
+        with open(path, &#39;r&#39;,encoding=&#39;gb18030&#39;,errors=&#39;ignore&#39;) as f:
+            reader = csv.reader(f)
+            rows = [row for row in reader]
+        return rows</code></pre>
 </details>
 </section>
 <section>
@@ -103,6 +177,147 @@ def data_write(file_path, datas):
     f.save(file_path)</code></pre>
 </details>
 </dd>
+<dt id="came.data_writes.readcsv"><code class="name flex">
+<span>def <span class="ident">readcsv</span></span>(<span>path)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This function is for reading csv files</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>path</code></strong></dt>
+<dd>The file
+path</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>rows</code></dt>
+<dd>The file data</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def readcsv(path):
+    &#34;&#34;&#34;
+       This function is for reading csv files
+
+       Args:
+           path: The file  path
+
+       Returns:
+           rows: The file data
+    &#34;&#34;&#34;
+    try:
+        with open(path, &#39;r&#39;,encoding=&#39;utf_8_sig&#39;) as f:
+        #with open(path, &#39;r&#39;,encoding=&#39;gb18030&#39;) as f:
+            reader = csv.reader(f)
+            rows = [row for row in reader]
+        return rows
+    except:
+        #with open(path, &#39;r&#39;,encoding=&#39;utf_8_sig&#39;) as f:
+        with open(path, &#39;r&#39;,encoding=&#39;gb18030&#39;,errors=&#39;ignore&#39;) as f:
+            reader = csv.reader(f)
+            rows = [row for row in reader]
+        return rows</code></pre>
+</details>
+</dd>
+<dt id="came.data_writes.savecsv"><code class="name flex">
+<span>def <span class="ident">savecsv</span></span>(<span>path, item, model='a')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This function is for saving csv files</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>path</code></strong></dt>
+<dd>The
+path for saving csv files</dd>
+<dt><strong><code>item</code></strong></dt>
+<dd>The data to be saved</dd>
+<dt><strong><code>model</code></strong></dt>
+<dd>The default parameter</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>True</code></dt>
+<dd>Omitted</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def savecsv(path, item, model=&#39;a&#39;):
+    &#34;&#34;&#34;
+       This function is for saving csv files
+
+       Args:
+           path: The  path for saving csv files
+           item: The data to be saved
+           model: The default parameter
+
+       Returns:
+           True: Omitted
+    &#34;&#34;&#34;
+    while True:
+        try:
+            with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f:
+                # with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f:
+                w = csv.writer(f)
+                w.writerow(item)
+                return True
+        except:
+            print(&#39;Close the table or the program cannot write&#39;)
+            time.sleep(1)</code></pre>
+</details>
+</dd>
+<dt id="came.data_writes.savecsvs"><code class="name flex">
+<span>def <span class="ident">savecsvs</span></span>(<span>path, item, model='a')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This function is for saving csv files</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>path</code></strong></dt>
+<dd>The
+path for saving csv files</dd>
+<dt><strong><code>item</code></strong></dt>
+<dd>The data to be saved</dd>
+<dt><strong><code>model</code></strong></dt>
+<dd>The default parameter</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>True</code></dt>
+<dd>Omitted</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def savecsvs(path,item,model = &#39;a&#39;):
+    &#34;&#34;&#34;
+       This function is for saving csv files
+
+       Args:
+           path: The  path for saving csv files
+           item: The data to be saved
+           model: The default parameter
+
+       Returns:
+           True: Omitted
+    &#34;&#34;&#34;
+    while True:
+        try:
+            with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f:
+            #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f:
+                w = csv.writer(f)
+                w.writerows(item)
+                return True
+        except Exception as e:
+            print(e)
+            print(&#39;请关闭表格，否则程序无法写入&#39;)
+            time.sleep(1)</code></pre>
+</details>
+</dd>
 </dl>
 </section>
 <section>
@@ -122,6 +337,9 @@ def data_write(file_path, datas):
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
 <li><code><a title="came.data_writes.data_write" href="#came.data_writes.data_write">data_write</a></code></li>
+<li><code><a title="came.data_writes.readcsv" href="#came.data_writes.readcsv">readcsv</a></code></li>
+<li><code><a title="came.data_writes.savecsv" href="#came.data_writes.savecsv">savecsv</a></code></li>
+<li><code><a title="came.data_writes.savecsvs" href="#came.data_writes.savecsvs">savecsvs</a></code></li>
 </ul>
 </li>
 </ul>

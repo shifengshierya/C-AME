@@ -36,68 +36,24 @@ from mpl_toolkits.basemap import Basemap
 import numpy as np
 import matplotlib.pyplot as plt
 from Part_2_main_trajectory_estiamtion import part2
+from datetime import datetime
+from data_writes import readcsv,savecsv
 
 
-# beginDate, endDate are datetime format like&#34;20180101&#34;
+# Get the datalist
 def datelist(beginDate, endDate):
     &#34;&#34;&#34;
-        This function is for getting the datelist
+       This function is for getting the datelist
 
-        Args:
-            beginDate: The beginning date in the datelist
-            endDate: The end date in the datelist
+       Args:
+           beginDate: The beginning date in the datelist
+           endDate: The end date in the datelist
 
-        Returns:
-            date_l: The datelist result
+       Returns:
+           date_l: The datelist result
     &#34;&#34;&#34;
     date_l=[datetime.strftime(x,&#39;%Y-%m-%d&#39;) for x in list(pd.date_range(start=beginDate, end=endDate))]
     return date_l
-
-def readcsv(path):
-    &#34;&#34;&#34;
-       This function is for reading csv files
-
-       Args:
-           path: The file  path
-
-       Returns:
-           rows: The file data
-    &#34;&#34;&#34;
-    try:
-        with open(path, &#39;r&#39;,encoding=&#39;utf_8_sig&#39;) as f:
-        #with open(path, &#39;r&#39;,encoding=&#39;gb18030&#39;) as f:
-            reader = csv.reader(f)
-            rows = [row for row in reader]
-        return rows
-    except:
-        #with open(path, &#39;r&#39;,encoding=&#39;utf_8_sig&#39;) as f:
-        with open(path, &#39;r&#39;,encoding=&#39;gb18030&#39;) as f:
-            reader = csv.reader(f)
-            rows = [row for row in reader]
-        return rows
-
-def savecsv(path,item,model = &#39;a&#39;):
-    &#34;&#34;&#34;
-       This function is for saving csv files
-
-       Args:
-           path: The  path for saving csv files
-           item: The data to be saved
-           model: The default parameter
-
-       Returns:
-           True: Omitted
-    &#34;&#34;&#34;
-    while True:
-        try:
-            with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f:
-            #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f:
-                w = csv.writer(f)
-                w.writerow(item)
-                return True
-        except:
-            print(&#39;Close&#39;)
-            time.sleep(1)
 
 #Read the names of all files and folders within the directory
 def file_names(inputpath):
@@ -119,10 +75,10 @@ def file_names(inputpath):
 #Show the raw data
 def map_2(save_path,csv_name):
     &#34;&#34;&#34;
-       This function is for showing the raw data on the map
+       This function is for showing the distribution of raw observation data on the map
 
        Args:
-           save_path: Path for storing the raw data figures
+           save_path: Path for storing the raw data distribution figures
            csv_name: Name of the species to be processed
 
        Returns:
@@ -192,34 +148,28 @@ def map_2(save_path,csv_name):
     # plt.show()
     plt.close()
 
-def main(path1=&#39;./RawData/&#39;, path2=&#39;./ProcessFiles/&#39;, save_path=&#39;./ResultFiles/&#39;, obs_count=3,lat_col=8,obs_date=11):
+def main(path1=&#39;./RawData/&#39;, path2=&#39;./ProcessFiles/&#39;, save_path=&#39;./ResultFiles/&#39;, obs_count=3,lat_col=8,obs_date=11,projection=3857):
     &#34;&#34;&#34;
-       This function is for data format standardization
+       This function is for data format standardization and EPSG code setting
 
        Args:
-           path1: The directory of input data mentioned above (support for multiple files processing)
+           path1: Raw observation data folder (support for multiple files processing)
            path2: Data format standardization results folder
-           save_path: Final results storage folder
+           save_path: Processing results storage folder
            obs_count: The column number for observation count
            lat_col: The column number for latitude
            obs_date: The column number for observation date
+           projection: The EPSG code setting
 
        Returns:
            True: Omitted
      &#34;&#34;&#34;
-    #Absolute path
-    # path1 = &#39;./2018/&#39;
-    # path2 = &#39;./source/&#39;
-    #Terminal
-    # path1 = input(&#39;Please set part1 input folder &#39;)
-    # path1 = path1 + &#39;/&#39;
-    # path2 = input(&#39;Please set part1 output folder&#39;)
-    # path2 = path2 + &#39;/&#39;
+
 
     year = &#39;2018&#39;
     date_list = datelist(f&#34;{year}-01-01&#34;, f&#34;{year}-12-31&#34;)
 
-#Datetime format standardization: 20180101 corresponds to 43101
+#Datetime format standardization
     date1 = {}
     num = 43101
     for date in date_list:
@@ -238,8 +188,14 @@ def main(path1=&#39;./RawData/&#39;, path2=&#39;./ProcessFiles/&#39;, save_path=
 #Perform quantity correction according to observation count
         data2 = []
         for datas in datalist:
-            ctime = &#39;2018&#39; + datas[3][4:]
-            ctime = date1[ctime]
+            try:
+                ctime = &#39;2018&#39; + datas[3][4:]
+                ctime = date1[ctime]
+            except:
+                date_obj = datetime.strptime(datas[3], &#39;%Y/%m/%d&#39;)
+                new_date_str = date_obj.strftime(&#39;%Y-%m-%d&#39;)
+                ctime = &#39;2018&#39; + new_date_str[4:]
+                ctime = date1[ctime]
             datas[3] = ctime
             if datas[0] == &#39;X&#39;:
                 num = 1
@@ -259,7 +215,7 @@ def main(path1=&#39;./RawData/&#39;, path2=&#39;./ProcessFiles/&#39;, save_path=
         map_2(path2, csv_list[i])
         print(csv_list[i])
     print(&#39;Part 1 finished&#39;)
-    part2(path2, save_path)
+    part2(projection,path2, save_path)
 
 
 
@@ -303,14 +259,14 @@ if __name__ == &#39;__main__&#39;:
 </summary>
 <pre><code class="python">def datelist(beginDate, endDate):
     &#34;&#34;&#34;
-        This function is for getting the datelist
+       This function is for getting the datelist
 
-        Args:
-            beginDate: The beginning date in the datelist
-            endDate: The end date in the datelist
+       Args:
+           beginDate: The beginning date in the datelist
+           endDate: The end date in the datelist
 
-        Returns:
-            date_l: The datelist result
+       Returns:
+           date_l: The datelist result
     &#34;&#34;&#34;
     date_l=[datetime.strftime(x,&#39;%Y-%m-%d&#39;) for x in list(pd.date_range(start=beginDate, end=endDate))]
     return date_l</code></pre>
@@ -354,24 +310,26 @@ to be looped over</dd>
 </details>
 </dd>
 <dt id="came.Part_1_data_format_standardization.main"><code class="name flex">
-<span>def <span class="ident">main</span></span>(<span>path1='./RawData/', path2='./ProcessFiles/', save_path='./ResultFiles/', obs_count=3, lat_col=8, obs_date=11)</span>
+<span>def <span class="ident">main</span></span>(<span>path1='./RawData/', path2='./ProcessFiles/', save_path='./ResultFiles/', obs_count=3, lat_col=8, obs_date=11, projection=3857)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This function is for data format standardization</p>
+<div class="desc"><p>This function is for data format standardization and EPSG code setting</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>path1</code></strong></dt>
-<dd>The directory of input data mentioned above (support for multiple files processing)</dd>
+<dd>Raw observation data folder (support for multiple files processing)</dd>
 <dt><strong><code>path2</code></strong></dt>
 <dd>Data format standardization results folder</dd>
 <dt><strong><code>save_path</code></strong></dt>
-<dd>Final results storage folder</dd>
+<dd>Processing results storage folder</dd>
 <dt><strong><code>obs_count</code></strong></dt>
 <dd>The column number for observation count</dd>
 <dt><strong><code>lat_col</code></strong></dt>
 <dd>The column number for latitude</dd>
 <dt><strong><code>obs_date</code></strong></dt>
 <dd>The column number for observation date</dd>
+<dt><strong><code>projection</code></strong></dt>
+<dd>The EPSG code setting</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -382,34 +340,28 @@ to be looped over</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def main(path1=&#39;./RawData/&#39;, path2=&#39;./ProcessFiles/&#39;, save_path=&#39;./ResultFiles/&#39;, obs_count=3,lat_col=8,obs_date=11):
+<pre><code class="python">def main(path1=&#39;./RawData/&#39;, path2=&#39;./ProcessFiles/&#39;, save_path=&#39;./ResultFiles/&#39;, obs_count=3,lat_col=8,obs_date=11,projection=3857):
     &#34;&#34;&#34;
-       This function is for data format standardization
+       This function is for data format standardization and EPSG code setting
 
        Args:
-           path1: The directory of input data mentioned above (support for multiple files processing)
+           path1: Raw observation data folder (support for multiple files processing)
            path2: Data format standardization results folder
-           save_path: Final results storage folder
+           save_path: Processing results storage folder
            obs_count: The column number for observation count
            lat_col: The column number for latitude
            obs_date: The column number for observation date
+           projection: The EPSG code setting
 
        Returns:
            True: Omitted
      &#34;&#34;&#34;
-    #Absolute path
-    # path1 = &#39;./2018/&#39;
-    # path2 = &#39;./source/&#39;
-    #Terminal
-    # path1 = input(&#39;Please set part1 input folder &#39;)
-    # path1 = path1 + &#39;/&#39;
-    # path2 = input(&#39;Please set part1 output folder&#39;)
-    # path2 = path2 + &#39;/&#39;
+
 
     year = &#39;2018&#39;
     date_list = datelist(f&#34;{year}-01-01&#34;, f&#34;{year}-12-31&#34;)
 
-#Datetime format standardization: 20180101 corresponds to 43101
+#Datetime format standardization
     date1 = {}
     num = 43101
     for date in date_list:
@@ -428,8 +380,14 @@ to be looped over</dd>
 #Perform quantity correction according to observation count
         data2 = []
         for datas in datalist:
-            ctime = &#39;2018&#39; + datas[3][4:]
-            ctime = date1[ctime]
+            try:
+                ctime = &#39;2018&#39; + datas[3][4:]
+                ctime = date1[ctime]
+            except:
+                date_obj = datetime.strptime(datas[3], &#39;%Y/%m/%d&#39;)
+                new_date_str = date_obj.strftime(&#39;%Y-%m-%d&#39;)
+                ctime = &#39;2018&#39; + new_date_str[4:]
+                ctime = date1[ctime]
             datas[3] = ctime
             if datas[0] == &#39;X&#39;:
                 num = 1
@@ -449,18 +407,18 @@ to be looped over</dd>
         map_2(path2, csv_list[i])
         print(csv_list[i])
     print(&#39;Part 1 finished&#39;)
-    part2(path2, save_path)</code></pre>
+    part2(projection,path2, save_path)</code></pre>
 </details>
 </dd>
 <dt id="came.Part_1_data_format_standardization.map_2"><code class="name flex">
 <span>def <span class="ident">map_2</span></span>(<span>save_path, csv_name)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This function is for showing the raw data on the map</p>
+<div class="desc"><p>This function is for showing the distribution of raw observation data on the map</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>save_path</code></strong></dt>
-<dd>Path for storing the raw data figures</dd>
+<dd>Path for storing the raw data distribution figures</dd>
 <dt><strong><code>csv_name</code></strong></dt>
 <dd>Name of the species to be processed</dd>
 </dl>
@@ -475,10 +433,10 @@ to be looped over</dd>
 </summary>
 <pre><code class="python">def map_2(save_path,csv_name):
     &#34;&#34;&#34;
-       This function is for showing the raw data on the map
+       This function is for showing the distribution of raw observation data on the map
 
        Args:
-           save_path: Path for storing the raw data figures
+           save_path: Path for storing the raw data distribution figures
            csv_name: Name of the species to be processed
 
        Returns:
@@ -549,98 +507,6 @@ to be looped over</dd>
     plt.close()</code></pre>
 </details>
 </dd>
-<dt id="came.Part_1_data_format_standardization.readcsv"><code class="name flex">
-<span>def <span class="ident">readcsv</span></span>(<span>path)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>This function is for reading csv files</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>path</code></strong></dt>
-<dd>The file
-path</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>rows</code></dt>
-<dd>The file data</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def readcsv(path):
-    &#34;&#34;&#34;
-       This function is for reading csv files
-
-       Args:
-           path: The file  path
-
-       Returns:
-           rows: The file data
-    &#34;&#34;&#34;
-    try:
-        with open(path, &#39;r&#39;,encoding=&#39;utf_8_sig&#39;) as f:
-        #with open(path, &#39;r&#39;,encoding=&#39;gb18030&#39;) as f:
-            reader = csv.reader(f)
-            rows = [row for row in reader]
-        return rows
-    except:
-        #with open(path, &#39;r&#39;,encoding=&#39;utf_8_sig&#39;) as f:
-        with open(path, &#39;r&#39;,encoding=&#39;gb18030&#39;) as f:
-            reader = csv.reader(f)
-            rows = [row for row in reader]
-        return rows</code></pre>
-</details>
-</dd>
-<dt id="came.Part_1_data_format_standardization.savecsv"><code class="name flex">
-<span>def <span class="ident">savecsv</span></span>(<span>path, item, model='a')</span>
-</code></dt>
-<dd>
-<div class="desc"><p>This function is for saving csv files</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>path</code></strong></dt>
-<dd>The
-path for saving csv files</dd>
-<dt><strong><code>item</code></strong></dt>
-<dd>The data to be saved</dd>
-<dt><strong><code>model</code></strong></dt>
-<dd>The default parameter</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>True</code></dt>
-<dd>Omitted</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def savecsv(path,item,model = &#39;a&#39;):
-    &#34;&#34;&#34;
-       This function is for saving csv files
-
-       Args:
-           path: The  path for saving csv files
-           item: The data to be saved
-           model: The default parameter
-
-       Returns:
-           True: Omitted
-    &#34;&#34;&#34;
-    while True:
-        try:
-            with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f:
-            #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f:
-                w = csv.writer(f)
-                w.writerow(item)
-                return True
-        except:
-            print(&#39;Close&#39;)
-            time.sleep(1)</code></pre>
-</details>
-</dd>
 </dl>
 </section>
 <section>
@@ -658,13 +524,11 @@ path for saving csv files</dd>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
-<ul class="two-column">
+<ul class="">
 <li><code><a title="came.Part_1_data_format_standardization.datelist" href="#came.Part_1_data_format_standardization.datelist">datelist</a></code></li>
 <li><code><a title="came.Part_1_data_format_standardization.file_names" href="#came.Part_1_data_format_standardization.file_names">file_names</a></code></li>
 <li><code><a title="came.Part_1_data_format_standardization.main" href="#came.Part_1_data_format_standardization.main">main</a></code></li>
 <li><code><a title="came.Part_1_data_format_standardization.map_2" href="#came.Part_1_data_format_standardization.map_2">map_2</a></code></li>
-<li><code><a title="came.Part_1_data_format_standardization.readcsv" href="#came.Part_1_data_format_standardization.readcsv">readcsv</a></code></li>
-<li><code><a title="came.Part_1_data_format_standardization.savecsv" href="#came.Part_1_data_format_standardization.savecsv">savecsv</a></code></li>
 </ul>
 </li>
 </ul>

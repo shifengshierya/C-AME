@@ -33,31 +33,7 @@ from matplotlib import pyplot as plt
 import csv
 import time
 import os
-
-def savecsv(path,item,model = &#39;a&#39;):
-    &#34;&#34;&#34;
-       This function is for saving csv files
-
-       Args:
-           path: The  path for saving csv files
-           item: The data to be saved
-           model: The default parameter
-
-       Returns:
-            True: Omitted
-            
-    &#34;&#34;&#34;
-    while True:
-        try:
-            with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f:
-            #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f:
-                w = csv.writer(f)
-                w.writerow(item)
-                return True
-        except:
-            print(&#39;Close the table or the program cannot write&#39;)
-            time.sleep(1)
-
+from data_writes import savecsv,savecsvs,readcsv
 
 def dist_eclud(data1, data2):
     &#34;&#34;&#34;
@@ -71,6 +47,7 @@ def dist_eclud(data1, data2):
            data: The Euclidean distance
            
     &#34;&#34;&#34;
+    #print(data2[0], data1[0], type(data2[0]), type(data1[0]))
     x = data2[0] - data1[0]
     y = data2[1] - data1[1]
     data = math.sqrt(x*x + y*y)
@@ -114,13 +91,13 @@ def get_same_date_list(date,excel_list):
 #Avarage distance 
 def get_avg(datalist):
     &#34;&#34;&#34;
-        This function is for obtaining the average Euclidean distance
+       This function is for obtaining the average distance
 
-        Args:
-            datalist: The data to be  processed
+       Args:
+           datalist: The data to be processed
 
-        Returns:
-            avg: The average distance
+       Returns:
+           avg: The average distance
             
     &#34;&#34;&#34;
     data1 = [datalist[0][0],datalist[0][1]]
@@ -137,7 +114,7 @@ def get_avg(datalist):
 #Calculate the average Euclidean distance for daily centroids
 def avg_distance(save_path):
     &#34;&#34;&#34;
-       This function is for calculating the average Euclidean distance for daily centroids
+       This function is for calculating the average distance for daily centroids
 
        Args:
            save_path: The path of files
@@ -146,7 +123,7 @@ def avg_distance(save_path):
            True: Omitted
            
     &#34;&#34;&#34;
-    df=pd.read_excel(os.path.join(save_path, &#39;shift.xlsx&#39;))
+    df=pd.read_csv(os.path.join(save_path, &#39;centroids.csv&#39;))
     train_data = np.array(df)
     excel_list = train_data.tolist()  # list
     # excel_list = excel_list[1:]
@@ -162,7 +139,7 @@ def avg_distance(save_path):
 
     plt.plot(datelist, avg_list, label=&#34;avg_distance&#34;)
     plt.xlabel(&#34;date&#34;)
-    plt.ylabel(&#34;avg_distance&#34;)
+    plt.ylabel(&#34;avg_distance(meter)&#34;)
     plt.legend(loc=&#34;best&#34;)
     plt.gca().ticklabel_format(axis=&#34;x&#34;, useOffset=False)
     plt.savefig(os.path.join(save_path, &#39;avg.png&#39;))
@@ -184,7 +161,7 @@ if __name__ == &#39;__main__&#39;:
 <span>def <span class="ident">avg_distance</span></span>(<span>save_path)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This function is for calculating the average Euclidean distance for daily centroids</p>
+<div class="desc"><p>This function is for calculating the average distance for daily centroids</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>save_path</code></strong></dt>
@@ -201,7 +178,7 @@ if __name__ == &#39;__main__&#39;:
 </summary>
 <pre><code class="python">def avg_distance(save_path):
     &#34;&#34;&#34;
-       This function is for calculating the average Euclidean distance for daily centroids
+       This function is for calculating the average distance for daily centroids
 
        Args:
            save_path: The path of files
@@ -210,7 +187,7 @@ if __name__ == &#39;__main__&#39;:
            True: Omitted
            
     &#34;&#34;&#34;
-    df=pd.read_excel(os.path.join(save_path, &#39;shift.xlsx&#39;))
+    df=pd.read_csv(os.path.join(save_path, &#39;centroids.csv&#39;))
     train_data = np.array(df)
     excel_list = train_data.tolist()  # list
     # excel_list = excel_list[1:]
@@ -226,7 +203,7 @@ if __name__ == &#39;__main__&#39;:
 
     plt.plot(datelist, avg_list, label=&#34;avg_distance&#34;)
     plt.xlabel(&#34;date&#34;)
-    plt.ylabel(&#34;avg_distance&#34;)
+    plt.ylabel(&#34;avg_distance(meter)&#34;)
     plt.legend(loc=&#34;best&#34;)
     plt.gca().ticklabel_format(axis=&#34;x&#34;, useOffset=False)
     plt.savefig(os.path.join(save_path, &#39;avg.png&#39;))
@@ -266,6 +243,7 @@ if __name__ == &#39;__main__&#39;:
            data: The Euclidean distance
            
     &#34;&#34;&#34;
+    #print(data2[0], data1[0], type(data2[0]), type(data1[0]))
     x = data2[0] - data1[0]
     y = data2[1] - data1[1]
     data = math.sqrt(x*x + y*y)
@@ -276,12 +254,11 @@ if __name__ == &#39;__main__&#39;:
 <span>def <span class="ident">get_avg</span></span>(<span>datalist)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This function is for obtaining the average Euclidean distance</p>
+<div class="desc"><p>This function is for obtaining the average distance</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>datalist</code></strong></dt>
-<dd>The data to be
-processed</dd>
+<dd>The data to be processed</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -294,13 +271,13 @@ processed</dd>
 </summary>
 <pre><code class="python">def get_avg(datalist):
     &#34;&#34;&#34;
-        This function is for obtaining the average Euclidean distance
+       This function is for obtaining the average distance
 
-        Args:
-            datalist: The data to be  processed
+       Args:
+           datalist: The data to be processed
 
-        Returns:
-            avg: The average distance
+       Returns:
+           avg: The average distance
             
     &#34;&#34;&#34;
     data1 = [datalist[0][0],datalist[0][1]]
@@ -392,55 +369,6 @@ processed</dd>
     return same_datas</code></pre>
 </details>
 </dd>
-<dt id="came.Part_3_avg_distance.savecsv"><code class="name flex">
-<span>def <span class="ident">savecsv</span></span>(<span>path, item, model='a')</span>
-</code></dt>
-<dd>
-<div class="desc"><p>This function is for saving csv files</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>path</code></strong></dt>
-<dd>The
-path for saving csv files</dd>
-<dt><strong><code>item</code></strong></dt>
-<dd>The data to be saved</dd>
-<dt><strong><code>model</code></strong></dt>
-<dd>The default parameter</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>True</code></dt>
-<dd>Omitted</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def savecsv(path,item,model = &#39;a&#39;):
-    &#34;&#34;&#34;
-       This function is for saving csv files
-
-       Args:
-           path: The  path for saving csv files
-           item: The data to be saved
-           model: The default parameter
-
-       Returns:
-            True: Omitted
-            
-    &#34;&#34;&#34;
-    while True:
-        try:
-            with open(path, model, encoding=&#39;utf_8_sig&#39;, newline=&#39;&#39;) as f:
-            #with open(path, model, encoding=&#39;gb18030&#39;, newline=&#39;&#39;) as f:
-                w = csv.writer(f)
-                w.writerow(item)
-                return True
-        except:
-            print(&#39;Close the table or the program cannot write&#39;)
-            time.sleep(1)</code></pre>
-</details>
-</dd>
 </dl>
 </section>
 <section>
@@ -458,13 +386,12 @@ path for saving csv files</dd>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
-<ul class="two-column">
+<ul class="">
 <li><code><a title="came.Part_3_avg_distance.avg_distance" href="#came.Part_3_avg_distance.avg_distance">avg_distance</a></code></li>
 <li><code><a title="came.Part_3_avg_distance.dist_eclud" href="#came.Part_3_avg_distance.dist_eclud">dist_eclud</a></code></li>
 <li><code><a title="came.Part_3_avg_distance.get_avg" href="#came.Part_3_avg_distance.get_avg">get_avg</a></code></li>
 <li><code><a title="came.Part_3_avg_distance.get_date_list" href="#came.Part_3_avg_distance.get_date_list">get_date_list</a></code></li>
 <li><code><a title="came.Part_3_avg_distance.get_same_date_list" href="#came.Part_3_avg_distance.get_same_date_list">get_same_date_list</a></code></li>
-<li><code><a title="came.Part_3_avg_distance.savecsv" href="#came.Part_3_avg_distance.savecsv">savecsv</a></code></li>
 </ul>
 </li>
 </ul>
