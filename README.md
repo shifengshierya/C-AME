@@ -36,7 +36,7 @@ We offer both a **Windows-only** application and the corresponding source code w
 
 This part is recommended for developers. 
 ### Quick Start on Colab
-We provide a [Colab Demo](https://colab.research.google.com/drive/1kOmRemx4p2Wqa2JtFeZtZNlCNiVo8zEc?usp=sharing) of this code for a quick try.
+We provide a [Colab Demo](https://colab.research.google.com/drive/1kOmRemx4p2Wqa2JtFeZtZNlCNiVo8zEc?usp=sharing) of this code for a quick try. Run the code by clicking the triangle button from top to bottom.
 ### Environment
 We use Python 3.10 for all the experiments. Install other dependencies via
 ```bash
