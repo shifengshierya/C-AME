@@ -2,7 +2,7 @@
 C-AME is an open source Python software application for avian migration trajectory estimation based on observation data from eBird platform.
 We offer both a **Windows-only** application and the corresponding source code with a Google Colab demo ready.
 ## C-AME Application Usage (Windows only)
-![came](https://github.com/shifengshierya/C-AME/assets/50764534/ccc84a8f-b4ca-42d4-998d-38d8996ab5b6)
+![came](./assets/came-win.png)
 1. **Download the Code**
    - Download the code located in the "application" folder and extract all files.
 2. **Navigate and Determine Folder Paths**
