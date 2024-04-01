@@ -80,5 +80,5 @@ Then, you can get the results in the corresponding folders：
 |  centroids_43110.jpg-centroids_43460.jpg | The centroids figure during clustering                   |
 |  group1.csv-group13.csv     |              The results after centroid grouping                      |
 |  gam1.jpg-gam13.jpg /  randomforest1.jpg-randomforest13.jpg/ KNN1.jpg-KNN13.jpg   |        The fitting process figures for GAM/RF/K-NN algorithm      |
-|  fiitingresult1.csv-fittingresult13.csv       | The fitting results after GAM/RF/KNN algorithm       |
+|  fiiting_result1.csv-fitting_result13.csv       | The fitting results after GAM/RF/KNN algorithm       |
 
