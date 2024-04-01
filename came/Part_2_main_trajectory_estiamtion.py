@@ -67,8 +67,8 @@ def part2(projection,data_path='./ProcessFiles/', save_path='./ResultFiles/'):
 
 
 #Path estimation:Show the estimation results on the map by map_1() after GAM fitting and converting  WebMercator to wgs84
-        #map_1(save_path,csv_name,'gam')
-        map_1(save_path,csv_name,'randomforest')
+        map_1(save_path,csv_name,'gam')
+        #map_1(save_path,csv_name,'randomforest')
         #map_1(save_path,csv_name,'knn')
 
 
