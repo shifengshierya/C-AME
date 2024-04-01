@@ -13,7 +13,7 @@ We offer both a **Windows-only** application and the corresponding source code w
      - Processing results storage folder: Part 2 output Folder
    - Note that we have set the default folder 'Raw Data' as the Part 1 Input Folder with the raw observation data in it to reproduce our method, you need to set empty folders, such as 'ProcessFiles' and 'ResultFiles', as Part 1 Output Folder and Part 2 Output Folder  before you run it. 
 3. **Execute the Application**
-   - Double click on the Application file named `cameMain.exe`, which is represented by a blue bird icon. This action will open the software terminal.
+   - Double click on the Application file named `cameMain.exe`, which is represented by a blue bird icon. This action will open the software terminal after a short while.
 4. **Parameter Settings**
    - Set the three paths you determined in Step 2 within the terminal window.
    - Ensure you select the correct columns for the following data:
