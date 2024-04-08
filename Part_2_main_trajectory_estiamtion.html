@@ -63,49 +63,51 @@ def part2(projection,data_path=&#39;./ProcessFiles/&#39;, save_path=&#39;./Resul
         y = df[&#34;LONGITUDE&#34;]
         date = df[&#34;OBSERVATION DATE&#34;]
         length = len(x)
-# Data preprocessing: Convert original latitude and longitude data to WebMercator coordinates by WGS84ToWebMercator_Single()
+        
+# Data preprocessing: Convert the original latitude and longitude data 
 
         initial_data = get_initial_data(x, y, date, length,projection)
         initial_data_df = pd.DataFrame(initial_data[1:], columns=initial_data[0])
         initial_data_df.to_csv(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;, &#39;&#39;), &#39;initial_data.csv&#39;), index=False)
         print(&#39;File {}/{},Step 1 finished&#39;.format(csv_num + 1, len(all_csv)))
 
-#Data preprocessing: Interpolation for missing data by interpolation()
+#Data preprocessing: Interpolation for missing data 
         initial_data = interpolation(date, length, initial_data)
         print(&#39;{},Step2 finished&#39;.format(csv_name))
 
-#Data preprocessing: Smooth the data by rolling_window()
+#Data preprocessing: Smooth the data 
         Rolling_window_data_df = rolling_window(initial_data, save_path, csv_name)
         print(&#39;{},Step3 finished&#39;.format(csv_name))
 
-#Data preprocessing: Outlier detectiobn by get_sldf()
+#Data preprocessing: Outlier detection 
         SLDF_df = get_sldf(Rolling_window_data_df, save_path, csv_name)
         print(&#39;{}, Get SLDF_df&#39;.format(csv_name))
 
 
-#Path estimation: Get daily population centroids by mean_shift()
+#Path estimation: Get daily population centroids 
         result = mean_shift(SLDF_df,save_path,csv_name)
         print(&#39;{},Get Meanshift results&#39;.format(csv_name))
         savecsvs(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;, &#39;&#39;), &#34;centroids.csv&#34;), result)
         # data_write(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;, &#39;&#39;), &#34;shift.xlsx&#34;), result)
 
-#Path estimation: Group the daily population centroids according to the minimum distance principle by group()
+#Path estimation: Group the daily population centroids according to the minimum distance principle 
         group(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;, &#39;&#39;), &#34;centroids.csv&#34;), save_path, csv_name)
         print(&#39;File{}/{},Group finished&#39;.format(csv_num + 1, len(all_csv)))
 
 
-#Path estimation:Show the estimation results on the map by map_1() after GAM fitting and converting  WebMercator to wgs84
+#Path estimation: Show the estimation results on the map 
         #map_1(save_path,csv_name,&#39;gam&#39;)
-        #map_1(save_path,csv_name,&#39;randomforest&#39;)
-        map_1(save_path,csv_name,&#39;knn&#39;)
+        map_1(save_path,csv_name,&#39;randomforest&#39;)
+        #map_1(save_path,csv_name,&#39;knn&#39;)
 
 
 
-#Index calculation of speed and offset distance by speed(),offset_distance()
+#Index calculation of speed and offset distance
         speed(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;, &#39;&#39;)))
         off_distance(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;, &#39;&#39;)))
         print(&#39;File {}/{},speed and offset distance finished&#39;.format(csv_num + 1, len(all_csv)))
-#Index calculation of avarage distance of daily centroids by  avg_distance()
+
+#Index calculation of average distance of daily centroids
         avg_distance(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;, &#39;&#39;)))
         print(&#39;File {}/{},Avg_distance finished&#39;.format(csv_num + 1, len(all_csv)))
 
@@ -158,49 +160,51 @@ if __name__ == &#39;__main__&#39;:
         y = df[&#34;LONGITUDE&#34;]
         date = df[&#34;OBSERVATION DATE&#34;]
         length = len(x)
-# Data preprocessing: Convert original latitude and longitude data to WebMercator coordinates by WGS84ToWebMercator_Single()
+        
+# Data preprocessing: Convert the original latitude and longitude data 
 
         initial_data = get_initial_data(x, y, date, length,projection)
         initial_data_df = pd.DataFrame(initial_data[1:], columns=initial_data[0])
         initial_data_df.to_csv(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;, &#39;&#39;), &#39;initial_data.csv&#39;), index=False)
         print(&#39;File {}/{},Step 1 finished&#39;.format(csv_num + 1, len(all_csv)))
 
-#Data preprocessing: Interpolation for missing data by interpolation()
+#Data preprocessing: Interpolation for missing data 
         initial_data = interpolation(date, length, initial_data)
         print(&#39;{},Step2 finished&#39;.format(csv_name))
 
-#Data preprocessing: Smooth the data by rolling_window()
+#Data preprocessing: Smooth the data 
         Rolling_window_data_df = rolling_window(initial_data, save_path, csv_name)
         print(&#39;{},Step3 finished&#39;.format(csv_name))
 
-#Data preprocessing: Outlier detectiobn by get_sldf()
+#Data preprocessing: Outlier detection 
         SLDF_df = get_sldf(Rolling_window_data_df, save_path, csv_name)
         print(&#39;{}, Get SLDF_df&#39;.format(csv_name))
 
 
-#Path estimation: Get daily population centroids by mean_shift()
+#Path estimation: Get daily population centroids 
         result = mean_shift(SLDF_df,save_path,csv_name)
         print(&#39;{},Get Meanshift results&#39;.format(csv_name))
         savecsvs(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;, &#39;&#39;), &#34;centroids.csv&#34;), result)
         # data_write(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;, &#39;&#39;), &#34;shift.xlsx&#34;), result)
 
-#Path estimation: Group the daily population centroids according to the minimum distance principle by group()
+#Path estimation: Group the daily population centroids according to the minimum distance principle 
         group(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;, &#39;&#39;), &#34;centroids.csv&#34;), save_path, csv_name)
         print(&#39;File{}/{},Group finished&#39;.format(csv_num + 1, len(all_csv)))
 
 
-#Path estimation:Show the estimation results on the map by map_1() after GAM fitting and converting  WebMercator to wgs84
+#Path estimation: Show the estimation results on the map 
         #map_1(save_path,csv_name,&#39;gam&#39;)
-        #map_1(save_path,csv_name,&#39;randomforest&#39;)
-        map_1(save_path,csv_name,&#39;knn&#39;)
+        map_1(save_path,csv_name,&#39;randomforest&#39;)
+        #map_1(save_path,csv_name,&#39;knn&#39;)
 
 
 
-#Index calculation of speed and offset distance by speed(),offset_distance()
+#Index calculation of speed and offset distance
         speed(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;, &#39;&#39;)))
         off_distance(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;, &#39;&#39;)))
         print(&#39;File {}/{},speed and offset distance finished&#39;.format(csv_num + 1, len(all_csv)))
-#Index calculation of avarage distance of daily centroids by  avg_distance()
+
+#Index calculation of average distance of daily centroids
         avg_distance(os.path.join(save_path, csv_name.replace(&#39;.csv&#39;, &#39;&#39;)))
         print(&#39;File {}/{},Avg_distance finished&#39;.format(csv_num + 1, len(all_csv)))
 
