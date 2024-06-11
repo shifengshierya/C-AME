@@ -99,7 +99,7 @@ def calculate_distance(path_list):
         name1 = os.path.basename(r)
         if name1[0:2] == 'fi':
             tmp = pd.read_csv(r, header=None)
-            for l in range(1,365):
+            for l in range(1,359):
                 x1 = float(tmp.iloc[1, 0])
                 y1 = float(tmp.iloc[1, 1])
 
@@ -129,7 +129,7 @@ def calculate_distance(path_list):
         name1 = os.path.basename(r)
         if name1[0:2] == 'fi':
             tmp = pd.read_csv(r, header=None)
-            for p in range(1,365):
+            for p in range(1,359):
                 x = float(tmp.iloc[p, 0])
                 y = float(tmp.iloc[p, 1])
                 distance2 = get_distance_point2line((x, y), line)
@@ -169,7 +169,7 @@ def off_distance_main(path):
     #savecsvs(os.path.join(path, 'off_distance', 'da.csv'), items)
 
     count = 1
-    xx = [i for i in range(43101, 43465)]
+    xx = [i for i in range(43104, 43462)]
     for l in result:
         name = os.path.basename(path1[count])
         #plt.xlim(0,360)
@@ -181,7 +181,7 @@ def off_distance_main(path):
         count += 1
         #plt.title('%s'%name)
 
-
+    plt.ticklabel_format(style='scientific', axis='y', scilimits=(0, 0))
     plt.legend()
     plt.savefig(os.path.join(path, 'off_distance', 'OffsetDistancePerDay.png'))
     plt.show()

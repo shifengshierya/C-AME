@@ -202,8 +202,8 @@ def rolling_window(initial_data,save_path,csv_name):
     Rolling_window_data = []
     Rolling_window_data.append(["LATITUDE", "LONGITUDE", "OBSERVATION DATE"])
 
-    k = 43101
-    for i in range(k, k + 365):
+    k = 43104
+    for i in range(k, k + 359):
         for data in initial_data:
             if data[2] == "OBSERVATION DATE":
                 continue
@@ -317,14 +317,14 @@ def get_sldf(window_data_df,save_path,csv_name):
     SLDF_all = np.zeros((0, 4))
 
     day_index = dict()
-    day_index[43101] = 0
+    day_index[43104] = 0
     for index, i in enumerate(xall[:, 2]):
         if i not in day_index:
             day_index[i] = index
 
-    for day in range(1, 366):
-        date = day + 43100
-        if day != 365:
+    for day in range(1, 360):
+        date = day + 43103
+        if day != 359:
             temp = xall[day_index[date]:day_index[date + 1], :2]
         else:
             temp = xall[day_index[date]:, :2]
@@ -355,7 +355,7 @@ def mean_shift(SLDF_df,save_path,csv_name):
     datas = SLDF_df.drop(['SLDF'], axis=1)
     result = []
     result.append(["LATITUDE", "LONGITUDE", "OBSERVATION DATE"])
-    for date in tqdm(range(43101, 43466)):
+    for date in tqdm(range(43104, 43463)):
     #for date in range(43101, 43119):
         #print(date)
         data = datas.loc[date == datas['OBSERVATION DATE']]  # .values.tolist()#["answer"]
@@ -418,7 +418,7 @@ def group(csv_path,save_path,csv_name):
     #datas = datas.iloc[1:, :]
 
     result_list = []
-    for date in range(43101, 43466):
+    for date in range(43104, 43463):
         data = datas.loc[date == datas['OBSERVATION DATE']]
         data = data.iloc[:, :2].values.tolist()
         A1 = np.hstack((A1, np.array(list(data)).T))
@@ -594,7 +594,7 @@ def gam(save_path, csv_name, key):
     x = df["X"]
     y = df["Y"]
     xx = df["date_index"]
-    xx = xx + 43100
+    xx = xx + 43103
 
 
     gam_model_x = LinearGAM().fit(date, x)
@@ -658,7 +658,7 @@ def gam(save_path, csv_name, key):
 
 
 #Fitting longitude and latitude with time repectively with RandomForests
-def randomforest(save_path, csv_name,key):
+def randomforest(save_path, csv_name,key,n_estimators,random_state):
     """
        This function is for Random forests algorithm
 
@@ -666,6 +666,8 @@ def randomforest(save_path, csv_name,key):
            save_path: The path for saving the result file
            csv_name: The species name being processed
            key: The number for file naming
+           n_estimators: The number of trees
+           random_state: randomness
 
        Returns:
            Lon: The longitude after Random Forests algorithm
@@ -675,15 +677,15 @@ def randomforest(save_path, csv_name,key):
     df = pd.read_csv(os.path.join(save_path, csv_name.replace('.csv', ''), 'group{}.csv'.format(key + 1)))
     date = df["date_index"]
     xx = df["date_index"]
-    xx = xx + 43100
+    xx = xx + 43103
 
     X = df[['date_index']]  # Features (date)
     y_longitude = df['Y']  # Target variable (longitude)
     y_latitude = df['X']  # Target variable (latitude)
 
     # Train the model
-    rf_longitude = RandomForestRegressor(n_estimators=100, random_state=42)
-    rf_latitude = RandomForestRegressor(n_estimators=100, random_state=42)
+    rf_longitude = RandomForestRegressor(n_estimators=n_estimators,random_state=random_state)
+    rf_latitude = RandomForestRegressor(n_estimators=n_estimators,random_state=random_state)
     rf_longitude.fit(X, y_longitude)
     rf_latitude.fit(X, y_latitude)
 
@@ -747,7 +749,7 @@ def randomforest(save_path, csv_name,key):
     return Lon, Lat
 
 #Fitting longitude and latitude with time repectively with KNN
-def knn(save_path, csv_name,key):
+def knn(save_path, csv_name,key,n_neighbors):
     """
        This function is for KNN algorithm
 
@@ -755,6 +757,7 @@ def knn(save_path, csv_name,key):
            save_path: The path for saving the result file
            csv_name: The species name being processed
            key: The number for file naming
+           n_neighbors: The number of neighbors
 
        Returns:
            Lon: The longitude after KNN fitting
@@ -765,7 +768,7 @@ def knn(save_path, csv_name,key):
     df = pd.read_csv(os.path.join(save_path, csv_name.replace('.csv', ''), 'group{}.csv'.format(key + 1)))
     date = df["date_index"]
     xx = df["date_index"]
-    xx = xx + 43100
+    xx = xx + 43103
 
     X = df[['date_index']]  # Features (date)
     y_longitude = df['Y']  # Target variable (longitude)
@@ -773,8 +776,8 @@ def knn(save_path, csv_name,key):
 
 
     # Train the model
-    knn_longitude = KNeighborsRegressor(n_neighbors=5)
-    knn_latitude = KNeighborsRegressor(n_neighbors=5)
+    knn_longitude = KNeighborsRegressor(n_neighbors=n_neighbors)
+    knn_latitude = KNeighborsRegressor(n_neighbors=n_neighbors)
     knn_longitude.fit(X, y_longitude)
     knn_latitude.fit(X, y_latitude)
 
@@ -837,7 +840,7 @@ def knn(save_path, csv_name,key):
     return Lon, Lat
 
 #Trajectory estimation: Show the estimation results on the map
-def map_1(save_path,csv_name,type_name):
+def map_1(save_path,csv_name,type_name, ):
     """
        This function is for showing the trajectories on the map
 
@@ -865,9 +868,12 @@ def map_1(save_path,csv_name,type_name):
         if type_name == 'gam':
             Lon, Lat = gam(save_path, csv_name, i)
         elif type_name == 'randomforest':
-            Lon, Lat = randomforest(save_path, csv_name, i)
+            n_estimators = 100
+            random_state = 42
+            Lon, Lat = randomforest(save_path, csv_name, i,n_estimators,random_state)
         elif type_name == 'knn':
-            Lon, Lat = knn(save_path, csv_name, i)
+            n_neighbors = 5
+            Lon, Lat = knn(save_path, csv_name, i,n_neighbors)
 
         LON.append(Lon)
         LAT.append(Lat)

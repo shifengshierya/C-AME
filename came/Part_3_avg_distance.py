@@ -112,6 +112,7 @@ def avg_distance(save_path):
     plt.plot(datelist, avg_list, label="avg_distance")
     plt.xlabel("date")
     plt.ylabel("avg_distance(meter)")
+    plt.ticklabel_format(style='scientific', axis='y', scilimits=(0, 0))
     plt.legend(loc="best")
     plt.gca().ticklabel_format(axis="x", useOffset=False)
     plt.savefig(os.path.join(save_path, 'avg.png'))

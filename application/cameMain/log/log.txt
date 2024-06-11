@@ -1,0 +1,5 @@
+﻿2024-06-11_00:31:51　异常： could not convert string to float: 'LATITUDE'
+2024-06-11_00:32:21　异常： could not convert string to float: 'LATITUDE'
+2024-06-11_00:33:50　异常： could not convert string to float: 'LATITUDE'
+2024-06-11_00:33:52　异常： could not convert string to float: 'LATITUDE'
+2024-06-11_00:33:56　异常： could not convert string to float: 'LATITUDE'

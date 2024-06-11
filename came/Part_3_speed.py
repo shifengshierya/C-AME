@@ -53,7 +53,7 @@ def calculate_speed(path):
     """
     df = pd.read_csv(path, header=None)
     list_speed = [0]
-    for i in range(1,364):
+    for i in range(1,358):
         # x1 = float(df.iloc[i + 1, 0])
         x = float(df.iloc[i + 1, 0]) - float(df.iloc[i, 0])
         y = float(df.iloc[i + 1, 1]) - float(df.iloc[i, 1])
@@ -75,7 +75,7 @@ def speed_main(path):
     path1 = get_file_list(path)
     list_averange = []
     index = 1
-    xx = [i for i in range(43101,43465)]
+    xx = [i for i in range(43104,43462)]
     for i in path1:
         name1 = os.path.basename(i)
         if name1[0:2] == 'fi':
@@ -105,7 +105,7 @@ def speed_main(path):
         result2.append(sum/len(list_averange))
 
 
-
+    plt.ticklabel_format(style='scientific', axis='y', scilimits=(0, 0))
     plt.legend()
     plt.savefig(os.path.join(path, 'speed', 'SpeedPerDay.png'))
     plt.show()
