@@ -27,7 +27,7 @@ We offer both a **Windows-only** application and the corresponding source code w
    -  Set the EPSG Code to define projection model:
      - The default value of EPSG: 3857.
    -  Choose the fitting model for grouped centroids:
-     -  Three alternative models to choose from: Generalized Additive Model (GAM), Random Forests (RF), and K-Nearest Neighbors (K-NN)
+     -  Three alternative models to choose from: Generalized Additive Model (GAM), Random Forests (RF), and K-Nearest Neighbors (K-NN).Meanwhile, we open up the number of trees(n_estimators)and randomness(random_state)in the RandomForest model, as well as the number of neighbors(n_neighbors) in K-NN for users to define to meet different needs.
 5. **Run the Application**
    - Click on the "RUN" button to execute the application.
 
