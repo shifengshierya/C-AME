@@ -24,10 +24,10 @@ We offer both a **Windows-only** application and the corresponding source code w
    - Note that we have set the default column numbers as follows:
      - Col# Latitude : Col# Observation Date = 8 : 11
      - Col# Observation Count= 3.
-   -  Set the EPSG Code to define projection model:
+   - Set the EPSG Code to define projection model:
      - The default value of EPSG: 3857.
-   -  Choose the fitting model for grouped centroids:
-     -  Three alternative models to choose from: Generalized Additive Model (GAM), Random Forests (RF), and K-Nearest Neighbors (K-NN). Meanwhile, we open up the number of trees(n_estimators; default value: 100)and randomness(random_state; default value: 42)in the Random Forests model, as well as the number of neighbors(n_neighbors; default value:5)  in K-NN for users to define according to the characteristics of their own data.
+   - Choose the fitting model for grouped centroids:
+     - Three alternative models to choose from: Generalized Additive Model (GAM), Random Forests (RF), and K-Nearest Neighbors (K-NN). Meanwhile, we open up the number of trees(n_estimators; default value: 100)and randomness(random_state; default value: 42)in the Random Forests model, as well as the number of neighbors(n_neighbors; default value:5)  in K-NN for users to define according to the characteristics of their own data.
 5. **Run the Application**
    - Click on the "RUN" button to execute the application.
 
