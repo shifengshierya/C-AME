@@ -667,7 +667,7 @@ def randomforest(save_path, csv_name,key,n_estimators,random_state):
            csv_name: The species name being processed
            key: The number for file naming
            n_estimators: The number of trees
-           random_state: randomness
+           random_state: Randomness
 
        Returns:
            Lon: The longitude after Random Forests algorithm
