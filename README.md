@@ -27,7 +27,7 @@ We offer both a **Windows-only** application and the corresponding source code w
    - Set the EPSG Code to define projection model:
      - The default value of EPSG: 3857.
    - Choose the fitting model for grouped centroids:
-     - Three alternative models to choose from: Generalized Additive Model (GAM), Random Forests (RF), and K-Nearest Neighbors (K-NN). Meanwhile, we open up the number of trees(n_estimators; default value: 100)and randomness(random_state; default value: 42)in the Random Forests model, as well as the number of neighbors(n_neighbors; default value:5)  in K-NN for users to define according to the characteristics of their own data.
+     - Three alternative models to choose from: Generalized Additive Model (GAM), Random Forests (RF), and K-Nearest Neighbors (K-NN). Meanwhile, we open up the number of trees(n_estimators; default value: 100)and randomness(random_state; default value: 42)in RF, as well as the number of neighbors(n_neighbors; default value:5)  in K-NN for users to define according to the characteristics of their own data.
 5. **Run the Application**
    - Click on the "RUN" button to execute the application.
 
@@ -43,7 +43,7 @@ We use Python 3.10 for all the experiments. Install other dependencies via
 pip install -r requirements.txt
 ```
 ### Data Preparation
-The raw observation data can be organized into lists, including the species with observation counts, observation dates and locations (latitude and longitude). In our case, raw data for Anthus spragueii, a small songbird in North America, is acquired from eBird and saved in the Part 1 Input Folder for our case study. It includes 2169 records from 2018/1/1 to 2018/12/31, and organized into lists, including common name, scientific name, observation count, country, state, county, latitude, longitude, observation date, and so on. The software tool can also be applied to other time-series latitude and longitude observation data of migratory species from different observation databases, such as GBIF, iNaturalist, the researchers themselves, or integrated data from multiple data sources with the data organized into locations (latitude and longitude), observation dates, and observation counts. 
+The raw observation data can be organized into lists, including the species with observation counts, observation dates and locations (latitude and longitude). In our case, raw data for Spragues' pipit (Anthus spragueii, Audubon), a small songbird in North America, is acquired from eBird and saved in the Part 1 Input Folder for our case study. It includes 2169 records from 2018/1/1 to 2018/12/31, and organized into lists, including common name, scientific name, observation count, country, state, county, latitude, longitude, observation date, and so on. The software tool can also be applied to other time-series latitude and longitude observation data of migratory species from different observation databases, such as GBIF, iNaturalist, the researchers themselves, or integrated data from multiple data sources with the data organized into locations (latitude and longitude), observation dates, and observation counts. 
 
 ### Usage
 Navigate into the source folder, and run 
@@ -80,5 +80,5 @@ Then, you can get the results in the corresponding folders：
 |  centroids_43110.jpg-centroids_43460.jpg | The centroids figure during clustering                   |
 |  group1.csv-group13.csv     |              The results after centroid grouping                      |
 |  gam1.jpg-gam13.jpg /  randomforest1.jpg-randomforest13.jpg/ KNN1.jpg-KNN13.jpg   |        The fitting process figures with GAM/RF/K-NN algorithm      |
-|  fiiting_result1.csv-fitting_result13.csv       | The fitting results after GAM/RF/KNN algorithm       |
+|  fiiting_result1.csv-fitting_result13.csv       | The fitting results after GAM/RF/K-NN algorithm       |
 
