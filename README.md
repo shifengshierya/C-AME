@@ -76,7 +76,7 @@ Then, you can get the results in the corresponding folders：
 |  initial_data.csv         |             The data after coordinates conversion            |
 |  rolling_window_data.csv  |                The data after rolling window                            |
 |  sldf.csv                 |             The data after SLDF outlier detection                       |
-|  centroids.csv            |                  The centroids result by Meanshift algorithm            |
+|  centroids.csv            |                  The centroids result by Mean-Shift algorithm            |
 |  centroids_43110.jpg-centroids_43460.jpg | The centroids figure during clustering                   |
 |  group1.csv-group13.csv     |              The results after centroid grouping                      |
 |  gam1.jpg-gam13.jpg /  randomforest1.jpg-randomforest13.jpg/ KNN1.jpg-KNN13.jpg   |        The fitting process figures with GAM/RF/K-NN algorithm      |
