@@ -177,7 +177,7 @@ def main(path1='./RawData/', path2='./ProcessFiles/', save_path='./ResultFiles/'
                     num = int(datas[0])
                 for j in range(num):
                     data2.append(datas)
-        else:
+         else:
             datalist = [['1'] + data[lat_col:obs_date] for data in datalist]
             datalist = datalist[1:]
 
@@ -195,7 +195,7 @@ def main(path1='./RawData/', path2='./ProcessFiles/', save_path='./ResultFiles/'
                 datas[3] = ctime
                 data2.append(datas)
                 
-         data2 = [data[1:] for data in data2]
+        data2 = [data[1:] for data in data2]
 #Sort by time
         sorted_data = sorted(data2, key=lambda x: x[2])
         sorted_data = [['LATITUDE', 'LONGITUDE', 'OBSERVATION DATE']] + sorted_data
