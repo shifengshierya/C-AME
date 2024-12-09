@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.3">
+<title>came.Part_2_functions_for_eachstep API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>came.Part_2_functions_for_eachstep</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="came.Part_2_functions_for_eachstep.create_folder"><code class="name flex">
+<span>def <span class="ident">create_folder</span></span>(<span>inputpath)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This function is for creating folders</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>inputpath</code></strong></dt>
+<dd>The folder path</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>True</code></dt>
+<dd>Omitted</dd>
+</dl></div>
+</dd>
+<dt id="came.Part_2_functions_for_eachstep.file_names"><code class="name flex">
+<span>def <span class="ident">file_names</span></span>(<span>inputpath)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This function is for looping over files</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>inputpath</code></strong></dt>
+<dd>The folder path
+to be looped over</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>namelist</code></dt>
+<dd>The files list</dd>
+</dl></div>
+</dd>
+<dt id="came.Part_2_functions_for_eachstep.gam"><code class="name flex">
+<span>def <span class="ident">gam</span></span>(<span>save_path, csv_name, key)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This function is for gam algorithm</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>save_path</code></strong></dt>
+<dd>The path for saving the result file</dd>
+<dt><strong><code>csv_name</code></strong></dt>
+<dd>The species name being processed</dd>
+<dt><strong><code>key</code></strong></dt>
+<dd>The number for file naming</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Lon</code></dt>
+<dd>The longitude after GAM fitting</dd>
+<dt><code>Lat</code></dt>
+<dd>The latitude after GAM fitting</dd>
+</dl></div>
+</dd>
+<dt id="came.Part_2_functions_for_eachstep.get_all_csv"><code class="name flex">
+<span>def <span class="ident">get_all_csv</span></span>(<span>data_path)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This function is for getting all csv files</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>data_path</code></strong></dt>
+<dd>The folder path of storing the csv files</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>all_csv</code></dt>
+<dd>All the csv files</dd>
+</dl></div>
+</dd>
+<dt id="came.Part_2_functions_for_eachstep.get_initial_data"><code class="name flex">
+<span>def <span class="ident">get_initial_data</span></span>(<span>x, y, date, length, projection1)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="came.Part_2_functions_for_eachstep.get_sldf"><code class="name flex">
+<span>def <span class="ident">get_sldf</span></span>(<span>window_data_df, save_path, csv_name)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This function is for saving the results after sldf outlier detection</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>window_data_df</code></strong></dt>
+<dd>The data after rolling_window</dd>
+<dt><strong><code>save_path</code></strong></dt>
+<dd>The path for saving the result file</dd>
+<dt><strong><code>csv_name</code></strong></dt>
+<dd>The species name being processed</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>sldf_df</code></dt>
+<dd>The data results after sldf outlier detection</dd>
+</dl></div>
+</dd>
+<dt id="came.Part_2_functions_for_eachstep.group"><code class="name flex">
+<span>def <span class="ident">group</span></span>(<span>csv_path, save_path, csv_name)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This function is for grouping the daily subpopulation centroids based on the minimum distance</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>csv_path</code></strong></dt>
+<dd>The path for the data file after Meanshift algorithm</dd>
+<dt><strong><code>save_path</code></strong></dt>
+<dd>The path for saving the result file</dd>
+<dt><strong><code>csv_name</code></strong></dt>
+<dd>The species name being processed</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>True</code></dt>
+<dd>Omitted</dd>
+</dl></div>
+</dd>
+<dt id="came.Part_2_functions_for_eachstep.interpolation"><code class="name flex">
+<span>def <span class="ident">interpolation</span></span>(<span>date, length, initial_data)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This function is to finish interpolation for missing dates</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>date</code></strong></dt>
+<dd>The observation date</dd>
+<dt><strong><code>length</code></strong></dt>
+<dd>The length of the data</dd>
+<dt><strong><code>initial_data</code></strong></dt>
+<dd>The data after coordinates conversion</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>initial_data</code></dt>
+<dd>The data results after interpolation</dd>
+</dl></div>
+</dd>
+<dt id="came.Part_2_functions_for_eachstep.knn"><code class="name flex">
+<span>def <span class="ident">knn</span></span>(<span>save_path, csv_name, key, n_neighbors)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This function is for KNN algorithm</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>save_path</code></strong></dt>
+<dd>The path for saving the result file</dd>
+<dt><strong><code>csv_name</code></strong></dt>
+<dd>The species name being processed</dd>
+<dt><strong><code>key</code></strong></dt>
+<dd>The number for file naming</dd>
+<dt><strong><code>n_neighbors</code></strong></dt>
+<dd>The number of neighbors</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Lon</code></dt>
+<dd>The longitude after KNN fitting</dd>
+<dt><code>Lat</code></dt>
+<dd>The latitude after KNN fitting</dd>
+</dl></div>
+</dd>
+<dt id="came.Part_2_functions_for_eachstep.map_1"><code class="name flex">
+<span>def <span class="ident">map_1</span></span>(<span>save_path, csv_name, type_name)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This function is for showing the trajectories on the map</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>save_path</code></strong></dt>
+<dd>The path for storing the result figures</dd>
+<dt><strong><code>csv_name</code></strong></dt>
+<dd>The name of the species to be processed</dd>
+<dt><strong><code>type_name</code></strong></dt>
+<dd>The fitting model chosen for centroids fitting</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>True</code></dt>
+<dd>Omitted</dd>
+</dl></div>
+</dd>
+<dt id="came.Part_2_functions_for_eachstep.mean_shift"><code class="name flex">
+<span>def <span class="ident">mean_shift</span></span>(<span>SLDF_df, save_path, csv_name)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This function is for getting centroids of high-density subpopulations by Meanshift algorithm</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>SLDF_df</code></strong></dt>
+<dd>The data after sldf outlier detection</dd>
+<dt><strong><code>save_path</code></strong></dt>
+<dd>The path for saving the result file</dd>
+<dt><strong><code>csv_name</code></strong></dt>
+<dd>The species name being processed</dd>
+</dl>
+<p>Returns:
+result: The data results after Meanshift clustering</p></div>
+</dd>
+<dt id="came.Part_2_functions_for_eachstep.projection2wgs84"><code class="name flex">
+<span>def <span class="ident">projection2wgs84</span></span>(<span>lat, lon)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This function is for coordinates conversion into
+geographical ones</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>a</code></strong></dt>
+<dd>The coordinates of longitude</dd>
+<dt><strong><code>b</code></strong></dt>
+<dd>The coordinates of latitude</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>lon</code></dt>
+<dd>The geographical coordinates of longitude</dd>
+<dt><code>lat</code></dt>
+<dd>The geographical coordinates of latitude</dd>
+</dl></div>
+</dd>
+<dt id="came.Part_2_functions_for_eachstep.randomforest"><code class="name flex">
+<span>def <span class="ident">randomforest</span></span>(<span>save_path, csv_name, key, n_estimators, random_state)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This function is for Random forests algorithm</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>save_path</code></strong></dt>
+<dd>The path for saving the result file</dd>
+<dt><strong><code>csv_name</code></strong></dt>
+<dd>The species name being processed</dd>
+<dt><strong><code>key</code></strong></dt>
+<dd>The number for file naming</dd>
+<dt><strong><code>n_estimators</code></strong></dt>
+<dd>The number of trees</dd>
+<dt><strong><code>random_state</code></strong></dt>
+<dd>Randomness</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Lon</code></dt>
+<dd>The longitude after Random Forests algorithm</dd>
+<dt><code>Lat</code></dt>
+<dd>The latitude after Random Forests algorithm</dd>
+</dl></div>
+</dd>
+<dt id="came.Part_2_functions_for_eachstep.rolling_window"><code class="name flex">
+<span>def <span class="ident">rolling_window</span></span>(<span>initial_data, save_path, csv_name)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This function is for rolling_window algorithm</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>initial_data</code></strong></dt>
+<dd>The data after interpolation</dd>
+<dt><strong><code>save_path</code></strong></dt>
+<dd>The path for saving the result file</dd>
+<dt><strong><code>csv_name</code></strong></dt>
+<dd>The species name being processed</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>rolling_window_data_df</code></dt>
+<dd>The data results after rolling_window</dd>
+</dl></div>
+</dd>
+<dt id="came.Part_2_functions_for_eachstep.sldf"><code class="name flex">
+<span>def <span class="ident">sldf</span></span>(<span>x)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This function is for outlier detection based on sldf values</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>x</code></strong></dt>
+<dd>The input data</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>result</code></dt>
+<dd>The result after sldf outlier detection</dd>
+</dl></div>
+</dd>
+<dt id="came.Part_2_functions_for_eachstep.wgs84toprojection"><code class="name flex">
+<span>def <span class="ident">wgs84toprojection</span></span>(<span>lat, lon)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="came" href="index.html">came</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="two-column">
+<li><code><a title="came.Part_2_functions_for_eachstep.create_folder" href="#came.Part_2_functions_for_eachstep.create_folder">create_folder</a></code></li>
+<li><code><a title="came.Part_2_functions_for_eachstep.file_names" href="#came.Part_2_functions_for_eachstep.file_names">file_names</a></code></li>
+<li><code><a title="came.Part_2_functions_for_eachstep.gam" href="#came.Part_2_functions_for_eachstep.gam">gam</a></code></li>
+<li><code><a title="came.Part_2_functions_for_eachstep.get_all_csv" href="#came.Part_2_functions_for_eachstep.get_all_csv">get_all_csv</a></code></li>
+<li><code><a title="came.Part_2_functions_for_eachstep.get_initial_data" href="#came.Part_2_functions_for_eachstep.get_initial_data">get_initial_data</a></code></li>
+<li><code><a title="came.Part_2_functions_for_eachstep.get_sldf" href="#came.Part_2_functions_for_eachstep.get_sldf">get_sldf</a></code></li>
+<li><code><a title="came.Part_2_functions_for_eachstep.group" href="#came.Part_2_functions_for_eachstep.group">group</a></code></li>
+<li><code><a title="came.Part_2_functions_for_eachstep.interpolation" href="#came.Part_2_functions_for_eachstep.interpolation">interpolation</a></code></li>
+<li><code><a title="came.Part_2_functions_for_eachstep.knn" href="#came.Part_2_functions_for_eachstep.knn">knn</a></code></li>
+<li><code><a title="came.Part_2_functions_for_eachstep.map_1" href="#came.Part_2_functions_for_eachstep.map_1">map_1</a></code></li>
+<li><code><a title="came.Part_2_functions_for_eachstep.mean_shift" href="#came.Part_2_functions_for_eachstep.mean_shift">mean_shift</a></code></li>
+<li><code><a title="came.Part_2_functions_for_eachstep.projection2wgs84" href="#came.Part_2_functions_for_eachstep.projection2wgs84">projection2wgs84</a></code></li>
+<li><code><a title="came.Part_2_functions_for_eachstep.randomforest" href="#came.Part_2_functions_for_eachstep.randomforest">randomforest</a></code></li>
+<li><code><a title="came.Part_2_functions_for_eachstep.rolling_window" href="#came.Part_2_functions_for_eachstep.rolling_window">rolling_window</a></code></li>
+<li><code><a title="came.Part_2_functions_for_eachstep.sldf" href="#came.Part_2_functions_for_eachstep.sldf">sldf</a></code></li>
+<li><code><a title="came.Part_2_functions_for_eachstep.wgs84toprojection" href="#came.Part_2_functions_for_eachstep.wgs84toprojection">wgs84toprojection</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.3</a>.</p>
+</footer>
+</body>
+</html>
