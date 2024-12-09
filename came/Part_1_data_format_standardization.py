@@ -154,28 +154,48 @@ def main(path1='./RawData/', path2='./ProcessFiles/', save_path='./ResultFiles/'
     for i in range(len(csv_list)):
         csv_path = path1 + csv_list[i]
         datalist = readcsv(csv_path)
-        datalist = [[data[obs_count]] + data[lat_col:obs_date] for data in datalist]
-        datalist = datalist[1:]
+        
+         if obs_count != -1:
+            datalist = [[data[obs_count]] + data[lat_col:obs_date] for data in datalist]
+            datalist = datalist[1:]
 
-#Perform quantity correction according to observation count
-        data2 = []
-        for datas in datalist:
-            try:
-                ctime = '2018' + datas[3][4:]
-                ctime = date1[ctime]
-            except:
-                date_obj = datetime.strptime(datas[3], '%Y/%m/%d')
-                new_date_str = date_obj.strftime('%Y-%m-%d')
-                ctime = '2018' + new_date_str[4:]
-                ctime = date1[ctime]
-            datas[3] = ctime
-            if datas[0] == 'X':
-                num = 1
-            else:
-                num = int(datas[0])
-            for j in range(num):
+    #Perform quantity correction according to observation count
+            data2 = []
+            for datas in datalist:
+                try:
+                    ctime = '2018' + datas[3][4:]
+                    ctime = date1[ctime]
+                except:
+                    date_obj = datetime.strptime(datas[3], '%Y/%m/%d')
+                    new_date_str = date_obj.strftime('%Y-%m-%d')
+                    ctime = '2018' + new_date_str[4:]
+                    ctime = date1[ctime]
+                datas[3] = ctime
+                if datas[0] == 'X':
+                    num = 1
+                else:
+                    num = int(datas[0])
+                for j in range(num):
+                    data2.append(datas)
+        else:
+            datalist = [['1'] + data[lat_col:obs_date] for data in datalist]
+            datalist = datalist[1:]
+
+            # Perform quantity correction according to observation count
+            data2 = []
+            for datas in datalist:
+                try:
+                    ctime = '2018' + datas[3][4:]
+                    ctime = date1[ctime]
+                except:
+                    date_obj = datetime.strptime(datas[3], '%Y/%m/%d')
+                    new_date_str = date_obj.strftime('%Y-%m-%d')
+                    ctime = '2018' + new_date_str[4:]
+                    ctime = date1[ctime]
+                datas[3] = ctime
                 data2.append(datas)
-        data2 = [data[1:] for data in data2]
+                
+         data2 = [data[1:] for data in data2]
 #Sort by time
         sorted_data = sorted(data2, key=lambda x: x[2])
         sorted_data = [['LATITUDE', 'LONGITUDE', 'OBSERVATION DATE']] + sorted_data
