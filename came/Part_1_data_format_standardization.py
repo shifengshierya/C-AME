@@ -177,7 +177,7 @@ def main(path1='./RawData/', path2='./ProcessFiles/', save_path='./ResultFiles/'
                     num = int(datas[0])
                 for j in range(num):
                     data2.append(datas)
-        else:
+         else:
             datalist = [['1'] + data[lat_col:obs_date] for data in datalist]
             datalist = datalist[1:]
 
