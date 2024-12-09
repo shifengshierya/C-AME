@@ -1,0 +1,13 @@
+pandas
+matplot
+datetime
+numpy==1.23.5
+matplotlib
+xlwt
+pyproj
+pygam
+scikit-learn
+basemap
+tqdm
+xlrd
+openpyxl
