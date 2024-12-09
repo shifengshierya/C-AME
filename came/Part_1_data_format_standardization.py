@@ -154,12 +154,11 @@ def main(path1='./RawData/', path2='./ProcessFiles/', save_path='./ResultFiles/'
     for i in range(len(csv_list)):
         csv_path = path1 + csv_list[i]
         datalist = readcsv(csv_path)
-
         if obs_count != -1:
             datalist = [[data[obs_count]] + data[lat_col:obs_date] for data in datalist]
             datalist = datalist[1:]
 
-    #Perform quantity correction according to observation count
+#Perform quantity correction according to observation count
             data2 = []
             for datas in datalist:
                 try:
@@ -177,11 +176,11 @@ def main(path1='./RawData/', path2='./ProcessFiles/', save_path='./ResultFiles/'
                     num = int(datas[0])
                 for j in range(num):
                     data2.append(datas)
-        else:
+         else:
             datalist = [['1'] + data[lat_col:obs_date] for data in datalist]
             datalist = datalist[1:]
 
-            # Perform quantity correction according to observation count
+ # Perform quantity correction according to observation count
             data2 = []
             for datas in datalist:
                 try:
