@@ -15,7 +15,7 @@ We offer both a **Windows-only** application and the corresponding source code w
    - Double click on the Application file named `cameMain.exe`, which is represented by a blue bird icon. This action will open the software terminal after a short while.
 4. **Parameter Settings**
    - Set the three paths you determined in Step 2 within the terminal window.
-   - Ensure you select the correct columns for the following data:
+   - Ensure you select the correct columns for the following data.If count data is not provided, you can set "Observation count" as “-1” for further use and the number of observations will not be adjusted:
      - Latitude
      - Longitude
      - Observation date
@@ -42,7 +42,7 @@ We use Python 3.10 for all the experiments. Install other dependencies via
 pip install -r requirements.txt
 ```
 ### Data Preparation
-The raw observation data can be organized into lists, including the species with observation counts, observation dates and locations (latitude and longitude). Noted that if observation count data is provided, the corresponding column number can be set accordingly such as 3. If count data is not provided, users can set it to “-1” for further use and the number of observations will not be adjusted. In our case, raw data for Anthus spragueii, a small songbird in North America, is acquired from eBird and saved in the Part 1 Input Folder for our case study. It includes 2169 records from 2018/1/1 to 2018/12/31, and organized into lists, including common name, scientific name, observation count, country, state, county, latitude, longitude, observation date, and so on. The software tool can also be applied to other time-series latitude and longitude observation data of migratory species from different observation databases, such as GBIF, iNaturalist, the researchers themselves, or integrated data from multiple data sources with the data organized into locations (latitude and longitude), observation dates, and observation counts. 
+The raw observation data can be organized into lists, including the species with observation counts, observation dates and locations (latitude and longitude). Noted that if observation count data is provided, the corresponding column number can be set accordingly, such as 3. If count data is not provided, users can set it as “-1” for further use and the number of observations will not be adjusted. In our case, raw data for Anthus spragueii, a small songbird in North America, is acquired from eBird and saved in the Part 1 Input Folder for our case study. It includes 2169 records from 2018/1/1 to 2018/12/31, and organized into lists, including common name, scientific name, observation count, country, state, county, latitude, longitude, observation date, and so on. The software tool can also be applied to other time-series latitude and longitude observation data of migratory species from different observation databases, such as GBIF, iNaturalist, the researchers themselves, or integrated data from multiple data sources with the data organized into locations (latitude and longitude), observation dates, and observation counts. 
 
 ### Usage
 Navigate into the source folder, and run 
