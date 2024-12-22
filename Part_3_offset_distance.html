@@ -3,19 +3,30 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.3">
+<meta name="generator" content="pdoc3 0.11.5">
 <title>came.Part_3_offset_distance API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
 <script>window.addEventListener('DOMContentLoaded', () => {
 hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
 hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
 })</script>
 </head>
 <body>
@@ -37,6 +48,85 @@ hljs.highlightAll();
 <span>def <span class="ident">calculate_distance</span></span>(<span>path_list)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calculate_distance(path_list):
+    &#34;&#34;&#34;
+       This function is for getting migration axis and  offset distance
+
+       Args:
+           path_list: The files in the path
+
+       Returns:
+           list11: The offset distances
+          
+    &#34;&#34;&#34;
+    list_distance = []
+    for l in path_list:
+        name1 = os.path.basename(l)
+        if name1[:2] == &#39;fi&#39;:
+            tmp = pd.read_csv(l, header=None)
+            list_distance.append(tmp)
+
+    mean_x = []
+    mean_y = []
+    for q in list_distance:
+        mean_x.append(float(q.iloc[1, 0]))
+        mean_y.append(float(q.iloc[1, 1]))
+
+    mean_x1 = np.mean(mean_x)
+    mean_y1 = np.mean(mean_y)
+    print(mean_x1, mean_y1)
+
+
+    dict1 = {}
+    list1 = []
+    max_list_x = []
+    max_list_y = []
+    for r in path_list:
+        name1 = os.path.basename(r)
+        if name1[0:2] == &#39;fi&#39;:
+            tmp = pd.read_csv(r, header=None)
+            for l in range(1,359):
+                x1 = float(tmp.iloc[1, 0])
+                y1 = float(tmp.iloc[1, 1])
+
+                x = float(tmp.iloc[l, 0])
+                y = float(tmp.iloc[l, 1])
+                distance1 = ((x - x1) ** 2 + (y - y1) ** 2) ** 0.5
+                dict1[distance1] = l
+                list1.append(distance1)
+            max_distance = max(list1)
+            max_x_1 = float(tmp.iloc[dict1[max_distance], 0])
+            max_y_1 = float(tmp.iloc[dict1[max_distance], 1])
+            max_list_x.append(max_x_1)
+            max_list_y.append(max_y_1)
+            list1 = []
+            dict1 = {}
+
+    mean_x2 = np.mean(max_list_x)
+    mean_y2 = np.mean(max_list_y)
+    print(mean_x2, mean_y2)
+
+
+    line = [mean_x1, mean_y1, mean_x2, mean_y2]
+
+    list11 = []
+    for r in path_list:
+        list_tmp = []
+        name1 = os.path.basename(r)
+        if name1[0:2] == &#39;fi&#39;:
+            tmp = pd.read_csv(r, header=None)
+            for p in range(1,359):
+                x = float(tmp.iloc[p, 0])
+                y = float(tmp.iloc[p, 1])
+                distance2 = get_distance_point2line((x, y), line)
+                list_tmp.append(distance2)
+            list11.append(list_tmp)
+    return list11</code></pre>
+</details>
 <div class="desc"><p>This function is for getting migration axis and
 offset distance</p>
 <h2 id="args">Args</h2>
@@ -54,6 +144,27 @@ offset distance</p>
 <span>def <span class="ident">file_names</span></span>(<span>inputpath)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def file_names(inputpath):
+    &#34;&#34;&#34;
+       This function is for looping over files
+
+       Args:
+           inputpath: The folder path  to be looped over
+
+       Returns:
+           namelist: The files list
+           
+    &#34;&#34;&#34;
+    namelist = []
+    filePath = inputpath
+    for i, j, k in os.walk(filePath):
+        namelist.append([i, j, k])
+    return namelist</code></pre>
+</details>
 <div class="desc"><p>This function is for looping over files</p>
 <h2 id="args">Args</h2>
 <dl>
@@ -71,6 +182,28 @@ to be looped over</dd>
 <span>def <span class="ident">get_distance_point2line</span></span>(<span>point, line)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_distance_point2line(point, line):
+    &#34;&#34;&#34;
+       This function is for calculating the distance from points to a line
+
+       Args:
+           point: The observation points
+           line: A line
+
+       Returns:
+           distance: The distance from points to the line
+           
+    &#34;&#34;&#34;
+    line_point1, line_point2 = np.array(line[0:2]), np.array(line[2:])
+    vec1 = line_point1 - point
+    vec2 = line_point2 - point
+    distance = np.abs(np.cross(vec1, vec2)) / np.linalg.norm(line_point1 - line_point2)
+    return distance</code></pre>
+</details>
 <div class="desc"><p>This function is for calculating the distance from points to a line</p>
 <h2 id="args">Args</h2>
 <dl>
@@ -89,6 +222,29 @@ to be looped over</dd>
 <span>def <span class="ident">get_file_list</span></span>(<span>path)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_file_list(path):
+    &#34;&#34;&#34;
+       This function is for getting file lists
+
+       Args:
+           path: The  path for files
+
+       Returns:
+           file_list: The file list
+            
+    &#34;&#34;&#34;
+
+    file_list = []
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            if file != &#39;.DS_Store&#39;:
+                file_list.append(os.path.join(root, file))
+    return file_list</code></pre>
+</details>
 <div class="desc"><p>This function is for getting file lists</p>
 <h2 id="args">Args</h2>
 <dl>
@@ -106,6 +262,42 @@ path for files</dd>
 <span>def <span class="ident">off_distance</span></span>(<span>data_path)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def off_distance(data_path):
+    &#34;&#34;&#34;
+       This function is for saving the results in the folder
+
+       Args:
+           data_path: The data path
+
+       Returns:
+           True: Omitted
+            
+    &#34;&#34;&#34;
+    # --------------------------------------------
+    excel_list = file_names(data_path)
+
+    for i in range(len(excel_list)):
+        folder_attribute = excel_list[i]  #
+        index = 1
+
+        if len(folder_attribute[2]) &gt; 0:
+            for fileName in folder_attribute[2]:
+                if fileName[0:2] == &#39;fi&#39;:
+                    path = folder_attribute[0]
+                    create_folder(os.path.join(path, &#39;speed&#39;))
+                    create_folder(os.path.join(path, &#39;off_distance&#39;))
+
+                    # --------------------------------------------
+                    off_distance_main(path)
+
+                    # q4(&#39;result&#39;)
+                    print(&#39;{}Result found&#39;.format(path))
+                    break</code></pre>
+</details>
 <div class="desc"><p>This function is for saving the results in the folder</p>
 <h2 id="args">Args</h2>
 <dl>
@@ -122,6 +314,59 @@ path for files</dd>
 <span>def <span class="ident">off_distance_main</span></span>(<span>path)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def off_distance_main(path):
+    &#34;&#34;&#34;
+       This function is for saving and drawing the results
+
+       Args:
+           path: The file path
+
+       Returns:
+           True: Omitted
+           
+    &#34;&#34;&#34;
+    path1 = get_file_list(path)
+    result = calculate_distance(path1)
+    count1 = 0
+    tmp = 0
+    index = 1
+    for j in result:
+        list_averange = []
+        result2 = []
+        items = [[datas] for datas in j]
+        savecsvs(os.path.join(path, &#39;off_distance&#39;, &#39;d{}.csv&#39;.format(str(index))),items)
+        index = index + 1
+        for b in range(len(j)):
+            for l in result:
+                tmp += l[b]
+            averange = int(tmp/len(result))
+            tmp = 0
+            result2.append(averange)
+    items = [[datas] for datas in result2]
+    #savecsvs(os.path.join(path, &#39;off_distance&#39;, &#39;da.csv&#39;), items)
+
+    count = 1
+    xx = [i for i in range(43104, 43462)]
+    for l in result:
+        name = os.path.basename(path1[count])
+        #plt.xlim(0,360)
+        plt.plot(xx,l,label=&#39;d{}&#39;.format(count))
+        #plt.plot(xx, l)
+        plt.xlabel(&#34;date&#34;)
+        plt.ylabel(&#34;offset distance(meter)&#34;)
+        #plt.title(&#39;%s&#39;%l)
+        count += 1
+        #plt.title(&#39;%s&#39;%name)
+
+    plt.ticklabel_format(style=&#39;scientific&#39;, axis=&#39;y&#39;, scilimits=(0, 0))
+    plt.legend()
+    plt.savefig(os.path.join(path, &#39;off_distance&#39;, &#39;OffsetDistancePerDay.png&#39;))
+    plt.show()</code></pre>
+</details>
 <div class="desc"><p>This function is for saving and drawing the results</p>
 <h2 id="args">Args</h2>
 <dl>
@@ -163,7 +408,7 @@ path for files</dd>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.3</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
 </footer>
 </body>
 </html>
