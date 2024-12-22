@@ -341,7 +341,7 @@ def get_sldf(window_data_df,save_path,csv_name):
 #Trajectory estimation: Get daily population centroids by Meanshift algorithm
 def mean_shift(SLDF_df,save_path,csv_name):
     """
-       This function is for getting centroids of high-density subpopulations by Meanshift algorithm
+       This function is for getting centroids of high-density subgroups by Meanshift algorithm
 
        Args:
            SLDF_df: The data after sldf outlier detection
